@@ -1,0 +1,13 @@
+:root {
+    --main-color: #66a940;
+    --base-color: #6a5a44;
+    --color2: #44546a;
+    --color3 : #FFC300;
+    --color4: #2e4c8d;
+    --color5: #5e99cca9;
+
+    --font-size-1: calc(18px + (30 - 18)*(100vw - 320px)/(1440 - 320));
+    --font-size-2: calc(14px + (24 - 14)*(100vw - 320px)/(1440 - 320));
+    --font-size-3: calc(12px + (20 - 12)*(100vw - 320px)/(1440 - 320));
+    --font-size-4: calc(12px + (14 - 12)*(100vw - 320px)/(1440 - 320));
+}
