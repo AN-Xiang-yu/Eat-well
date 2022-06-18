@@ -1,2 +1,17 @@
 /node_modules
 /config/ .env
+*.py
+IA/script.zip
+IA/script/cat_voc.pkl
+IA/script/Filtrage.csv
+IA/script/item-info
+IA/script/local_test_splitByUser
+IA/script/local_train_splitByUser
+IA/script/mid_voc.pkl
+IA/script/mydata_Filtrage.csv
+IA/script/reviews-info
+IA/script/run.sh
+IA/script/script.zip
+IA/script/spark_env.zip
+IA/script/train_dein2.log
+IA/script/uid_voc.pkl
