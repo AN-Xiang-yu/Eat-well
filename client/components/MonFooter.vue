@@ -7,7 +7,7 @@
                     <p>
                         <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
                         <span>&emsp;&emsp;</span>
-                        <a href="tel:+33188289000">+33 6 66 66 66 66 66</a>
+                        <a href="tel:+33188289000">+33 6 66 66 66 66</a>
                     </p>
                 </div>
                 <div>
