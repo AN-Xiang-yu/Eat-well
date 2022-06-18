@@ -40,55 +40,56 @@
 
 <script>
 module.exports = {
-  props: {
-    articles: { type: Array, default: [] },
-    panier: { type: Object }
-  },
-  data () {
-    return {
-      newArticle: {
-        name: '',
-        description: '',
-        image: '',
-        price: 0
-      },
-      editingArticle: {
-        id: -1,
-        name: '',
-        description: '',
-        image: '',
-        price: 0
-      }
+    name:"Accueil",
+    props: {
+        articles: { type: Array, default: [] },
+        panier: { type: Object }
+    },
+    data () {
+        return {
+        newArticle: {
+            name: '',
+            description: '',
+            image: '',
+            price: 0
+        },
+        editingArticle: {
+            id: -1,
+            name: '',
+            description: '',
+            image: '',
+            price: 0
+        }
+        }
+    },
+    methods: {
+        addArticle () {
+        this.$emit('add-article', this.newArticle)
+        },
+        deleteArticle (articleId) {
+        this.$emit('delete-article', articleId)
+        },
+        editArticle (article) {
+        this.editingArticle.id = article.id
+        this.editingArticle.name = article.name
+        this.editingArticle.description = article.description
+        this.editingArticle.image = article.image
+        this.editingArticle.price = article.price
+        },
+        sendEditArticle () {
+        this.$emit('update-article', this.editingArticle)
+        this.abortEditArticle()
+        },
+        abortEditArticle () {
+        this.editingArticle = {
+            id: -1,
+            name: '',
+            description: '',
+            image: '',
+            price: 0
+        }
+        }
     }
-  },
-  methods: {
-    addArticle () {
-      this.$emit('add-article', this.newArticle)
-    },
-    deleteArticle (articleId) {
-      this.$emit('delete-article', articleId)
-    },
-    editArticle (article) {
-      this.editingArticle.id = article.id
-      this.editingArticle.name = article.name
-      this.editingArticle.description = article.description
-      this.editingArticle.image = article.image
-      this.editingArticle.price = article.price
-    },
-    sendEditArticle () {
-      this.$emit('update-article', this.editingArticle)
-      this.abortEditArticle()
-    },
-    abortEditArticle () {
-      this.editingArticle = {
-        id: -1,
-        name: '',
-        description: '',
-        image: '',
-        price: 0
-      }
-    }
-  }
 }
 </script>
 
