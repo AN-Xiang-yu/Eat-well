@@ -17,8 +17,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-CREATE DATABASE IF NOT EXISTS long_life;
-USE long_life;
+CREATE DATABASE IF NOT EXISTS eat_well;
+USE eat_well;
 --
 -- Base de données : `long_life`
 --
