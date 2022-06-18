@@ -4,11 +4,11 @@
 <ol>
 <li>Réinitialiser le mot de passe de base de données</li>
   <p> 
-    Taper les codes suivants sur workbench
+    Taper les codes suivants sur workbench :
   </p>
   <p> 
-    ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
-    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
+    ``ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
+    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';``
   </p>
 <li>Importer la BDD dans le répertoire suivant: autre/bd/eat_well.sql</li> 
 </ol>
