@@ -21,8 +21,10 @@
 
 <body>
     <div id="body" class="flex-nowrap direction-column jc-between w100 h100">
-        <mon-header class="w100"></mon-header>
-        <main class="w100 flex-80"></main>
+        <mon-header class="w100" :connecte="connecte" :utilisateur="utilisateur" @deconnecter="deconnecter"></mon-header>
+        <main class="w100 flex-80">
+            <router-view :connecte="connecte" :utilisateur="utilisateur" :message-erreur="messageErreur" @sauter-recettes="sauterRecettes" @sauter-accueil="sauterAccueil" @inscription="inscription" @connecter="connecter"></router-view>
+        </main>
         <mon-footer class="flex-10"></mon-footer>
     </div>
 

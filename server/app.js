@@ -12,7 +12,16 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(session({ secret: 'grehjznejzkhgjrez', saveUninitialized: false, resave: false }))
+app.use(session({
+    cookie: { //fixer la session
+        path: '/',
+        httpOnly: false,
+        maxAge: 24 * 60 * 60 * 1000
+    },
+    secret: 'grehjznejzkhgjrez',
+    saveUninitialized: false,
+    resave: false
+}))
 app.use(express.static(path.join(__dirname, '../client')))
 
 app.use('/api/', apiRouter)

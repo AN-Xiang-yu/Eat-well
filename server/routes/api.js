@@ -1,176 +1,237 @@
 const express = require('express')
 const router = express.Router()
+const bcrypt = require('bcrypt')
+const saltRounds = 10
+const Utilisateur = require("../class/utilisateur.js")
+const Recette = require("../class/recette.js")
+const Ingredient = require("../class/ingredient.js")
+var recettes = []
+var ingredients = []
 
+// créer l'instance Sequelize
+const { Sequelize } = require('sequelize')
+const sequelize = new Sequelize("eat_well", "root", "", {
+    dialect: "mysql",
+    host: "localhost"
+})
 
-class Panier {
-    constructor() {
-        this.createdAt = new Date()
-        this.updatedAt = new Date()
-        this.articles = []
-    }
+// connecter à la base de données
+try {
+    sequelize.authenticate()
+    console.log('connecté à la base de données MySQL !')
+} catch (error) {
+    console.error('Impossible de se connecter, erreur suivante :', error)
 }
 
-/**
- * Dans ce fichier, vous trouverez des exemples de requêtes GET, POST, PUT et DELETE
- * Ces requêtes concernent l'ajout ou la suppression d'articles sur le site
- * Votre objectif est, en apprenant des exemples de ce fichier, de créer l'API pour le panier de l'utilisateur
- *
- * Notre site ne contient pas d'authentification, ce qui n'est pas DU TOUT recommandé.
- * De même, les informations sont réinitialisées à chaque redémarrage du serveur, car nous n'avons pas de système de base de données pour faire persister les données
- */
+// créer des instances utiliser les requêtes
+const utilisateur = new Utilisateur.default(sequelize)
+const recette = new Recette.default(sequelize)
+const ingredient = new Ingredient.default(sequelize)
 
-/**
- * Notre mécanisme de sauvegarde des paniers des utilisateurs sera de simplement leur attribuer un panier grâce à req.session, sans authentification particulière
- */
-router.use((req, res, next) => {
-    // l'utilisateur n'est pas reconnu, lui attribuer un panier dans req.session
-    if (typeof req.session.panier === 'undefined') {
-        req.session.panier = new Panier()
+function connecterSessionUtilisateur(req, res, utilisateurRecupere) {
+    //connexion d'utilisateur
+    req.session.utilisateur = {
+        idUtilisateur: utilisateurRecupere.id,
+        email: utilisateurRecupere.email,
+        surnom: utilisateurRecupere.surnom,
     }
-    next()
-})
-
-/*
- * Cette route doit retourner le panier de l'utilisateur, grâce à req.session
- */
-router.get('/panier', (req, res) => {
-    res.status(501).json({ message: 'Not implemented' })
-})
-
-/*
- * Cette route doit ajouter un article au panier, puis retourner le panier modifié à l'utilisateur
- * Le body doit contenir l'id de l'article, ainsi que la quantité voulue
- */
-router.post('/panier', (req, res) => {
-    res.status(501).json({ message: 'Not implemented' })
-})
-
-/*
- * Cette route doit permettre de confirmer un panier, en recevant le nom et prénom de l'utilisateur
- * Le panier est ensuite supprimé grâce à req.session.destroy()
- */
-router.post('/panier/pay', (req, res) => {
-    res.status(501).json({ message: 'Not implemented' })
-})
-
-/*
- * Cette route doit permettre de changer la quantité d'un article dans le panier
- * Le body doit contenir la quantité voulue
- */
-router.put('/panier/:articleId', (req, res) => {
-    res.status(501).json({ message: 'Not implemented' })
-})
-
-/*
- * Cette route doit supprimer un article dans le panier
- */
-router.delete('/panier/:articleId', (req, res) => {
-    res.status(501).json({ message: 'Not implemented' })
-})
-
-
-/**
- * Cette route envoie l'intégralité des articles du site
- */
-router.get('/articles', (req, res) => {
-    res.json(articles)
-})
-
-/**
- * Cette route crée un article.
- * WARNING: dans un vrai site, elle devrait être authentifiée et valider que l'utilisateur est bien autorisé
- * NOTE: lorsqu'on redémarre le serveur, l'article ajouté disparait
- *   Si on voulait persister l'information, on utiliserait une BDD (mysql, etc.)
- */
-router.post('/article', (req, res) => {
-    const name = req.body.name
-    const description = req.body.description
-    const image = req.body.image
-    const price = parseInt(req.body.price)
-
-    // vérification de la validité des données d'entrée
-    if (typeof name !== 'string' || name === '' ||
-        typeof description !== 'string' || description === '' ||
-        typeof image !== 'string' || image === '' ||
-        isNaN(price) || price <= 0) {
-        res.status(400).json({ message: 'bad request' })
-        return
-    }
-
-    const article = {
-        id: articles.length + 1,
-        name: name,
-        description: description,
-        image: image,
-        price: price
-    }
-    articles.push(article)
-        // on envoie l'article ajouté à l'utilisateur
-    res.json(article)
-})
-
-/**
- * Cette fonction fait en sorte de valider que l'article demandé par l'utilisateur
- * est valide. Elle est appliquée aux routes:
- * - GET /article/:articleId
- * - PUT /article/:articleId
- * - DELETE /article/:articleId
- * Comme ces trois routes ont un comportement similaire, on regroupe leurs fonctionnalités communes dans un middleware
- */
-function parseArticle(req, res, next) {
-    const articleId = parseInt(req.params.articleId)
-
-    // si articleId n'est pas un nombre (NaN = Not A Number), alors on s'arrête
-    if (isNaN(articleId)) {
-        res.status(400).json({ message: 'articleId should be a number' })
-        return
-    }
-    // on affecte req.articleId pour l'exploiter dans toutes les routes qui en ont besoin
-    req.articleId = articleId
-
-    const article = articles.find(a => a.id === req.articleId)
-    if (!article) {
-        res.status(404).json({ message: 'article ' + articleId + ' does not exist' })
-        return
-    }
-    // on affecte req.article pour l'exploiter dans toutes les routes qui en ont besoin
-    req.article = article
-    next()
-}
-
-router.route('/article/:articleId')
-    /**
-     * Cette route envoie un article particulier
-     */
-    .get(parseArticle, (req, res) => {
-        // req.article existe grâce au middleware parseArticle
-        res.json(req.article)
+    res.status(201).json({
+        utilisateur: req.session.utilisateur
     })
+}
+
 
 /**
- * Cette route modifie un article.
- * WARNING: dans un vrai site, elle devrait être authentifiée et valider que l'utilisateur est bien autorisé
- * NOTE: lorsqu'on redémarre le serveur, la modification de l'article disparait
- *   Si on voulait persister l'information, on utiliserait une BDD (mysql, etc.)
+ * Description : Cette fonction permet à utilisateur de s'inscrire 
+ * On va vérifier l'existence d'utilisateur dans la BDD, l'ajouter
+ * dans la BDD, et mettre à jour la session en cas de réussite d'inscription
+ * après, on va générer aléatoirement une liste de recette
+ *
+ * @param {string} email email de l'utilisateur
+ * @param {string} surnom surnom de l'utilisateur
+ * @param {number} mdp mot de passe de l'utilisateur
+ * @return {Utilisateur} tous les informations principales d'utilisateur
+ * @author author-name(Xiangyu AN) (création : 18-06-2022) (modification : 19-06-2022)
+ * @état : non fini, la partie générer aléatoirement une liste de recette à faire
  */
-.put(parseArticle, (req, res) => {
-    const name = req.body.name
-    const description = req.body.description
-    const image = req.body.image
-    const price = parseInt(req.body.price)
+router.post('/inscription', async(req, res) => {
+    //info d'un étudiant
+    const email = req.body.email
+    const surnom = req.body.surnom
+    const mdp = req.body.mdp
+    const mdphash = await bcrypt.hash(mdp, 10) //hasher le mot de passe
+    let idUtilisateur = null
+    let resultatTemp = null
 
-    req.article.name = name
-    req.article.description = description
-    req.article.image = image
-    req.article.price = price
-    res.send()
+    //vérifier l'existence de l'utilisateur
+    try {
+        console.log("vérifier l'existence de l'utilisateur")
+        resultatTemp = await utilisateur.exister(email, surnom)
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        console.log(error);
+        res.status(400).json({ error: "Impossible de faire la vérification d'existence de l'utilisateur" })
+        return
+    }
+
+    //cas d'existence de l'utilsateur
+    if (resultatTemp[0].length != 0) {
+        console.log('L\'utilisateur existe déjà');
+        res.status(400).json({ message: 'L\'utilisateur existe déjà' })
+        return
+    }
+
+    //ajouter l'utilisateur dans la table d'utilisateur
+    try {
+        console.log("ajouter l'utilisateur dans la table d'utilisateur")
+        resultatTemp = await utilisateur.ajouterUtilisateur(email, surnom, mdphash)
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        res.status(400).json({ error: "Impossible d'ajouter l'utilisateur dans la table d'utilisateur" })
+        return
+    }
+
+    //cas d'échec d'ajout d'un utilisateur dans la table d'utilisateur
+    if (resultatTemp[0].length == 0) {
+        console.log("Échoué d\'ajouter l\'utilsiateur dans la table d'utilisateur");
+        res.status(400).json({ message: "Échoué d\'ajouter l\'utilsiateur dans la table d'utilisateur" })
+        return
+    }
+
+    //récupérer l'id d'utilsateur qui vient d'être ajouté dans la table d'utilisateur
+    idUtilisateur = parseInt(resultatTemp[0])
+
+    utilisateurRecupere = {
+        idUtilisateur: idUtilisateur,
+        email: email,
+        surnom: surnom,
+    }
+
+    /* ******************************************* */
+    //A FAIRE: générer une recommandaiton de 10 recettes
+    //1. récupérer tous les id de recettes de la table de recette
+    //2. vérifier si l'on a bien réussi à récupérer les id de recettes
+    //3. choisir aléatoirement 10 id de recettes
+    //4. ajouter ces id de recettes + id d'utilisateur dans la table (utilsateur_recette)
+    /* ******************************************* */
+
+    //connexion d'utilisateur
+    connecterSessionUtilisateur(req, res, utilisateurRecupere)
+    return
 })
 
-.delete(parseArticle, (req, res) => {
-    const index = articles.findIndex(a => a.id === req.articleId)
+/**
+ * Description : Cette fonction permet à utilisateur de se connecter
+ * On va vérifier l'existence d'utilisateur dans la BDD.
+ * S'il existe, alors on va vérifier son mot de passe saisi
+ * Si le mot de passe est bon, l'utilisateur va pouvoir se connecter
+ *
+ * @param {string} email_surnom email ou surnom de l'utilisateur
+ * @param {number} mdp mot de passe de l'utilisateur
+ * @return {Utilisateur} tous les informations principales d'utilisateur
+ * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
+ * @état : fini
+ */
+router.post('/connexion', async(req, res) => {
+    const emailSurnom = req.body.email_surnom
+    const mdp = req.body.mdp
+    let utilisateurRecupere = null
+    let resultatTemp = null
 
-    articles.splice(index, 1) // remove the article from the array
-    res.send()
+    //récupérer l'utilisateur depuis la bd
+    try {
+        resultatTemp = await utilisateur.getUtilisateur(emailSurnom)
+    } catch (error) {
+        res.status(400).json({ error: 'Échoué de connexion' })
+        return
+    }
+
+    //vérifier l'existence de l'utilisateur
+    if (resultatTemp[0].length == 0) {
+        console.log('L\'utilisateur n\'existe pas');
+        res.status(404).json({ message: 'L\'utilisateur n\'existe pas' })
+        return
+    }
+
+    //récupérer l'utilisateur
+    utilisateurRecupere = resultatTemp[0][0]
+
+    //vérifier la validation de mot de passe
+    if (!(await bcrypt.compare(mdp, utilisateurRecupere.mdp))) {
+        console.log('Le mot de passe de l\'utilisateur n\'est pas correct.');
+        res.status(401).json({ message: 'Le mot de passe de l\'utilisateur n\'est pas correct.' })
+        return
+    }
+
+    //connexion d'utilisateur
+    connecterSessionUtilisateur(req, res, utilisateurRecupere)
+    return
+})
+
+/**
+ * Description : Cette fonction permet de vérifier l'état de connexion de l'utilisateur
+ * On va vérifier l'existence dans session
+ * S'il exsite, on va utiliser son id pour récupérer ses informations et maintenir sa session
+ *
+ * @return {Utilisateur} tous les informations principales d'utilisateur
+ * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
+ * @état : fini
+ */
+router.get('/connexion', async(req, res) => {
+    let resultatTemp = null
+    let utilisateurRecupere = null
+
+    //si l'utilisateur n'est pas connecté
+    if (typeof req.session.utilisateur === 'undefined') {
+        console.log("L'utilisateur n'est pas connecté");
+        return
+    }
+
+    //récupérer l'utilisateur par id
+    try {
+        resultatTemp = await utilisateur.getUtilisateurParId(req.session.utilisateur.idUtilisateur)
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        res.status(400).json({ error: "Impossible de trouver l'utilisateur" })
+        return
+    }
+
+    //vérifier l'existence de l'utilisateur
+    if (resultatTemp[0].length == 0) {
+        console.log('L\'utilisateur n\'existe pas');
+        res.status(404).json({ message: 'L\'utilisateur n\'existe pas' })
+        return
+    }
+
+    utilisateurRecupere = resultatTemp[0][0] //récupérer l'utilisateur
+
+    //connexion d'utilisateur
+    connecterSessionUtilisateur(req, res, utilisateurRecupere)
+    return
+})
+
+/**
+ * Description : Cette fonction permet à utilisateur de se déconnecter
+ * On va vérifier l'existence dans session
+ * S'il exsite, on va libérer session pour déconnecter
+ *
+ * @return {Utilisateur} tous les informations principales d'utilisateur
+ * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
+ * @état : fini
+ */
+router.get('/deconnexion', (req, res) => {
+    //si l'utilisateur n'est pas connecté
+    if (typeof req.session.utilisateur != 'undefined') {
+        //libérer session pour déconnecter
+        req.session.destroy()
+
+        //envoyer le message de réussite à l'utilisateur
+        res.status(200).json({ message: "déconnecter" })
+        return
+    }
+    //envoyer le message d'erreur à l'utilisateur
+    res.status(400).json({ message: "L'utilisateur n'est pas connecté" })
+    return
 })
 
 module.exports = router
