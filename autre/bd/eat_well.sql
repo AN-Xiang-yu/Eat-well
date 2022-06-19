@@ -31,7 +31,7 @@ USE eat_well;
 
 DROP TABLE IF EXISTS `ingredient`;
 CREATE TABLE IF NOT EXISTS `ingredient` (
-  `id` varchar(100) NOT NULL,
+  `id` Int Auto_increment NOT NULL,
   `nom` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -44,9 +44,9 @@ CREATE TABLE IF NOT EXISTS `ingredient` (
 
 DROP TABLE IF EXISTS `ingredient_recette`;
 CREATE TABLE IF NOT EXISTS `ingredient_recette` (
-  `id` varchar(100) NOT NULL,
-  `id_ingredient` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`,`id_ingredient`),
+  `id_recette` int NOT NULL,
+  `id_ingredient` Int NOT NULL,
+  PRIMARY KEY (`id_recette`,`id_ingredient`),
   KEY `ingredient_recette_ingredient0_FK` (`id_ingredient`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `ingredient_recette` (
 
 DROP TABLE IF EXISTS `recette`;
 CREATE TABLE IF NOT EXISTS `recette` (
-  `id` varchar(100) NOT NULL,
+  `id` Int Auto_increment NOT NULL,
   `nom` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `recette` (
 
 DROP TABLE IF EXISTS `utilisateur`;
 CREATE TABLE IF NOT EXISTS `utilisateur` (
-  `id` varchar(50) NOT NULL,
+  `id` Int Auto_increment NOT NULL,
   `surnom` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `mdp` varchar(100) NOT NULL,
@@ -86,9 +86,9 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 
 DROP TABLE IF EXISTS `utilisateur_recette`;
 CREATE TABLE IF NOT EXISTS `utilisateur_recette` (
-  `id` varchar(50) NOT NULL,
-  `id_recette` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`,`id_recette`),
+  `id_utilisateur` Int NOT NULL,
+  `id_recette` Int NOT NULL,
+  PRIMARY KEY (`id_utilisateur`,`id_recette`),
   KEY `utilisateur_recette_recette0_FK` (`id_recette`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -101,14 +101,14 @@ CREATE TABLE IF NOT EXISTS `utilisateur_recette` (
 --
 ALTER TABLE `ingredient_recette`
   ADD CONSTRAINT `ingredient_recette_ingredient0_FK` FOREIGN KEY (`id_ingredient`) REFERENCES `ingredient` (`id`),
-  ADD CONSTRAINT `ingredient_recette_recette_FK` FOREIGN KEY (`id`) REFERENCES `recette` (`id`);
+  ADD CONSTRAINT `ingredient_recette_recette_FK` FOREIGN KEY (`id_recette`) REFERENCES `recette` (`id`);
 
 --
 -- Contraintes pour la table `utilisateur_recette`
 --
 ALTER TABLE `utilisateur_recette`
   ADD CONSTRAINT `utilisateur_recette_recette0_FK` FOREIGN KEY (`id_recette`) REFERENCES `recette` (`id`),
-  ADD CONSTRAINT `utilisateur_recette_utilisateur_FK` FOREIGN KEY (`id`) REFERENCES `utilisateur` (`id`);
+  ADD CONSTRAINT `utilisateur_recette_utilisateur_FK` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
