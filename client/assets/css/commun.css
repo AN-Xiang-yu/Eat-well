@@ -1,6 +1,7 @@
 :root {
-    --main-color: #66a940;
-    --base-color: #6a5a44;
+    --main-color: #d0eb99;
+    --base-color: rgb(11, 167, 57);
+    --rouge: rgb(235, 46, 1);
     --color2: #44546a;
     --color3: #FFC300;
     --color4: #2e4c8d;
@@ -21,7 +22,7 @@
     --orange-saumon: #F88E55;
     --leger-blanc: rgba(255, 255, 255, 0.25);
     --leger-noire: #eaeaea;
-    --demi-noire: rgba(0, 0, 0, 0.5);
+    --demi-noire: rgba(23, 192, 73, 0.5);
     --ombre: #666666;
     /* theme couleur */
     --theme0-color: #44b1ce;
