@@ -1,12 +1,12 @@
 ﻿Domain Code,Domain,Area Code (FAO),Area,Element Code,Element,Item Code,Item,Year Code,Year,Unit,Value,Flag,Flag Description
-"EI","Emissions intensities","68","France","71761","Emissions intensity","1718","Cereals excluding rice","2017","2017","kg CO2eq/kg product","0.1244","Fc","Calculated data"
-"EI","Emissions intensities","68","France","71761","Emissions intensity","27","Rice, paddy","2017","2017","kg CO2eq/kg product","24.1834","Fc","Calculated data"
-"EI","Emissions intensities","68","France","71761","Emissions intensity","867","Meat, cattle","2017","2017","kg CO2eq/kg product","20.0797","Fc","Calculated data"
-"EI","Emissions intensities","68","France","71761","Emissions intensity","882","Milk, whole fresh cow","2017","2017","kg CO2eq/kg product","0.5753","Fc","Calculated data"
-"EI","Emissions intensities","68","France","71761","Emissions intensity","1017","Meat, goat","2017","2017","kg CO2eq/kg product","7.7211","Fc","Calculated data"
-"EI","Emissions intensities","68","France","71761","Emissions intensity","1020","Milk, whole fresh goat","2017","2017","kg CO2eq/kg product","0.3356","Fc","Calculated data"
-"EI","Emissions intensities","68","France","71761","Emissions intensity","977","Meat, sheep","2017","2017","kg CO2eq/kg product","15.3533","Fc","Calculated data"
-"EI","Emissions intensities","68","France","71761","Emissions intensity","982","Milk, whole fresh sheep","2017","2017","kg CO2eq/kg product","1.2805","Fc","Calculated data"
-"EI","Emissions intensities","68","France","71761","Emissions intensity","1058","Meat, chicken","2017","2017","kg CO2eq/kg product","0.3719","Fc","Calculated data"
-"EI","Emissions intensities","68","France","71761","Emissions intensity","1062","Eggs, hen, in shell","2017","2017","kg CO2eq/kg product","0.6057","Fc","Calculated data"
-"EI","Emissions intensities","68","France","71761","Emissions intensity","1035","Meat, pig","2017","2017","kg CO2eq/kg product","1.4302","Fc","Calculated data"
+EI,Emissions intensities,68,France,71761,Emissions intensity,1718,Cereals excluding rice,2017,2017,kg CO2eq/kg product,0.1244,Fc,Calculated data
+EI,Emissions intensities,68,France,71761,Emissions intensity,27,"Rice, paddy",2017,2017,kg CO2eq/kg product,24.1834,Fc,Calculated data
+EI,Emissions intensities,68,France,71761,Emissions intensity,867,"Meat, cattle",2017,2017,kg CO2eq/kg product,20.0797,Fc,Calculated data
+EI,Emissions intensities,68,France,71761,Emissions intensity,882,"Milk, whole fresh cow",2017,2017,kg CO2eq/kg product,0.5753,Fc,Calculated data
+EI,Emissions intensities,68,France,71761,Emissions intensity,1017,"Meat, goat",2017,2017,kg CO2eq/kg product,7.7211,Fc,Calculated data
+EI,Emissions intensities,68,France,71761,Emissions intensity,1020,"Milk, whole fresh goat",2017,2017,kg CO2eq/kg product,0.3356,Fc,Calculated data
+EI,Emissions intensities,68,France,71761,Emissions intensity,977,"Meat, sheep",2017,2017,kg CO2eq/kg product,15.3533,Fc,Calculated data
+EI,Emissions intensities,68,France,71761,Emissions intensity,982,"Milk, whole fresh sheep",2017,2017,kg CO2eq/kg product,1.2805,Fc,Calculated data
+EI,Emissions intensities,68,France,71761,Emissions intensity,1058,"Meat, chicken",2017,2017,kg CO2eq/kg product,0.3719,Fc,Calculated data
+EI,Emissions intensities,68,France,71761,Emissions intensity,1062,"Eggs, hen, in shell",2017,2017,kg CO2eq/kg product,0.6057,Fc,Calculated data
+EI,Emissions intensities,68,France,71761,Emissions intensity,1035,"Meat, pig",2017,2017,kg CO2eq/kg product,1.4302,Fc,Calculated data
