@@ -1,6 +1,7 @@
 <template>
   <article>
-
+    <h1>Page 404</h1>
+    <section></section>
   </article>
 </template>
 
