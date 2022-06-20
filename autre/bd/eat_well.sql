@@ -17,100 +17,92 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+DROP DATABASE IF EXISTS eat_well;
 CREATE DATABASE IF NOT EXISTS eat_well;
 USE eat_well;
 --
--- Base de données : `long_life`
+-- Base de données : `eat_well`
 --
 
--- --------------------------------------------------------
+#------------------------------------------------------------
+#        Script MySQL.
+#------------------------------------------------------------
 
---
--- Structure de la table `ingredient`
---
 
-DROP TABLE IF EXISTS `ingredient`;
-CREATE TABLE IF NOT EXISTS `ingredient` (
-  `id` Int Auto_increment NOT NULL,
-  `nom` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+#------------------------------------------------------------
+# Table: utilisateur
+#------------------------------------------------------------
 
--- --------------------------------------------------------
+CREATE TABLE utilisateur(
+        id     Int  Auto_increment  NOT NULL ,
+        surnom Varchar (50) NOT NULL ,
+        email  Varchar (100) NOT NULL ,
+        mdp    Varchar (100) NOT NULL
+	,CONSTRAINT utilisateur_PK PRIMARY KEY (id)
+)ENGINE=InnoDB;
 
---
--- Structure de la table `ingredient_recette`
---
 
-DROP TABLE IF EXISTS `ingredient_recette`;
-CREATE TABLE IF NOT EXISTS `ingredient_recette` (
-  `id_recette` int NOT NULL,
-  `id_ingredient` Int NOT NULL,
-  PRIMARY KEY (`id_recette`,`id_ingredient`),
-  KEY `ingredient_recette_ingredient0_FK` (`id_ingredient`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+#------------------------------------------------------------
+# Table: ingredient
+#------------------------------------------------------------
 
--- --------------------------------------------------------
+CREATE TABLE ingredient(
+        id               Int  Auto_increment  NOT NULL ,
+        nom              Varchar (100) NOT NULL ,
+        categorie        Varchar (150) NOT NULL ,
+        energie          Int NOT NULL ,
+        lipide           Int NOT NULL ,
+        sel              Float NOT NULL ,
+        production_CO2   Float NOT NULL ,
+        consommation_eau Int NOT NULL
+	,CONSTRAINT ingredient_PK PRIMARY KEY (id)
+)ENGINE=InnoDB;
 
---
--- Structure de la table `recette`
---
 
-DROP TABLE IF EXISTS `recette`;
-CREATE TABLE IF NOT EXISTS `recette` (
-  `id` Int Auto_increment NOT NULL,
-  `nom` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+#------------------------------------------------------------
+# Table: recette
+#------------------------------------------------------------
 
--- --------------------------------------------------------
+CREATE TABLE recette(
+        id          Int  Auto_increment  NOT NULL ,
+        nom         Varchar (100) NOT NULL ,
+        auteur      Varchar (100) NOT NULL ,
+        tags        Longtext NOT NULL ,
+        etapes      Longtext NOT NULL ,
+        nrbPersonne Int NOT NULL ,
+        temps_total Int NOT NULL ,
+        temps_prepa Int NOT NULL
+	,CONSTRAINT recette_PK PRIMARY KEY (id)
+)ENGINE=InnoDB;
 
---
--- Structure de la table `utilisateur`
---
 
-DROP TABLE IF EXISTS `utilisateur`;
-CREATE TABLE IF NOT EXISTS `utilisateur` (
-  `id` Int Auto_increment NOT NULL,
-  `surnom` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `mdp` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+#------------------------------------------------------------
+# Table: ingredient_recette
+#------------------------------------------------------------
 
--- --------------------------------------------------------
+CREATE TABLE ingredient_recette(
+        id_recette            Int NOT NULL ,
+        id_ingredient Int NOT NULL ,
+        quantite      Float NOT NULL
+	,CONSTRAINT ingredient_recette_PK PRIMARY KEY (id_recette,id_ingredient)
 
---
--- Structure de la table `utilisateur_recette`
---
+	,CONSTRAINT ingredient_recette_recette_FK FOREIGN KEY (id_recette) REFERENCES recette(id)
+	,CONSTRAINT ingredient_recette_ingredient0_FK FOREIGN KEY (id_ingredient) REFERENCES ingredient(id)
+)ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `utilisateur_recette`;
-CREATE TABLE IF NOT EXISTS `utilisateur_recette` (
-  `id_utilisateur` Int NOT NULL,
-  `id_recette` Int NOT NULL,
-  PRIMARY KEY (`id_utilisateur`,`id_recette`),
-  KEY `utilisateur_recette_recette0_FK` (`id_recette`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Contraintes pour les tables déchargées
---
+#------------------------------------------------------------
+# Table: utilisateur_recette
+#------------------------------------------------------------
 
---
--- Contraintes pour la table `ingredient_recette`
---
-ALTER TABLE `ingredient_recette`
-  ADD CONSTRAINT `ingredient_recette_ingredient0_FK` FOREIGN KEY (`id_ingredient`) REFERENCES `ingredient` (`id`),
-  ADD CONSTRAINT `ingredient_recette_recette_FK` FOREIGN KEY (`id_recette`) REFERENCES `recette` (`id`);
+CREATE TABLE utilisateur_recette(
+        id_utilisateur         Int NOT NULL ,
+        id_recette Int NOT NULL ,
+        clique     Bool NOT NULL ,
+        iteration  Int NOT NULL
+	,CONSTRAINT utilisateur_recette_PK PRIMARY KEY (id_utilisateur,id_recette)
 
---
--- Contraintes pour la table `utilisateur_recette`
---
-ALTER TABLE `utilisateur_recette`
-  ADD CONSTRAINT `utilisateur_recette_recette0_FK` FOREIGN KEY (`id_recette`) REFERENCES `recette` (`id`),
-  ADD CONSTRAINT `utilisateur_recette_utilisateur_FK` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id`);
-COMMIT;
+	,CONSTRAINT utilisateur_recette_utilisateur_FK FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id)
+	,CONSTRAINT utilisateur_recette_recette0_FK FOREIGN KEY (id_recette) REFERENCES recette(id)
+)ENGINE=InnoDB;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
