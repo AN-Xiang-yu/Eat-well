@@ -46,7 +46,7 @@
                 <li class="flex-40 right">
                     <router-link to='/connexion'>
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        <span>Surnom</span>
+                        <span>{{utilisateur.surnom}}</span>
                     </router-link>
                 </li>
                 <li class="flex-5 center">
@@ -83,7 +83,7 @@
                     <li class="flex-50 center">
                         <router-link to='/connexion'>
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                            <span>Surnom</span>
+                            <span>{{utilisateur.surnom}}</span>
                         </router-link>
                     </li>
                     <li class="flex-50 m-auto">
