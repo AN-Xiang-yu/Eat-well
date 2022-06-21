@@ -69,12 +69,9 @@ router.post("/inscription", async (req, res) => {
   } catch (error) {
     //envoyer le message d'échec à l'utilisateur
     console.log(error);
-    res
-      .status(400)
-      .json({
-        error:
-          "Impossible de faire la vérification d'existence de l'utilisateur",
-      });
+    res.status(400).json({
+      error: "Impossible de faire la vérification d'existence de l'utilisateur",
+    });
     return;
   }
 
@@ -91,22 +88,18 @@ router.post("/inscription", async (req, res) => {
     resultatTemp = await utilisateur.ajouterUtilisateur(email, surnom, mdphash);
   } catch (error) {
     //envoyer le message d'échec à l'utilisateur
-    res
-      .status(400)
-      .json({
-        error: "Impossible d'ajouter l'utilisateur dans la table d'utilisateur",
-      });
+    res.status(400).json({
+      error: "Impossible d'ajouter l'utilisateur dans la table d'utilisateur",
+    });
     return;
   }
 
   //cas d'échec d'ajout d'un utilisateur dans la table d'utilisateur
   if (resultatTemp[0].length == 0) {
     console.log("Échoué d'ajouter l'utilsiateur dans la table d'utilisateur");
-    res
-      .status(400)
-      .json({
-        message: "Échoué d'ajouter l'utilsiateur dans la table d'utilisateur",
-      });
+    res.status(400).json({
+      message: "Échoué d'ajouter l'utilsiateur dans la table d'utilisateur",
+    });
     return;
   }
 

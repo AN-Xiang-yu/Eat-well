@@ -21,10 +21,15 @@
             <!-- Mode non connexion : inscription et connexion en écran de taille grande -->
             <div id="barre-menu-page-container-grand-ecran" class="flex-25 flex jc-between a-center f-700" v-if="!connecte">
                 <li class="flex-50 center">
+                    
                     <router-link to='/inscription'>
-                        <span>S'inscrire</span>
+                        <button>
+                            <span>S'inscrire</span>
                         <i class="fa-solid fa-user-plus"></i>
+                        </button>
+                        
                     </router-link>
+
                 </li>
                 <li class="flex-50 center">
                     <router-link to='/connexion'>
@@ -36,6 +41,7 @@
             <!-- Mode connexion : recettes et surnom en écran de taille grande -->
             <div id="barre-menu-page-container-grand-ecran" class="flex-85 flex jc-between a-center f-700" v-else>
                 <li class="flex-50 left">
+
                     <router-link to='/recettes'>
                         <i class="fa-solid fa-utensils"></i>
                         <span>Recettes</span>
@@ -130,7 +136,7 @@ module.exports ={
     },   
     computed: {
         cheminLogo: function() {
-            return this.connecte ? '/catalogue' : '/'
+            return this.connecte ? '/recettes' : '/'
         },
     }
 

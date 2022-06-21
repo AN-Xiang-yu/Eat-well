@@ -3,22 +3,39 @@ class Ingredient {
         this.sequelize = sequelize
     }
 
-    //récupérer tous les livres du site
-    async getLivres(langue) {
+    /**
+     * Description : Cette fonction permet de récupérer le nom et l'id de tous les ingrédients 
+     * 
+     * @return {list<Ingredient>} Une liste de recettes
+     * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
+
+     * @état : A FAIRE
+     */
+    async getIngredients() {
         return this.sequelize.query(
-            `SELECT DISTINCT l.isbn, title, auteur, editeur, note, nom_langue_livre, date_pub, couverture, cache, 
-            quantite AS quantite_total, COALESCE(quantite_emprunte,0) as quantite_emprunte, (quantite-COALESCE(quantite_emprunte,0)) AS quantite_disponible
-                FROM livre l 
-                INNER JOIN livre_${langue} ll ON l.isbn = ll.isbn
-                INNER JOIN langue_livre lanl ON lanl.id_langue_livre = l.id_langue_livre
-                INNER JOIN langue_livre_${langue} lanll ON lanl.id_langue_livre = lanll.id_langue_livre
-                LEFT JOIN 
-                    (SELECT isbn, SUM(quantite_item) AS quantite_emprunte
-                        FROM panier_item 
-                        GROUP BY isbn) AS t2 ON l.isbn = t2.isbn`
-        ).catch(err => res.status(400).json({ error: err }))
+            `SELECT *
+                FROM ingredient
+                WHERE ......... `, {
+                // replacements: {...: ... },
+            }).catch(err => res.status(400).json({ error: err }))
     }
 
+    /**
+     * Description : Cette fonction permet de récupérer tous les ids des ingrédients 
+     * 
+     * @return {list<Ingredient>} Une liste de recettes
+     * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
+
+     * @état : A FAIRE
+     */
+    async getIdIngredients() {
+        return this.sequelize.query(
+            `SELECT id
+                FROM ingredient
+                WHERE ......... `, {
+                // replacements: {...: ... },
+            }).catch(err => res.status(400).json({ error: err }))
+    }
 }
 
 exports.default = Ingredient;

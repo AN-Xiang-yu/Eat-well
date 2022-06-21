@@ -16,6 +16,7 @@
                 </div>
                 <p class="w100 center" ><router-link to='/inscription'>S'inscrire si vous n'avez pas de compte</router-link></p>
                 <p class="spe-coleur justify" v-text ="messageErreur"> </p>
+                <p class="an"></p>
             </form>
         </section>
     </article>
