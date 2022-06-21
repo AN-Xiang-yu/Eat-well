@@ -47,6 +47,7 @@ class Utilisateur {
      * On va utiliser les trois entrées pour alimenter la table d'utilisateur
      *
      * @param {string} emailSurnom email ou surnom de l'utilisateur
+     * @return {Utilisateur} les informations de l'utilisateur
      * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
      * @état : fini
      */
@@ -65,6 +66,7 @@ class Utilisateur {
      * On va utiliser les trois entrées pour alimenter la table d'utilisateur
      *
      * @param {int} idUtilisateur email ou surnom de l'utilisateur
+     * @return {Utilisateur} les informations de l'utilisateur
      * @author author-name(Xiangyu AN) (création : 18-06-2022) (modification : 18-06-2022)
      * @état : fini
      */

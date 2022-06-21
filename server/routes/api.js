@@ -8,6 +8,13 @@ const Ingredient = require("../class/ingredient.js")
 var recettes = []
 var ingredients = []
 
+
+
+
+
+
+
+
 // créer l'instance Sequelize
 const { Sequelize } = require('sequelize')
 const sequelize = new Sequelize("eat_well", "root", "", {
@@ -233,5 +240,7 @@ router.get('/deconnexion', (req, res) => {
     res.status(400).json({ message: "L'utilisateur n'est pas connecté" })
     return
 })
+
+
 
 module.exports = router
