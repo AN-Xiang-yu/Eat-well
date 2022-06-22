@@ -18,4 +18,4 @@
 
 Boostrap 3
 
-  npm i --save bootstrap bootstrap-vue-3
+  `npm i --save bootstrap bootstrap-vue-3`
