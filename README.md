@@ -14,3 +14,8 @@
   </p>
   <li>Importer la BDD dans le répertoire suivant: <b>autre/bd/eat_well.sql</b></li> 
 </ol>
+
+
+Boostrap 3
+
+npm i --save bootstrap bootstrap-vue-3
