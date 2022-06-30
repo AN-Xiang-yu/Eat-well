@@ -853,6 +853,10 @@ table {
     width: 10%;
 }
 
+.w0 {
+    width: 0%;
+}
+
 .w150px {
     width: 150px;
 }

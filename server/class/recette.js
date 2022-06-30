@@ -210,7 +210,7 @@ class Recette {
      * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
      * @état : A FAIRE
      */
-    async getRecettesParId(id) {
+    async updateRecommandation(idUtilisateur, idRecette) {
         return this.sequelize
             .query(
                 `UPDATE utilisateur_recette

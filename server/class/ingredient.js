@@ -22,7 +22,7 @@ class Ingredient {
     /**
        * Description : Cette fonction permet de récupérer tous les id des ingrédients 
        * 
-       * @return {list<Ingredient>} Une liste de recettes
+       * @return {list<Ingredient>} Une liste d'ids d'ingrédients
        * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
 
        * @état : fait

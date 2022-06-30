@@ -41,7 +41,6 @@ class Utilisateur {
             }).catch(err => res.status(400).json({ error: err }))
     }
 
-
     /**
      * Description : Cette fonction permet de récupérer l'utilisateur par son email ou surnom
      * On va utiliser les trois entrées pour alimenter la table d'utilisateur
