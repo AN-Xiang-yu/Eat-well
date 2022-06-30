@@ -8,7 +8,7 @@
 
 ## Installation
 
-### base de données
+### Base de données
 <ol>
 <li>Réinitialiser le mot de passe de base de données</li>
   <p> 
@@ -38,9 +38,9 @@
 ### Development tools
 ### Target browsers
 
-## bugs connus
+## Bugs connus
 
-## Contributeurs
+## Contributeurs -- Groupe 240 du Mastercamp
 <p>AN, Xiangyu  </p>
 <p>BENAMAR, Essaid </p>
 <p>NDACLEU ANDJONGO Laure </p>
