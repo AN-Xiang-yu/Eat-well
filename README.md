@@ -2,7 +2,9 @@
 
 ## Introduction
 
-## Prerequis 
+## Table de matière
+
+## Architecture
 
 ## Installation
 
@@ -26,6 +28,20 @@
 #### nodejs
 #### Boostrap 3
   `npm i --save bootstrap bootstrap-vue-3`
- #### node_modules
- 
+#### node_modules
+
+## Exécuter
+
+## Explorer l'application 
+
+## Outils et target
+### Development tools
+### Target browsers
+
+## bugs connus
+
+## Contributeurs
+AN, Xiangyu
+BENAMAR, Essaid
+NDACLEU ANDJONGO Laure
 
