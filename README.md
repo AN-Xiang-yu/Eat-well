@@ -32,14 +32,14 @@
 
 <article> 
   <section id="architecture">
-    <h2>Architecture </h2>
+    <h2>2. Architecture </h2>
   </section>
 </article>
 
 
 <article id="installation"> 
   <section>
-    <h2>2. Installation </h2>
+    <h2>3. Installation </h2>
   </section>
 </article>
 
@@ -68,7 +68,7 @@
 
 <article> 
   <section id="executer">
-    <h2>3. Exécuter </h2>
+    <h2>4. Exécuter </h2>
   </section>
 </article>
 
@@ -80,14 +80,14 @@
 
 <article> 
   <section id="bugs">
-    <h2>4. Bugs connus </h2>
+    <h2>5. Bugs connus </h2>
   </section>
 </article>
 
 
 <article> 
   <section id="outils-target">
-    <h2>5. Outils et target </h2>
+    <h2>6. Outils et target </h2>
     <div> 
       <h3>Development tools </h3>
     </div>
@@ -99,7 +99,7 @@
 
 <article> 
   <section id="contributeurs">
-    <h2>6. Contributeurs -- Groupe 240 du Mastercamp </h2>
+    <h2>7. Contributeurs -- Groupe 240 du Mastercamp </h2>
     <div> 
       <p>AN, Xiangyu  </p>
       <p>BENAMAR, Essaid </p>
