@@ -36,7 +36,8 @@
     <div>
       <h3>autre</h3>
       <div>
-        <h4>bd </h4>
+        <h4>     bd </h4>
+        <p> </p>
       </div>
       <div>
         <h4>diagramme </h4>
