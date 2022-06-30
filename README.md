@@ -1,6 +1,6 @@
 # Eat-well
 
-## Introduction
+<h2> Introduction</h2>
 
 ## Table de matière
 
