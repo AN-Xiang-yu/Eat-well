@@ -33,6 +33,46 @@
 <article> 
   <section id="architecture">
     <h2>2. Architecture </h2>
+    <div>
+      <h3>autre</h3>
+      <div>
+        <h4>&nbsp&nbsp&nbsp&nbspbd </h4>
+        <p> </p>
+      </div>
+      <div>
+        <h4>diagramme </h4>
+      </div>
+      <div>
+        <h4>maquettes </h4>
+      </div>
+    </div>
+    <div>
+      <h3>bin</h3>
+    </div>
+    <div>
+      <h3>client</h3>
+    </div>
+    <div>
+      <h3>IA</h3>
+    </div>
+    <div>
+      <h3>node_modules</h3>
+    </div>
+    <div>
+      <h3>server</h3>
+    </div>
+    <div>
+      <h3>les autres fichiers</h3>
+      <div>
+        <h4>package-lock.json</h4>
+      </div>
+      <div>
+        <h4>package.json</h4>
+      </div>
+      <div>
+        <h4>node_modules.zip</h4>
+      </div>
+    </div>
   </section>
 </article>
 
