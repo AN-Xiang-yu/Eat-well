@@ -1,12 +1,31 @@
-# Eat-well
 
-<h2> Introduction</h2>
+<h1>Eat-well</h1> 
+<article>
+  <section>
+    <h2>Introduction</h2>
+  </section>
+</article>
 
-## Table de matière
+<article> 
+  <section>
+    <h2>Table de matière </h2>
+  </section>
+</article>
 
-## Architecture
 
-## Installation
+<article> 
+  <section>
+    <h2>Architecture </h2>
+  </section>
+</article>
+
+
+<article> 
+  <section>
+    <h2>Installation </h2>
+  </section>
+</article>
+
 
 ### Base de données
 <ol>
@@ -30,20 +49,48 @@
   `npm i --save bootstrap bootstrap-vue-3`
 #### node_modules
 
-## Exécuter
+<article> 
+  <section>
+    <h2>Exécuter </h2>
+  </section>
+</article>
 
-## Explorer l'application 
+<article> 
+  <section>
+    <h2>Explorer l'application  </h2>
+  </section>
+</article>
 
-## Outils et target
-### Development tools
-### Target browsers
+<article> 
+  <section>
+    <h2>Bugs connus </h2>
+  </section>
+</article>
 
-## Bugs connus
 
-## Contributeurs -- Groupe 240 du Mastercamp
-<p>AN, Xiangyu  </p>
-<p>BENAMAR, Essaid </p>
-<p>NDACLEU ANDJONGO Laure </p>
+<article> 
+  <section>
+    <h2>Outils et target </h2>
+    <div> 
+      <h3>Development tools </h3>
+    </div>
+    <div> 
+      <h3>Target browsers </h3>
+    </div>
+  </section>
+</article>
+
+<article> 
+  <section>
+    <h2>Contributeurs -- Groupe 240 du Mastercamp </h2>
+    <div> 
+      <p>AN, Xiangyu  </p>
+      <p>BENAMAR, Essaid </p>
+      <p>NDACLEU ANDJONGO Laure </p>
+    </div>
+  </section>
+</article>
+
 
 
 
