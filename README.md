@@ -1,10 +1,10 @@
 
 <h1>Eat-well</h1> 
 <article>
-  <section>
+  <section id="introduction">
     <h2>Introduction</h2>
     <div> 
-      <p id="a">
+      <p>
         Dans le cadre du projet universitaire du Mastercamp de 2022 en filère Data, nous avons proposé une application web qui permet aux utilisateurs de faire des recherche des recettes bonnes, saines, équilibrées et à la fois vertueuses. Ce readme vous permet de mieux comprendre l'architecture de projet, l'installation de projet, les exécution et les bus connus ainsi des outils utilisés.
       </p>
     </div>
@@ -14,18 +14,21 @@
 <article> 
   <section>
     <h2>Table de matière </h2>
+    <nav>
+      <ul>
+    </nav>
   </section>
 </article>
 
 
 <article> 
-  <section>
+  <section id="architecture">
     <h2>Architecture </h2>
   </section>
 </article>
 
 
-<article> 
+<article id="installation"> 
   <section>
     <h2>Installation </h2>
   </section>
@@ -55,7 +58,7 @@
 #### node_modules
 
 <article> 
-  <section>
+  <section id="executer">
     <h2>Exécuter </h2>
   </section>
 </article>
@@ -67,14 +70,14 @@
 </article>
 
 <article> 
-  <section>
+  <section id="bugs">
     <h2>Bugs connus </h2>
   </section>
 </article>
 
 
 <article> 
-  <section>
+  <section id="outils-target">
     <h2>Outils et target </h2>
     <div> 
       <h3>Development tools </h3>
@@ -86,7 +89,7 @@
 </article>
 
 <article> 
-  <section>
+  <section id="contributeurs">
     <h2>Contributeurs -- Groupe 240 du Mastercamp </h2>
     <div> 
       <p>AN, Xiangyu  </p>
