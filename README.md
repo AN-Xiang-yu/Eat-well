@@ -1,6 +1,12 @@
 # Eat-well
 
-<h2>Installation de base de données</h2>
+## Introduction
+
+## Prerequis 
+
+## Installation
+
+### base de données
 <ol>
 <li>Réinitialiser le mot de passe de base de données</li>
   <p> 
@@ -16,6 +22,10 @@
 </ol>
 
 
-Boostrap 3
-
+### environnement de travail
+#### nodejs
+#### Boostrap 3
   `npm i --save bootstrap bootstrap-vue-3`
+ #### node_modules
+ 
+
