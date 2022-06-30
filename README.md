@@ -86,7 +86,7 @@
     <div> 
       <p>AN, Xiangyu  </p>
       <p>BENAMAR, Essaid </p>
-      <p>NDACLEU ANDJONGO Laure </p>
+      <p>NDACLEU ANDJONGO, Laure </p>
     </div>
   </section>
 </article>
