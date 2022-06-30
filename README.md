@@ -41,7 +41,9 @@
 ## bugs connus
 
 ## Contributeurs
-AN, Xiangyu
-BENAMAR, Essaid
-NDACLEU ANDJONGO Laure
+<p>AN, Xiangyu  </p>
+<p>BENAMAR, Essaid </p>
+<p>NDACLEU ANDJONGO Laure </p>
+
+
 
