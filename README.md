@@ -24,7 +24,7 @@
     <h2>1. Introduction</h2>
     <div> 
       <p>
-        Dans le cadre du projet universitaire du Mastercamp de 2022 en filère Data, nous avons proposé une application web qui permet aux utilisateurs de faire des recherche des recettes bonnes, saines, équilibrées et à la fois vertueuses. Ce readme vous permet de mieux comprendre l'architecture de projet, l'installation de projet, les exécution et les bus connus ainsi des outils utilisés.
+        Dans le cadre du projet universitaire du Mastercamp de 2022 en filière Data, nous avons proposé une application web qui permet aux utilisateurs de faire des recherches des bonnes recettes, saines, équilibrées et à la fois vertueuses. Ce readme vous permet de mieux comprendre l'architecture de projet, l'installation de projet, les exécutions et les bus connus ainsi des outils utilisés.
       </p>
     </div>
   </section>
