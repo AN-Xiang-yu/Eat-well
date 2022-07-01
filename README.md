@@ -92,7 +92,6 @@
             ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
             ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
             
-          </p>
   <li>Importer la BDD dans le répertoire suivant: <b>autre/bd/eat_well.sql</b></li> 
 </ol>
     </div>
