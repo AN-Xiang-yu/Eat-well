@@ -11,7 +11,7 @@
         <li><a href = "#architecture">Architecture</a></li>
         <li><a href = "#installation">Installation</a></li>
         <li><a href = "#executer">Exécuter</a></li>
-        <li><a href = "#bugs">Bugs connus</a></li>
+        <li><a href = "#bugs">Explorer l'application</a></li>
         <li><a href = "#outils-target">Outils et target</a></li>
         <li><a href = "#contributeurs">Contributeurs -- Groupe 240 du Mastercamp</a></li>
       </ol>
