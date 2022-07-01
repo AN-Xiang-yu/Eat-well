@@ -88,8 +88,10 @@
             Taper les codes suivants sur workbench :
           </p>
           <pre>
-              <code>ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
-              ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';</code>
+            <code>
+              ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
+              ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
+            </code>
           </pre>
         <li>Importer la BDD dans le répertoire suivant: <b>autre/bd/eat_well.sql</b></li> 
       </ol>
@@ -99,9 +101,11 @@
       <ol>
         <li>Nodejs</li>
         <li>Boostrap 3</li> 
-        <code>
-          npm i --save bootstrap bootstrap-vue-3
-        </code>
+        <pre>
+          <code>
+            npm i --save bootstrap bootstrap-vue-3
+          </code>
+        </pre>
       </ol>
     </div>
   </section>
