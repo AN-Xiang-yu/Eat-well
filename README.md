@@ -102,7 +102,6 @@
         <code>
           npm i --save bootstrap bootstrap-vue-3
         </code>
-
       </ol>
     </div>
   </section>
