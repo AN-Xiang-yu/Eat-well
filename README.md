@@ -100,10 +100,8 @@
         <li>Nodejs</li>
         <li>Boostrap 3</li> 
         
-        ``
           npm i --save bootstrap bootstrap-vue-3
-        ``
-        
+
       </ol>
     </div>
   </section>
