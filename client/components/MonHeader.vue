@@ -51,7 +51,7 @@
                 </li>
                 <li class="flex-5 center">
                     <button class="rond button-type1" v-on:click="deconnecter">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        <i class="fa-solid fa-power-off"></i>
                     </button>
                 </li>
             </div>
@@ -88,7 +88,7 @@
                     </li>
                     <li class="flex-50 m-auto">
                         <button class="rond button-type1" v-on:click="deconnecter">
-                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                            <i class="fa-solid fa-power-off"></i>
                         </button>
                     </li>
                 </div>
