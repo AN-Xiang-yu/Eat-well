@@ -91,22 +91,22 @@
             ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
             ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY ''; 
             
-  <li>Importer la BDD dans le répertoire suivant: <b>autre/bd/eat_well.sql</b></li> 
-</ol>
+        <li>Importer la BDD dans le répertoire suivant: <b>autre/bd/eat_well.sql</b></li> 
+      </ol>
+    </div>
+    <div>
+      <h3>Environnement de travail</h3>
+      <ol>
+        <li>Nodejs</li>
+        <li>Boostrap 3</li> 
+          `npm i --save bootstrap bootstrap-vue-3`
+      </ol>
     </div>
   </section>
 </article>
 
 
 
-
-
-
-### environnement de travail
-#### nodejs
-#### Boostrap 3
-  `npm i --save bootstrap bootstrap-vue-3`
-#### node_modules
 
 <article> 
   <section id="executer">
