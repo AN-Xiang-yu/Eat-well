@@ -88,10 +88,8 @@
             Taper les codes suivants sur workbench :
           </p>
           <pre>
-            <code>
-              ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
-              ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
-            </code>
+              <code>ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
+              ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';</code>
           </pre>
         <li>Importer la BDD dans le répertoire suivant: <b>autre/bd/eat_well.sql</b></li> 
       </ol>
