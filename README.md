@@ -117,13 +117,7 @@
 
 <article> 
   <section>
-    <h2>Explorer l'application  </h2>
-  </section>
-</article>
-
-<article> 
-  <section id="bugs">
-    <h2>5. Bugs connus </h2>
+    <h2>5. Explorer l'application  </h2>
   </section>
 </article>
 
