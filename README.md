@@ -35,15 +35,15 @@
       <h3>autre</h3>
       <div>
         <h4>&nbsp&nbsp&nbsp&nbspbd </h4>
-        <p>&nbsp&nbsp&nbsp&nbspbd&nbsp&nbsp&nbsp&nbspbdDans ce répertoire, vous pouvez trouvez notre base de données en sql </p>
+        <p>&nbsp&nbsp&nbsp&nbspbd&nbsp&nbsp&nbsp&nbspDans ce répertoire, vous pouvez trouvez notre base de données en sql </p>
       </div>
       <div>
         <h4>&nbsp&nbsp&nbsp&nbspdiagramme </h4>
-        <p>&nbsp&nbsp&nbsp&nbspbd&nbsp&nbsp&nbsp&nbspbdDans ce répertoire, vous pouvez trouvez le diagramme de cas d'utilisation, le diagramme de classe et le diagramme de séquence </p>
+        <p>&nbsp&nbsp&nbsp&nbspbd&nbsp&nbsp&nbsp&nbspDans ce répertoire, vous pouvez trouvez le diagramme de cas d'utilisation, le diagramme de classe et le diagramme de séquence </p>
       </div>
       <div>
         <h4>&nbsp&nbsp&nbsp&nbspmaquettes </h4>
-        <p>&nbsp&nbsp&nbsp&nbspbd&nbsp&nbsp&nbsp&nbspbdDans ce répertoire, vous pouvez trouvez les maquettes de notre application web </p>
+        <p>&nbsp&nbsp&nbsp&nbspbd&nbsp&nbsp&nbsp&nbspDans ce répertoire, vous pouvez trouvez les maquettes de notre application web </p>
       </div>
     </div>
     <div>
