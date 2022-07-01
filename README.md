@@ -11,7 +11,7 @@
         <li><a href = "#architecture">Architecture</a></li>
         <li><a href = "#installation">Installation</a></li>
         <li><a href = "#executer">Exécuter</a></li>
-        <li><a href = "#bugs">Bugs connus</a></li>
+        <li><a href = "#bugs">Explorer l'application</a></li>
         <li><a href = "#outils-target">Outils et target</a></li>
         <li><a href = "#contributeurs">Contributeurs -- Groupe 240 du Mastercamp</a></li>
       </ol>
@@ -40,10 +40,10 @@
         <p> </p>
       </div>
       <div>
-        <h4>diagramme </h4>
+        <h4>&nbsp&nbsp&nbsp&nbspdiagramme </h4>
       </div>
       <div>
-        <h4>maquettes </h4>
+        <h4>&nbsp&nbsp&nbsp&nbspmaquettes </h4>
       </div>
     </div>
     <div>
@@ -64,13 +64,13 @@
     <div>
       <h3>les autres fichiers</h3>
       <div>
-        <h4>package-lock.json</h4>
+        <h4>&nbsp&nbsp&nbsp&nbsppackage-lock.json</h4>
       </div>
       <div>
-        <h4>package.json</h4>
+        <h4>&nbsp&nbsp&nbsp&nbsppackage.json</h4>
       </div>
       <div>
-        <h4>node_modules.zip</h4>
+        <h4>&nbsp&nbsp&nbsp&nbspnode_modules.zip</h4>
       </div>
     </div>
   </section>
@@ -80,31 +80,39 @@
 <article id="installation"> 
   <section>
     <h2>3. Installation </h2>
+    <div>
+      <h3>Base de données </h3>
+      <ol>
+        <li>Réinitialiser le mot de passe de base de données</li>
+          <p> 
+            Taper les codes suivants sur workbench :
+          </p>
+          <pre>
+            <code>
+              ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
+              ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
+            </code>
+          </pre>
+        <li>Importer la BDD dans le répertoire suivant: <b>autre/bd/eat_well.sql</b></li> 
+      </ol>
+    </div>
+    <div>
+      <h3>Environnement de travail</h3>
+      <ol>
+        <li>Nodejs</li>
+        <li>Boostrap 3</li> 
+        <pre>
+          <code>
+            npm i --save bootstrap bootstrap-vue-3
+          </code>
+        </pre>
+      </ol>
+    </div>
   </section>
 </article>
 
 
-### Base de données
-<ol>
-<li>Réinitialiser le mot de passe de base de données</li>
-  <p> 
-    Taper les codes suivants sur workbench :
-  </p>
-  <p> 
-    
-    ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
-    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
-    
-  </p>
-  <li>Importer la BDD dans le répertoire suivant: <b>autre/bd/eat_well.sql</b></li> 
-</ol>
 
-
-### environnement de travail
-#### nodejs
-#### Boostrap 3
-  `npm i --save bootstrap bootstrap-vue-3`
-#### node_modules
 
 <article> 
   <section id="executer">
@@ -114,13 +122,7 @@
 
 <article> 
   <section>
-    <h2>Explorer l'application  </h2>
-  </section>
-</article>
-
-<article> 
-  <section id="bugs">
-    <h2>5. Bugs connus </h2>
+    <h2>5. Explorer l'application  </h2>
   </section>
 </article>
 
