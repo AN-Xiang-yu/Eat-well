@@ -40,10 +40,10 @@
         <p> </p>
       </div>
       <div>
-        <h4>diagramme </h4>
+        <h4>&nbsp&nbsp&nbsp&nbspdiagramme </h4>
       </div>
       <div>
-        <h4>maquettes </h4>
+        <h4>&nbsp&nbsp&nbsp&nbspmaquettes </h4>
       </div>
     </div>
     <div>
