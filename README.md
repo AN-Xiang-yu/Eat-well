@@ -64,13 +64,13 @@
     <div>
       <h3>les autres fichiers</h3>
       <div>
-        <h4>package-lock.json</h4>
+        <h4>&nbsp&nbsp&nbsp&nbsppackage-lock.json</h4>
       </div>
       <div>
-        <h4>package.json</h4>
+        <h4>&nbsp&nbsp&nbsp&nbsppackage.json</h4>
       </div>
       <div>
-        <h4>node_modules.zip</h4>
+        <h4>&nbsp&nbsp&nbsp&nbspnode_modules.zip</h4>
       </div>
     </div>
   </section>
