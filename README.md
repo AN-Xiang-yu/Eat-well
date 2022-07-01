@@ -80,24 +80,26 @@
 <article id="installation"> 
   <section>
     <h2>3. Installation </h2>
+    <div>
+      <h3>Base de données </h3>
+      <ol>
+        <li>Réinitialiser le mot de passe de base de données</li>
+          <p> 
+            Taper les codes suivants sur workbench :
+          </p>
+          <p> 
+            ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
+            ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
+          </p>
+  <li>Importer la BDD dans le répertoire suivant: <b>autre/bd/eat_well.sql</b></li> 
+</ol>
+    </div>
   </section>
 </article>
 
 
-### Base de données
-<ol>
-<li>Réinitialiser le mot de passe de base de données</li>
-  <p> 
-    Taper les codes suivants sur workbench :
-  </p>
-  <p> 
-    
-    ALTER USER 'root'@'localhost' IDENTIFIED BY ''; 
-    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
-    
-  </p>
-  <li>Importer la BDD dans le répertoire suivant: <b>autre/bd/eat_well.sql</b></li> 
-</ol>
+
+
 
 
 ### environnement de travail
