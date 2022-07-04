@@ -98,7 +98,7 @@ h3 {
 
 /* Enlever propriété de li */
 
-li {
+ul li {
     float: left;
     margin: 0;
     padding: 0;
@@ -799,6 +799,10 @@ table {
     height: 100%;
 }
 
+.h-auto {
+    height: auto;
+}
+
 .h-fit-content {
     height: -webkit-fit-content;
     height: -moz-fit-content;
@@ -966,6 +970,17 @@ table {
 
 .ordi-affiche {
     display: none;
+}
+
+
+/* position */
+
+.position-ab {
+    position: absolute;
+}
+
+.position-r {
+    position: relative;
 }
 
 
