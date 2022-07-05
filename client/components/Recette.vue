@@ -40,6 +40,7 @@
     </section>
     <!-- recommandation de recettes -->
     <section class="flex-100 flex a-center jc-around vignette-container w100">
+        <h2 class="flex-100">Recette de recommandation</h2>
         <!-- <div v-for="livre in livres" :key="livre.isbn" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r"> -->
         <div class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
             <div class="w100 center">
