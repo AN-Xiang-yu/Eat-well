@@ -1,19 +1,15 @@
 :root {
     --main-color: rgb(208, 235, 153);
     --base-color: rgb(11, 167, 57);
+    --base-color-legere: rgba(11, 167, 57, 0.5);
     --color2: rgb(235, 46, 1);
     --color3: rgb(7, 123, 191);
     --color4: rgb(70, 70, 70);
     --color5: rgb(240, 255, 241);
+    --color-blanc: rgb(232, 240, 254);
     /*backagrounds coleurs*/
-    --base-couleur: #077bbf;
-    --main-couleur: #008bd2;
-    --deuxieme-couleur: #464646;
-    --troisieme-coleur: rgb(232, 240, 254);
     --quatieme-couleur: rgb(45, 81, 159, .9);
     --quatieme-couleur: rgb(45, 81, 159);
-    --cinquieme-couleur: #e8f2fc;
-    --page-background-couleur: #f5f5f5;
     --survol-coleur: #F27979;
     --spe-coleur: #c74300;
     --blanc: #FFFFFF;
@@ -23,16 +19,6 @@
     --leger-noire: #eaeaea;
     --demi-noire: rgba(23, 192, 73, 0.5);
     --ombre: #666666;
-    /* theme couleur */
-    --theme0-color: #44b1ce;
-    --theme1-color: #e28743;
-    --theme2-color: #1e81b0;
-    --theme3-color: #eab676;
-    --theme4-color: #76b5c5;
-    --theme5-color: #873e23;
-    --theme6-color: #063970;
-    --theme7-color: #154c79;
-    --theme8-color: #abdbe3;
     /* inter ligne */
     --inter-ligne-outer: 2rem;
     --inter-ligne-inner: .75rem;
@@ -72,7 +58,7 @@ html,
 body {
     height: 100%;
     font-family: "Neo Sans Pro";
-    background-color: var(--page-background-couleur);
+    background-color: var(--color5);
 }
 
 * {
@@ -115,6 +101,10 @@ ul {
 a {
     text-decoration: none;
     color: black;
+}
+
+a:hover {
+    text-decoration: none;
 }
 
 p {
@@ -205,7 +195,7 @@ section {
 /* footer */
 
 footer {
-    padding: var(--inter-ligne-outer) 0;
+    /* padding: var(--inter-ligne-outer) 0; */
     font-weight: bold;
 }
 
@@ -222,7 +212,7 @@ footer {
 
 .button-type1 {
     color: #000000;
-    background: var(--blanc);
+    background: var(--main-color);
     height: 3rem;
     width: 130px;
     display: -webkit-box;
@@ -240,7 +230,7 @@ footer {
     -moz-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    border: 1px solid var(--main-couleur);
+    border: 1px solid var(--main-color);
     overflow: hidden;
     position: relative;
     z-index: 0;
@@ -253,7 +243,7 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--main-couleur);
+    background: var(--main-color);
     border-radius: 50% 50% 0 0;
     -webkit-transition: all 0.75s;
     -o-transition: all 0.75s;
@@ -267,8 +257,24 @@ footer {
     border-radius: 0;
 }
 
+.button-type1::before {
+    content: '';
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--base-color);
+    border-radius: 50% 50% 0 0;
+    -webkit-transition: all 0.75s;
+    -o-transition: all 0.75s;
+    -moz-transition: all 0.75s;
+    transition: all 0.75s;
+    z-index: -1;
+}
+
 .button-type2 {
-    background-color: var(--main-couleur);
+    background-color: var(--main-color);
     border-radius: 16px;
     display: inline-block;
     cursor: pointer;
@@ -278,22 +284,6 @@ footer {
     padding: 13px 32px;
     text-decoration: none;
     border: 0;
-}
-
-.button-type1::before {
-    content: '';
-    position: absolute;
-    top: 3rem;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--main-couleur);
-    border-radius: 50% 50% 0 0;
-    -webkit-transition: all 0.75s;
-    -o-transition: all 0.75s;
-    -moz-transition: all 0.75s;
-    transition: all 0.75s;
-    z-index: -1;
 }
 
 .button-type2:hover {
@@ -325,7 +315,7 @@ input,
 textarea,
 select {
     /* backgroud par défaut */
-    background-color: var(--troisieme-coleur);
+    background-color: var(--color-blanc);
 }
 
 input:invalid,
@@ -340,15 +330,15 @@ input:disabled,
 textarea:disabled,
 select:disabled {
     /* input invalide */
-    border-color: var(--deuxieme-couleur);
-    caret-color: var(--deuxieme-couleur);
+    border-color: var(--color4);
+    caret-color: var(--color4);
 }
 
 input:valid,
 textarea:valid,
 select:valid {
     /* input valide */
-    border-color: var(--base-couleur);
+    border-color: var(--color3);
     caret-color: black;
 }
 
@@ -356,7 +346,7 @@ input:placeholder-shown,
 textarea:placeholder-shown,
 select:placeholder-shown {
     /* input non rempli */
-    border-color: var(--deuxieme-couleur);
+    border-color: var(--color4);
 }
 
 input:focus,
@@ -364,7 +354,7 @@ textarea:focus,
 select:focus {
     /* input en étant sélectionné */
     outline: none;
-    border-color: var(--base-couleur);
+    border-color: var(--color3);
     -webkit-transition-timing-function: ease;
     -moz-transition-timing-function: ease;
     -o-transition-timing-function: ease;
@@ -391,7 +381,7 @@ select:focus {
 }
 
 .border-t-deuxieme-couleur {
-    border-top: 1px var(--deuxieme-couleur) solid;
+    border-top: 1px var(--color4) solid;
 }
 
 .border-tb-blanc {
@@ -412,11 +402,11 @@ select:focus {
 }
 
 .border-b-bleu {
-    border-bottom: 1px var(--base-couleur) solid;
+    border-bottom: 1px var(--color3) solid;
 }
 
 .border-b-bleu-gros {
-    border-bottom: 2px var(--base-couleur) solid;
+    border-bottom: 2px var(--color3) solid;
 }
 
 .border-b-leger-noire {
@@ -446,19 +436,23 @@ table {
 }
 
 .background-bleu {
-    background-color: var(--base-couleur);
+    background-color: var(--color3);
 }
 
 .background-bleu-leger {
-    background-color: var(--main-couleur);
+    background-color: var(--main-color);
 }
 
 .background-gris {
-    background-color: var(--deuxieme-couleur);
+    background-color: var(--color4);
 }
 
 .background-blanc {
     background-color: var(--blanc);
+}
+
+.background-main-color {
+    background-color: var(--main-color);
 }
 
 
@@ -477,7 +471,7 @@ table {
 }
 
 .troisieme-coleur * {
-    color: var(--troisieme-coleur);
+    color: var(--color-blanc);
 }
 
 .survol-coleur * {
@@ -1015,7 +1009,7 @@ table {
 /*vignette*/
 
 .vignette {
-    background-color: var(--cinquieme-couleur);
+    background-color: var(--beige);
     -webkit-box-flex: 0;
     -webkit-flex: 0 0 100%;
     -moz-box-flex: 0;

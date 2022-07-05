@@ -1,6 +1,6 @@
 <template>
 <header>
-    <nav class="border-b-bleu majuscule background-blanc" >
+    <nav class="border-b-bleu majuscule background-main-color" >
         <ul class="flex a-center jc-between w90 m-auto">
             <div class="flex jc-between a-center barre-menu-image-container">
                 <!-- logo du site -->
@@ -22,16 +22,18 @@
             <div id="barre-menu-page-container-grand-ecran" class="flex-25 flex jc-between a-center f-700" v-if="!connecte">
                 <li class="flex-50 center">
                     <router-link to='/inscription'>
-                        <button>
-                            <span>S'inscrire</span>
-                        <i class="fa-solid fa-user-plus"></i>
+                        <button class="button-type1">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>&nbsp&nbspS'inscrire</span>
                         </button>
                     </router-link>
                 </li>
                 <li class="flex-50 center">
                     <router-link to='/connexion'>
-                        <span>Se connecter</span>
-                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <button class="button-type1 w-auto">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            <span>&nbsp&nbspSe connecter</span>
+                        </button>
                     </router-link>
                 </li>
             </div>
@@ -39,14 +41,17 @@
             <div id="barre-menu-page-container-grand-ecran" class="flex-85 flex jc-between a-center f-700" v-else>
                 <li class="flex-50 left">
                     <router-link to='/recettes'>
-                        <i class="fa-solid fa-utensils"></i>
-                        <span>Recettes</span>
+                        <button class="button-type1">
+                            <i class="fa-solid fa-utensils"></i>
+                            <span>&nbsp&nbspRecettes</span>
+                        </button>
+
                     </router-link>
                 </li>
                 <li class="flex-40 right">
                     <router-link to='/connexion'>
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                        <span>{{utilisateur.surnom}}</span>
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                            <span>{{utilisateur.surnom}}</span>     
                     </router-link>
                 </li>
                 <li class="flex-5 center">
@@ -61,14 +66,18 @@
                 <div class="flex direction-column" v-if="!connecte">
                     <li class="flex-50 center">
                         <router-link to='/inscription'>
-                            <span>S'inscrire</span>
-                            <i class="fa-solid fa-user-plus"></i>
+                            <button class="button-type1">
+                                <i class="fa-solid fa-user-plus"></i>
+                                <span>&nbsp&nbspS'inscrire</span>
+                            </button>
                         </router-link>
                     </li>
                     <li class="flex-50 center">
                         <router-link to='/connexion'>
-                            <span>Se connecter</span>
-                             <i class="fa-solid fa-right-to-bracket"></i>
+                            <button class="button-type1">
+                                <span>Se connecter</span>
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                            </button>
                         </router-link>
                     </li>
                 </div>
@@ -76,8 +85,11 @@
                 <div class="flex direction-column" v-else>
                     <li class="flex-50 center">
                         <router-link to='/recettes'>
-                            <i class="fa-solid fa-utensils"></i>
-                            <span>Recettes</span>
+                            <button class="button-type1">
+                                <i class="fa-solid fa-utensils"></i>
+                                <span>Recettes</span>
+                            </button>
+                            
                         </router-link>
                     </li>
                     <li class="flex-50 center">

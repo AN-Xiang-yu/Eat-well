@@ -1,7 +1,6 @@
 <template>
   <article>
     <h1 class="cache">Eat Well</h1>
-    <!-- carousel -->
     <section>
         <b-carousel
         id="carousel-1"
@@ -35,7 +34,7 @@
             <div class="flex-40 justify mtb-inter">
                <p>Une alimentation saine permet de prévenir tous les types de malnutrition ainsi que les maladies non transmissibles telles que le diabète, les maladies cardiaques, les accidents vasculaires cérébraux et le cancer.
                     Les régimes alimentaires malsains et le manque d'activité physique sont des risques majeurs pour la santé dans le monde.</p> 
-                <p>Des habitudes alimentaires saines devraient être adoptées dès le début de la vie - l'allaitement maternel favorise une croissance saine et améliore le développement cognitif, et peut également présenter des avantages durables pour la santé, tels qu'une réduction du risque de surpoids ou d'obésité plus tard dans la vie, et de maladies non transmissibles.</p>
+                <p>Des habitudes alimentaires peut présenter des avantages durables pour la santé, tels qu'une réduction du risque de surpoids ou d'obésité plus tard dans la vie, et de maladies non transmissibles.</p>
             </div>
             <div class="flex-40">
                 <img class="w100" src="assets/image/accueil/importance-nourriture-saine.jpg" alt="importance de nourriture saine">
@@ -47,14 +46,13 @@
             </div>
             <div class="flex-40 justify">
                 <p>Si nous devenions tous végétariens, nous pourrions idéalement retransformer au moins 80 % de nos pâturages en prairies et en forêts, et les plantes absorberaient davantage de dioxyde de carbone, ce qui ralentirait encore le changement climatique. De nombreux grands herbivores, tels que les bisons, ont été évincés par le passé afin d'élever du bétail. En outre, des prédateurs tels que les loups ont été tués pour protéger le bétail. Par conséquent, la transformation des pâturages en habitats naturels peut également accroître la biodiversité.</p>
-                <p>Les 10 à 20 % de pâturages restants peuvent être utilisés pour produire davantage de cultures et combler le déficit de l'offre alimentaire. Bien que l'augmentation des terres agricoles soit relativement faible, elle serait plus que suffisante pour compléter le régime alimentaire. En effet, environ un tiers des terres actuellement utilisées pour produire des cultures servent à faire pousser du fourrage pour le bétail, plutôt que pour la consommation humaine.</p>
             </div>
         </div>
     </section>
     <section>
-        <div class="center">
+        <div class="flex jc-center">
             <router-link :to="cheminBouton">
-                <button>
+                <button class="button-type1 w-auto btn-commencer-recherche">
                     <span>Commencer à faire les recherches !</span>
                 </button>
             </router-link>
@@ -64,6 +62,8 @@
 </template>
 
 <script>
+
+
 module.exports = {
     name:"Accueil",
     props: {
@@ -78,6 +78,8 @@ module.exports = {
     },
     async mounted () {
 
+    },
+    components: {
     },
     methods: {
         onSlideStart(slide) {
@@ -96,5 +98,7 @@ module.exports = {
 </script>
 
 <style scoped>
-
+.btn-commencer-recherche{
+    padding: 1.5rem 20rem
+}
 </style>
