@@ -9,13 +9,18 @@
                     <div class="flex-nowrap a-center jc-around mtb-inter-inner" v-for="(ingredient, index) in ingredients" :key="index">
                         <!-- barre de recherche -->
                         <div class="flex-75 flex-nowrap a-center jc-around pad-05r border-leger-noire ombreHover background-blanc">
-                            <input class="search-input border-no background-blanc w80" type="search" placeholder="Chercher recettes par ingrédient" v-model="ingredients[index]">
+                                <input class="search-input border-no background-blanc w80" placeholder="Chercher recettes par ingrédient" list="liste-ingredients" v-model="ingredients[index]">
+                                <datalist id="liste-ingredients">
+                                    <option value="Filtrage par défaut" selected>Filtrage par défaut</option>
+                                    <option value="Filtrer les recettes selon son niveau de nutrion dans l'ordre croissant"></option>
+                                </datalist>
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                         <!-- bouton plus -->
                         <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="ajouterNouvelIngredient(ingredients)">
                             <i class="fa-solid fa-circle-plus"></i>
                         </button>
+                        <!-- bouton moins -->
                         <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="supprimerIngredient(ingredients, index)">
                             <i class="fa-solid fa-circle-minus"></i>
                         </button>
@@ -27,59 +32,77 @@
                 <!-- activer la recherche avancée -->
                 <div class="w100 flex a-center mtb-inter-inner pad-1r">
                     <button id="button-recherche" class="button-type2 btn-circle btn-xl flex a-center jc-center mr-05r ml-05r" @click="changerAffichageRechercheAvancee()">
-                        <i class="fa-solid fa-circle-chevron-right"></i>
+                        <i :class="{'fa-solid ' : true, 'fa-circle-chevron-down' : affichageRechercheAvancee === true, 'fa-circle-chevron-right' : affichageRechercheAvancee === false}"></i>
                     </button>
-                    <p><span>&nbsp&nbspRecherche avancée</span></p>
+                    <label for="button-recherche">&nbsp&nbspRecherche avancée</label>
                 </div>
                 <!-- formulaire de recherche avancée -->
                 <transition name="slide-fade">
-                    <form class="recherche-avancee-formulaire m-auto flex a-center jc-around ombreHover background-blanc border-leger-noire" @submit.prevent v-show="affichageRechercheAvancee">
+                    <form class="recherche-avancee-formulaire m-auto flex a-center jc-around ombreHover background-blanc border-leger-noire pad-1r" @submit.prevent v-show="affichageRechercheAvancee">
                         <div class="flex-100 flex-nowrap a-center jc-around mtb-inter-inner" v-for="(ingredient, index) in ingredientsNonConsommes" :key="index">
                             <!-- barre de recherche -->
                             <div class="flex-75 flex-nowrap a-center jc-around pad-05r border-leger-noire ombreHover background-blanc">
-                                <input class="search-input border-no background-blanc w80" type="search" placeholder="Ingrédient à ne pas consommer" v-model="ingredientsNonConsommes[index]">
+                                <input class="search-input border-no background-blanc w80" type="search" placeholder="Ingrédient à ne pas consommer" list="liste-ingredients-non-consommes" v-model="ingredientsNonConsommes[index]">
+                                <datalist id="liste-ingredients-non-consommes">
+                                    <option value="Filtrage par défaut" selected>Filtrage par défaut</option>
+                                    <option value="Filtrer les recettes selon son niveau de nutrion dans l'ordre croissant"></option>
+                                </datalist>
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                             <!-- bouton plus -->
                             <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="ajouterNouvelIngredient(ingredientsNonConsommes)">
                                 <i class="fa-solid fa-circle-plus"></i>
                             </button>
+                            <!-- bouton moins -->
                             <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="supprimerIngredient(ingredientsNonConsommes, index)">
                                 <i class="fa-solid fa-circle-minus"></i>
                             </button>
                         </div>
                         <div class="flex-80 flex direction-column mtb-inter-inner">
+                            <!-- sans porc -->
                             <div>
-                                <input id="sans-porc" name="sans-porc" type="checkbox" value="sans_porc" />
+                                <input id="sans-porc" name="sans-porc" type="checkbox" v-model="listeContraintes.sansProc" />
                                 <label for="sans-porc">&nbsp&nbspSans porc</label>
                             </div>
+                            <!-- vegane -->
                             <div>
-                                <input id="vegane" name="vegane" type="checkbox" value="vegane" />
+                                <input id="vegane" name="vegane" type="checkbox" v-model="listeContraintes.vegane"/>
                                 <label for="vegane">&nbsp&nbspVegane</label>
                             </div>
+                            <!-- végétarien -->
                             <div>
-                                <input id="vegetarien" name="vegetarien" type="checkbox" value="vegetarien" />
+                                <input id="vegetarien" name="vegetarien" type="checkbox" v-model="listeContraintes.vegetarien"/>
                                 <label for="vegetarien">&nbsp&nbspVégétarien</label>
                             </div>
+                            <!-- sans alcool -->
                             <div>
-                                <input id="sans-alcool" name="sans-alcool" type="checkbox" value="sans_alcool" />
+                                <input id="sans-alcool" name="sans-alcool" type="checkbox" v-model="listeContraintes.sansAlcool"/>
                                 <label for="sans-alcool">&nbsp&nbspSans alcool</label>
                             </div>
+                            <!-- sans gluten -->
                             <div>
-                                <input id="sans-gluten" name="sans-gluten" type="checkbox" value="sans_gluten" />
+                                <input id="sans-gluten" name="sans-gluten" type="checkbox" v-model="listeContraintes.sansGluten"/>
                                 <label for="sans-gluten">&nbsp&nbspSans gluten</label>
                             </div>
                         </div>
+                        <!-- indice personnelle -->
                         <div class="flex-85 flex jc-around a-center mtb-inter-inner">
                             <p class="flex-100 spe-coleur">* Pour avoir une remarque personnelle, il faut remplir tous les informations ci-dessous : taille, poids, sexe</p>
-                            <input class="flex-25 w30 border-no border-b-bleu-gros pad-05r mtb-inter-inner" type="number" step="0.01" placeholder="* Taille">
-                            <input class="flex-25 w30 border-no border-b-bleu-gros pad-05r mtb-inter-inner" type="number" step="0.01" placeholder="* Poids">
-                            <select class="flex-25 w30 border-b-leger-noire-gros pad-1r mtb-inter-inner background-blanc" name="" id="">
-                                <option value="0">* Sexe</option>
-                                <option value="homme">Homme</option>
-                                <option value="femme">Femme</option>
-                            </select>
+                            <!-- taiile -->
+                            <input class="flex-25 w30 border-no border-b-bleu-gros pad-05r mtb-inter-inner" type="number" step="0.01" placeholder="* Taille (cm)" v-model="infosPersonnelles.taille">
+                            <!-- poids -->
+                            <input class="flex-25 w30 border-no border-b-bleu-gros pad-05r mtb-inter-inner" type="number" step="0.01" placeholder="* Poids (kg)" v-model="infosPersonnelles.poids">
+                            <!-- sexe -->
+                            <input class="flex-25 w30 border-no border-b-bleu-gros pad-05r mtb-inter-inner" placeholder="* Sexe" v-model="infosPersonnelles.sexe" list="recherche-avancee-sexe">
+                            <datalist id="recherche-avancee-sexe" class="flex-25 w30 border-b-leger-noire-gros pad-1r mtb-inter-inner background-blanc">
+                                <option value="Homme">Homme</option>
+                                <option value="Femme">Femme</option>
+                            </datalist>
+                            <!-- retour d'informations personnelles -->
+                            <p>Votre socore IMC est : <span>{{noteImc}}</span></p>
+                            <p>Votre indice de masse corporelle est : <span>{{imc}}</span></p>
                         </div>
+                        <!-- reset -->
                         <button class="button-type1 button-normal mtb-inter-inner">Reset</button>
                     </form>
                 </transition>
@@ -107,46 +130,52 @@
         <!-- recettes -->
         <section class="flex-100 flex a-center jc-around vignette-container w100">
             <div v-for="n in 10" :key="n" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
+                <!-- image de recette -->
                 <div class="w100 center">
                     <img class="w200px" src="" alt="image de recette">
                 </div>
+                <!-- informations principales de recette -->
                 <div>
                     <h3>Nom : </h3>
                     <p>CO2 : </p>
                     <p>l'eau : </p>
                     <p>calorie :  </p>
                 </div>
-                <div class="couche-livre flex direction-column jc-around a-center pad-1r w100">
-                    <!-- etape de cuisson -->
+                <!-- survole - ingredients -->
+                <router-link class="couche-recette flex direction-column jc-around a-center pad-1r w100" to="/recette">
+                    <h4>Ingrédients</h4>
                     <ol>
                         <li></li>
                         <li></li>
                         <li></li>
                     </ol>
-                </div>
+                </router-link>
             </div>
         </section>
         <!-- recette de recommandation -->
         <section class="flex-100 flex a-center jc-around vignette-container w100">
             <h2 class="flex-100">Recette de recommandation</h2>
             <div v-for="n in 6" :key="n" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
+                <!-- image de recette -->
                 <div class="w100 center">
                     <img class="w200px" src="" alt="image de recette">
                 </div>
+                <!-- informations principales de recette -->
                 <div>
                     <h3>Nom : </h3>
                     <p>CO2 : </p>
                     <p>l'eau : </p>
                     <p>calorie :  </p>
                 </div>
-                <div class="couche-livre flex direction-column jc-around a-center pad-1r w100">
-                    <!-- etape de cuisson -->
+                <!-- survole - ingredients -->
+                <router-link class="couche-recette flex direction-column jc-around a-center pad-1r w100" to="/recette">
+                    <h4>Ingrédients</h4>
                     <ol>
                         <li></li>
                         <li></li>
                         <li></li>
                     </ol>
-                </div>
+                </router-link>
             </div>
         </section>
     </article>
@@ -163,8 +192,23 @@ module.exports = {
     data () {
         return {
             ingredients : [""],
-            ingredientsNonConsommes : [""],
             affichageRechercheAvancee : false,
+            ingredientsNonConsommes : [""],
+            listeContraintes : {
+                sansProc : false,
+                vegane : false,
+                vegetarien : false,
+                sansAlcool : false,
+                sansGluten : false,
+            },
+            infosPersonnelles:{
+                taille : null,
+                poids : null,
+                sexe : null,
+                imc : this.imc
+            },
+            filtrage : 'Filtrage par défaut',
+            content : null,
         }
     },
     async mounted () {
@@ -182,12 +226,56 @@ module.exports = {
         //changer l'état de recherche avancée
         changerAffichageRechercheAvancee(){
             this.affichageRechercheAvancee = !this.affichageRechercheAvancee
+        },
+    },
+    computed: {
+        // La note d'imc
+        noteImc(){
+            if(this.infosPersonnelles.taille != null 
+            && this.infosPersonnelles.taille != 0
+            && this.infosPersonnelles.poids != null 
+            && this.infosPersonnelles.poids != 0
+            && this.infosPersonnelles.sexe != null){
+                console.log("sxwdqsdsq")
+                return (this.infosPersonnelles.poids / ((this.infosPersonnelles.taille/100)*(this.infosPersonnelles.taille/100))).toFixed(2)
+            }
+            else
+                return ''
+        },
+        // l'indice d'imc
+        imc(){
+            if(this.noteImc != ''){
+                if(this.noteImc < 18.5)
+                    return 'dénutrition'
+                if(this.noteImc < 25)
+                    return 'corpulence normale'
+                if(this.noteImc < 30)
+                    return 'surpoids'
+                if(this.noteImc < 35)
+                    return 'obésité modérée'
+                if(this.noteImc < 40)
+                    return 'obésité sévère'
+                if(this.noteImc >= 40)
+                    return 'obésité morbide'
+            }
+            return ''
         }
+
     }
 }
 </script>
 
 <style scoped>
+/* bouton */
+.fa-circle-minus, .fa-circle-plus{
+    padding:5px
+}
+/* input */
+.border-b-leger-noire-gros {
+    border-bottom: 2px var(--leger-noire) solid;
+}
+
+/* barre de recherche */
 .fa-magnifying-glass{
     font-size: 2rem;
 }
@@ -200,25 +288,35 @@ module.exports = {
     text-align: center;
 }
 
-*{
-    box-sizing: initial;
-}
-
-.button-normal{
-    box-sizing: border-box;
-}
-
-.border-b-leger-noire-gros {
-    border-bottom: 2px var(--leger-noire) solid;
-}
-
+/* bouton recherche */
 #button-recherche{
     width: 2rem;
     height: 2rem;
     font-size: 1.5rem;
 }
 
+/* recherche avancée */
 .recherche-avancee-formulaire{
     width:600px;
+}
+
+/* recettes */
+.vignette:hover .couche-recette {
+    display: flex;
+}
+
+.vignette {
+    position:relative
+}
+.couche-recette {
+    display: none;
+    position:absolute;
+    height: 100%;
+    top:0;
+    background-color: var(--color2);
+    z-index: 9;
+    width:100%;
+    opacity: 0.8;
+    color:white
 }
 </style>

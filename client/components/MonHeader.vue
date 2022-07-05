@@ -63,7 +63,7 @@
             <!-- navigation en écran de taille petite -->
             <div id="barre-menu-page-container" class="flex-90 m-auto cache f-700">
                 <!-- Mode non connexion -->
-                <div class="flex direction-column" v-if="!connecte">
+                <div class="flex direction-column a-center" v-if="!connecte">
                     <li class="flex-50 center">
                         <router-link to='/inscription'>
                             <button class="button-type1">

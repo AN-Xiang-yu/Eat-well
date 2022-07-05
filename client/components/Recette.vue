@@ -39,67 +39,32 @@
         </div>
     </section>
     <!-- recommandation de recettes -->
-    <section class="flex-100 flex a-center jc-around vignette-container w100">
-        <h2 class="flex-100">Recette de recommandation</h2>
-        <!-- <div v-for="livre in livres" :key="livre.isbn" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r"> -->
-        <div class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
-            <div class="w100 center">
-                <img class="w200px" src="" alt="image de recette">
+    <!-- recette de recommandation -->
+        <section class="flex-100 flex a-center jc-around vignette-container w100">
+            <h2 class="flex-100">Recette de recommandation</h2>
+            <div v-for="n in 6" :key="n" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
+                <!-- image de recette -->
+                <div class="w100 center">
+                    <img class="w200px" src="" alt="image de recette">
+                </div>
+                <!-- informations principales de recette -->
+                <div>
+                    <h3>Nom : </h3>
+                    <p>CO2 : </p>
+                    <p>l'eau : </p>
+                    <p>calorie :  </p>
+                </div>
+                <!-- survole - ingredients -->
+                <router-link class="couche-recette flex direction-column jc-around a-center pad-1r w100" to="/recette">
+                    <h4>Ingrédients</h4>
+                    <ol>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ol>
+                </router-link>
             </div>
-            <div>
-                <h3>Nom : </h3>
-                <p>CO2 : </p>
-                <p>l'eau : </p>
-                <p>calorie :  </p>
-            </div>
-            <div class="couche-livre flex direction-column jc-around a-center pad-1r w100">
-                <!-- etape de cuisson -->
-                <ol>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ol>
-            </div>
-        </div>
-        <div class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
-            <div class="w100 center">
-                <img class="w200px" src="" alt="image de recette">
-            </div>
-            <div>
-                <h3>Nom : </h3>
-                <p>CO2 : </p>
-                <p>l'eau : </p>
-                <p>calorie :  </p>
-            </div>
-            <div class="couche-livre flex direction-column jc-around a-center pad-1r w100">
-                <!-- etape de cuisson -->
-                <ol>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ol>
-            </div>
-        </div>
-        <div class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
-            <div class="w100 center">
-                <img class="w200px" src="" alt="image de recette">
-            </div>
-            <div>
-                <h3>Nom : </h3>
-                <p>CO2 : </p>
-                <p>l'eau : </p>
-                <p>calorie :  </p>
-            </div>
-            <div class="couche-livre flex direction-column jc-around a-center pad-1r w100">
-                <!-- etape de cuisson -->
-                <ol>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ol>
-            </div>
-        </div>                
-    </section>
+        </section>
   </article>
 
 </template>
@@ -129,4 +94,23 @@ module.exports = {
 </script>
 
 <style scoped>
+/* recettes */
+.vignette:hover .couche-recette {
+    display: flex;
+}
+
+.vignette {
+    position:relative
+}
+.couche-recette {
+    display: none;
+    position:absolute;
+    height: 100%;
+    top:0;
+    background-color: var(--color2);
+    z-index: 9;
+    width:100%;
+    opacity: 0.8;
+    color:white
+}
 </style>

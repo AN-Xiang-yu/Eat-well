@@ -18,7 +18,11 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    routes
+    routes,
+    // retouner vers le début de page
+    scrollBehavior() {
+        return { x: 0, y: 0 };
+    }
 })
 
 var app = new Vue({
