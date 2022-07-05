@@ -1,5 +1,5 @@
 <template>
-  <article lcass="flex direction-column a-center">
+  <article lcass="flex direction-column a-center jc-center">
     <h1 class="center">Nom de recette</h1>
     <!-- information basique de recette -->
     <section class="flex-100 flex jc-around ">
@@ -17,7 +17,7 @@
         </div>
     </section>
     <!-- liste des ingrédients -->
-    <section class="flex-100">
+    <section class="flex-80">
         <h2>Liste des ingrédients :</h2>
         <div>
             <ol>
@@ -28,7 +28,7 @@
         </div>
     </section>
     <!-- étape de cuisson -->
-    <section class="flex-100">
+    <section class="flex-80">
         <h2>Étape de cuisson : </h2>
         <div>
             <ol>
