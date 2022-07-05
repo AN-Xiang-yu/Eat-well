@@ -30,7 +30,7 @@
             <!-- barre de recherche avancée -->
             <div class="mtb-inter-inner">
                 <!-- activer la recherche avancée -->
-                <div class="w100 flex a-center mtb-inter-inner pad-1r">
+                <div class="m-auto w70 flex a-center mtb-inter-inner pad-1r">
                     <button id="button-recherche" class="button-type2 btn-circle btn-xl flex a-center jc-center mr-05r ml-05r" @click="changerAffichageRechercheAvancee()">
                         <i :class="{'fa-solid ' : true, 'fa-circle-chevron-down' : affichageRechercheAvancee === true, 'fa-circle-chevron-right' : affichageRechercheAvancee === false}"></i>
                     </button>
@@ -142,8 +142,8 @@
                     <p>calorie :  </p>
                 </div>
                 <!-- survole - ingredients -->
-                <router-link class="couche-recette flex direction-column jc-around a-center pad-1r w100" to="/recette">
-                    <h4>Ingrédients</h4>
+                <router-link class="couche-recette flex direction-column jc-around pad-1r w100" to="/recette">
+                    <h4 class="w100 center">Ingrédients</h4>
                     <ol>
                         <li></li>
                         <li></li>
@@ -168,8 +168,8 @@
                     <p>calorie :  </p>
                 </div>
                 <!-- survole - ingredients -->
-                <router-link class="couche-recette flex direction-column jc-around a-center pad-1r w100" to="/recette">
-                    <h4>Ingrédients</h4>
+                <router-link class="couche-recette flex direction-column jc-around pad-1r w100" to="/recette">
+                    <h4 class="w100 center">Ingrédients</h4>
                     <ol>
                         <li></li>
                         <li></li>
@@ -266,16 +266,6 @@ module.exports = {
 </script>
 
 <style scoped>
-/* bouton */
-.fa-circle-minus, .fa-circle-plus{
-    padding-top: 0.05rem;
-    padding-right: 0.02rem;
-}
-
-.fa-circle-chevron-right, .fa-circle-chevron-down{
-    padding-top: 0.162rem;
-    padding-right: 0.02rem;
-}
 /* input */
 .border-b-leger-noire-gros {
     border-bottom: 2px var(--leger-noire) solid;

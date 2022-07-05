@@ -55,8 +55,8 @@
                     <p>calorie :  </p>
                 </div>
                 <!-- survole - ingredients -->
-                <router-link class="couche-recette flex direction-column jc-around a-center pad-1r w100" to="/recette">
-                    <h4>Ingrédients</h4>
+                <router-link class="couche-recette flex direction-column jc-around pad-1r w100" to="/recette">
+                    <h4 class="w100 center">Ingrédients</h4>
                     <ol>
                         <li></li>
                         <li></li>
