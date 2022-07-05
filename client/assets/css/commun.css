@@ -10,10 +10,10 @@
     /*backagrounds coleurs*/
     --quatieme-couleur: rgb(45, 81, 159, .9);
     --quatieme-couleur: rgb(45, 81, 159);
-    --survol-coleur: #F27979;
+    --survol-coleur: rgba(242, 121, 121);
     --spe-coleur: #c74300;
     --blanc: #FFFFFF;
-    --beige: #F5D4B1;
+    --beige: rgba(245, 212, 177, .5);
     --orange-saumon: #F88E55;
     --leger-blanc: rgba(255, 255, 255, 0.25);
     --leger-noire: #eaeaea;

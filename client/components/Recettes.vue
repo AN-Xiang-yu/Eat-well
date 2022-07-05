@@ -103,7 +103,7 @@
                             <p>Votre indice de masse corporelle est : <span>{{imc}}</span></p>
                         </div>
                         <!-- reset -->
-                        <button class="button-type1 button-normal mtb-inter-inner">Reset</button>
+                        <button type="reset" class="button-type1 button-normal mtb-inter-inner">Reset</button>
                     </form>
                 </transition>
                 
@@ -129,10 +129,10 @@
         </section>
         <!-- recettes -->
         <section class="flex-100 flex a-center jc-around vignette-container w100">
-            <div v-for="n in 10" :key="n" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
+            <div v-for="n in 8" :key="n" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
                 <!-- image de recette -->
                 <div class="w100 center">
-                    <img class="w200px" src="" alt="image de recette">
+                    <img class="w200px" src="assets/image/recette/defaut.png" alt="image de recette">
                 </div>
                 <!-- informations principales de recette -->
                 <div>
@@ -158,7 +158,7 @@
             <div v-for="n in 6" :key="n" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
                 <!-- image de recette -->
                 <div class="w100 center">
-                    <img class="w200px" src="" alt="image de recette">
+                    <img class="w200px" src="assets/image/recette/defaut.png" alt="image de recette">
                 </div>
                 <!-- informations principales de recette -->
                 <div>
@@ -268,7 +268,13 @@ module.exports = {
 <style scoped>
 /* bouton */
 .fa-circle-minus, .fa-circle-plus{
-    padding:5px
+    padding-top: 0.05rem;
+    padding-right: 0.02rem;
+}
+
+.fa-circle-chevron-right, .fa-circle-chevron-down{
+    padding-top: 0.162rem;
+    padding-right: 0.02rem;
 }
 /* input */
 .border-b-leger-noire-gros {

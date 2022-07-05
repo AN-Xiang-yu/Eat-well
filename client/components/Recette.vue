@@ -45,7 +45,7 @@
             <div v-for="n in 6" :key="n" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
                 <!-- image de recette -->
                 <div class="w100 center">
-                    <img class="w200px" src="" alt="image de recette">
+                    <img class="w200px" src="assets/image/recette/defaut.png" alt="image de recette">
                 </div>
                 <!-- informations principales de recette -->
                 <div>
