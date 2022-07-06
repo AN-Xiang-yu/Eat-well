@@ -196,8 +196,8 @@ router.post("/connexion", async(req, res) => {
 
     //vérifier l'existence de l'utilisateur
     if (resultatTemp[0].length == 0) {
-        console.log("L'utilisateur n'existe pas");
-        res.status(404).json({ message: "L'utilisateur n'existe pas" });
+        console.log("L'utilisateur n'existe pas (post connexion)");
+        res.status(404).json({ message: "L'utilisateur n'existe pas (post connexion)" });
         return;
     }
 
@@ -250,8 +250,8 @@ router.get("/connexion", async(req, res) => {
 
     //vérifier l'existence de l'utilisateur
     if (resultatTemp[0].length == 0) {
-        console.log("L'utilisateur n'existe pas");
-        res.status(404).json({ message: "L'utilisateur n'existe pas" });
+        console.log("L'utilisateur n'existe pas (get connexion)");
+        res.status(404).json({ message: "L'utilisateur n'existe pas (get connexion)" });
         return;
     }
     //récupérer l'utilisateur

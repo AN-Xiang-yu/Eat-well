@@ -4,7 +4,7 @@
     <!-- information basique de recette -->
     <section class="flex-100 flex jc-around">
         <div class="flex-40">
-            <img class="w100" src="assets/image/recette/23053_w768h640c1cx300cy250.jpg" alt="image de recette">
+            <img class="w100" :src="recette.image" alt="image de recette">
         </div>
         <div class="flex-40 flex direction-column jc-around" >
             <p><span>Type :</span> {{recette.type}}</p>
@@ -40,11 +40,14 @@
         <h2 class="flex-100">Recette de recommandation</h2>
         <div v-for="recette in recettesRecommandation" :key="recette.id_recette" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
             <!-- image de recette -->
-            <div class="w100 center">
-                <img class="w200px" src="assets/image/recette/defaut.png" alt="image de recette">
-            </div>
+                <div class="w100 center">
+                    <img 
+                    :class="imageRecetteNulle(recette.image) ? 'w200px': 'w75'" 
+                    :src="imageRecetteNulle(recette.image) ? 'assets/image/recette/defaut.png' : recette.image" 
+                    alt="image de recette">
+                </div>
             <!-- informations principales de recette -->
-            <div>
+            <div class="w100">
                 <h3 class="center w100">{{recette.nomRecette }} </h3>
                 <p>CO2 : </p>
                 <p>l'eau : </p>
@@ -103,6 +106,9 @@ module.exports = {
             this.$emit('cliquer-recette-recommandation', {idRecette :  idRecette, idUtilisateur :  this.utilisateur.idUtilisateur, iteration :  iteration})
             this.$router.push({path:'/recette/'+idRecette})
             location.reload() //rafraichir la page pour mettre à jour les modifications
+        },
+        imageRecetteNulle(image){
+            return  image == null 
         },
 
     },

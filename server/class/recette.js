@@ -147,7 +147,7 @@ class Recette {
     async getRecetteParId(idRecette) {
         return this.sequelize
             .query(
-                `SELECT r.nom, ingredients, etapes, t.nom as type
+                `SELECT r.nom, ingredients, etapes, image, t.nom as type
                     FROM recette r
                         INNER JOIN type t ON t.id = r.id_type
                     WHERE r.id = :idRecette`, {
@@ -168,7 +168,7 @@ class Recette {
     async getRecettesRecommandationParIdUtilisateur(idUtilisateur) {
         return this.sequelize
             .query(
-                `SELECT id_utilisateur, ur.id_recette, r.nom as nomRecette, ingredients, etapes, t.nom as type, iteration
+                `SELECT id_utilisateur, ur.id_recette, r.nom as nomRecette, ingredients, etapes, t.nom as type, iteration, image
                     FROM utilisateur_recette ur 
                         INNER JOIN recette r ON ur.id_recette = r.id
                         INNER JOIN type t ON t.id = r.id_type

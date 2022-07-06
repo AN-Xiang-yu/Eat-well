@@ -158,10 +158,13 @@
             <div v-for="recette in recettesRecommandation" :key="recette.id_recette" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
                 <!-- image de recette -->
                 <div class="w100 center">
-                    <img class="w200px" src="assets/image/recette/defaut.png" alt="image de recette">
+                    <img 
+                    :class="imageRecetteNulle(recette.image) ? 'w200px': 'w75'" 
+                    :src="imageRecetteNulle(recette.image) ? 'assets/image/recette/defaut.png' : recette.image" 
+                    alt="image de recette">
                 </div>
                 <!-- informations principales de recette -->
-                <div>
+                <div class="w100">
                     <h3 class="center w100">{{recette.nomRecette }} </h3>
                     <p>CO2 : </p>
                     <p>l'eau : </p>
@@ -242,9 +245,10 @@ module.exports = {
         async cliquerRecetteRecommandation(idRecette, iteration) {
             this.$emit('cliquer-recette-recommandation', {idRecette :  idRecette, idUtilisateur :  this.utilisateur.idUtilisateur, iteration :  iteration})
             this.$router.push({path:'/recette/'+idRecette})
-            location.reload() //rafraichir la page pour mettre à jour les modifications
         },
-
+        imageRecetteNulle(image){
+            return  image == null 
+        },
     },
     computed: {
         // La note d'imc
