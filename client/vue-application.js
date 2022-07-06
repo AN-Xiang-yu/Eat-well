@@ -40,6 +40,7 @@ var app = new Vue({
             surnom: null,
         },
         connecte: null,
+        recettesRecommandation: null
     },
     async mounted() {
         this.restConnecter() //mettre à jour le mode de connexion 
@@ -174,6 +175,7 @@ var app = new Vue({
         async afficherRecetteCarousel(nbrRecette) {
             try {
                 let resultat = (await axios.post('/api/recettesCarousel', nbrRecette)).data
+                console.log(resultat);
             } catch (erreur) {
                 console.log(erreur.response.data.message);
                 console.log('erreur', erreur) //afficher le message d'erreur
@@ -199,13 +201,13 @@ var app = new Vue({
         },
 
         /**
-         * Description : Cette fonction permet de récupérer tous les tags et noms de recette dans BDD
+         * Description : Cette fonction permet de récupérer tous les noms de recette dans BDD
          * 
          * @return {void} 
          * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
          * @état : A FAIRE
          */
-        async recupererMotsCles() {
+        async recupererNomsRecette() {
             try {
                 let resultat = (await axios.get('/api/motsCles')).data
             } catch (erreur) {
@@ -260,12 +262,16 @@ var app = new Vue({
          * 
          * @param {int} idUtilisateur id d'utilisateur
          * @return {void} 
-         * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-         * @état : A FAIRE
+         * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
+         * @état : Fait
          */
-        async consulterRecette(idUtilisateur) {
+        async consulterRecetteRecommandation(idUtilisateur) {
             try {
                 let resultat = (await axios.post('/api/recettesRecommandation', idUtilisateur)).data
+                this.recettesRecommandation = resultat.recettes
+                this.recettesRecommandation.forEach(function(recette) {
+                    recette.ingredients = recette.ingredients.split(',')
+                })
             } catch (erreur) {
                 console.log(erreur.response.data.message);
                 console.log('erreur', erreur) //afficher le message d'erreur
@@ -285,6 +291,7 @@ var app = new Vue({
         async consulterRecette(idRecette, idUtilisateur) {
             try {
                 let resultat = (await axios.post('/api/recettesRecommandation', listeId)).data
+
             } catch (erreur) {
                 console.log(erreur.response.data.message);
                 console.log('erreur', erreur) //afficher le message d'erreur

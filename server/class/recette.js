@@ -45,26 +45,6 @@ class Recette {
     }
 
     /** !!!!!!!!!! A REVOIR AVEC LE GROUPE
-     * Description : Cette fonction permet de récupérer les recettes selon les mots clées
-     *
-     * @param {List<string>} mots_cles une liste de string (tags ou nom de recettes)
-     * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-     * @return {Recette} Une liste de recettes
-     * @état : A FAIRE
-     */
-    async getRecettesParMotsCles(mots_cles) {
-        return this.sequelize
-            .query(
-                `SELECT *
-                FROM recettes
-                WHERE ............ `, {
-                    // replacements: {...: ... },
-                }
-            )
-            .catch((err) => res.status(400).json({ error: err }));
-    }
-
-    /** !!!!!!!!!! A REVOIR AVEC LE GROUPE
      * Description : Cette fonction permet de récupérer les recettes selon les contraintes
      *
      * @param {List<object>} contraintes une liste de contraintes
@@ -136,28 +116,22 @@ class Recette {
     async getNomRecettes() {
         return this.sequelize
             .query(
-                `SELECT nom FROM recette
-        `, {
-                    // replacements: {...: ... },
-                }
+                `SELECT nom FROM recette`
             )
             .catch((err) => res.status(400).json({ error: err }));
     }
 
     /**
-     * Description : Cette fonction permet de récupérer les tags de tous les recettes
+     * Description : Cette fonction permet de récupérer les Ids de tous les recettes
      *
-     * @return {list<string>} Une liste de tags de recettes
-     * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
+     * @return {list<string>} Une liste de recettes
+     * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
      * @état : fait
      */
-    async getTagRecettes() {
+    async getIdRecettes() {
         return this.sequelize
             .query(
-                `SELECT tag FROM recette
-        `, {
-                    // replacements: {...: ... },
-                }
+                `SELECT id FROM recette`
             )
             .catch((err) => res.status(400).json({ error: err }));
     }
@@ -174,8 +148,8 @@ class Recette {
         return this.sequelize
             .query(
                 `SELECT *
-        FROM recette
-        WHERE id = :id`, {
+                    FROM recette
+                    WHERE id = :id`, {
                     replacements: { id: id },
                 }
             )
@@ -183,20 +157,24 @@ class Recette {
     }
 
     /**
-     * Description : Cette fonction permet de récupérer la recette de recommandation
+     * Description : Cette fonction permet de récupérer les recettes de recommandation
      *
      * @param {int} idUtilisateur id d'utilisateur
      * @return {List<Recette>} Une liste de recettes
-     * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-     * @état : A FAIRE
+     * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : ??-06-2022)
+     * @état : fait
      */
-    async getRecettesParId(id) {
+    async getRecettesRecommandationParIdUtilisateur(idUtilisateur) {
         return this.sequelize
             .query(
-                `SELECT *
-        FROM utilisateur_recette
-        WHERE ...`, {
-                    // replacements: { id: id },
+                `SELECT id_utilisateur, ur.id_recette, r.nom as nomRecette, ingredients, etapes, t.nom as type, iteration
+                    FROM utilisateur_recette ur 
+                        INNER JOIN recette r ON ur.id_recette = r.id
+                        INNER JOIN type t ON t.id = r.id_type
+                    WHERE id_utilisateur = :idUtilisateur 
+                        AND iteration = 
+                            (SELECT MAX(iteration) FROM utilisateur_recette WHERE id_utilisateur = :idUtilisateur)`, {
+                    replacements: { idUtilisateur: idUtilisateur },
                 }
             )
             .catch((err) => res.status(400).json({ error: err }));
@@ -214,9 +192,28 @@ class Recette {
         return this.sequelize
             .query(
                 `UPDATE utilisateur_recette
-                    SET nom_colonne_1 = 'nouvelle valeur'
+                    SET id_utilisateur = :idUtilisateur 
                     WHERE condition`, {
-                    // replacements: { id: id },
+                    replacements: { id_utilisateur: id_utilisateur, },
+                }
+            )
+            .catch((err) => res.status(400).json({ error: err }));
+    }
+
+    /**
+     * Description : Cette fonction permet de mettre à jour la table de utilisateur_recette
+     *
+     * @param {int} idUtilisateur id d'utilisateur
+     * @param {int} idRecette id de recette
+     * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
+     * @état : Fait
+     */
+    async addRecommandation(idUtilisateur, idRecette, iteration) {
+        return this.sequelize
+            .query(
+                `INSERT INTO utilisateur_recette (id_utilisateur, id_recette, clique, iteration)
+                    VALUES(:idUtilisateur, :idRecette, 0, :iteration)`, {
+                    replacements: { idUtilisateur: idUtilisateur, idRecette: idRecette, iteration: iteration },
                 }
             )
             .catch((err) => res.status(400).json({ error: err }));

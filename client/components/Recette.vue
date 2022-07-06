@@ -38,33 +38,33 @@
             </ol>
         </div>
     </section>
-    <!-- recommandation de recettes -->
-    <!-- recette de recommandation -->
-        <section class="flex-100 flex a-center jc-around vignette-container w100">
-            <h2 class="flex-100">Recette de recommandation</h2>
-            <div v-for="n in 6" :key="n" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
-                <!-- image de recette -->
-                <div class="w100 center">
-                    <img class="w200px" src="assets/image/recette/defaut.png" alt="image de recette">
-                </div>
-                <!-- informations principales de recette -->
-                <div>
-                    <h3>Nom : </h3>
-                    <p>CO2 : </p>
-                    <p>l'eau : </p>
-                    <p>calorie :  </p>
-                </div>
-                <!-- survole - ingredients -->
-                <router-link class="couche-recette flex direction-column jc-around pad-1r w100" to="/recette">
-                    <h4 class="w100 center">Ingrédients</h4>
-                    <ol>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                    </ol>
-                </router-link>
+    <!-- recettes de recommandation -->
+    <section class="flex-100 flex a-center jc-around vignette-container w100">
+        <h2 class="flex-100">Recette de recommandation</h2>
+        <div v-for="recette in recettesRecommandation" :key="recette.id_recette" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
+            <!-- image de recette -->
+            <div class="w100 center">
+                <img class="w200px" src="assets/image/recette/defaut.png" alt="image de recette">
             </div>
-        </section>
+            <!-- informations principales de recette -->
+            <div>
+                <h3 class="center w100">{{recette.nomRecette }} </h3>
+                <p>CO2 : </p>
+                <p>l'eau : </p>
+                <p>calorie :  </p>
+            </div>
+            <!-- survole - ingredients -->
+            <router-link class="couche-recette flex direction-column jc-around pad-1r w100" to="/recette">
+                <h4 class="w100 center">Ingrédients</h4>
+                <div class="flex">
+                    <ol class="mb-0">
+                        <li v-for="(ingredient,index) in recette.ingredients" :key = "index" v-show="index < 5">{{ingredient}}</li>
+                    </ol>
+                    <p class="w100 center" v-show="(recette.ingredients.length > 4)">...... (cliquer pour voir les détails)</p>
+                </div>
+            </router-link>
+        </div>
+    </section>
   </article>
 
 </template>
@@ -73,19 +73,28 @@
 module.exports = {
     name:"Recette",
     props: {
+        utilisateur : {type:Object},
+        recettesRecommandation : {type:Array},
+        connecte: {type: Boolean},
     },
     data () {
         return {
         }
     },
     async mounted () {
-
+        setTimeout(() => {this.sauterAccueil()}, 100);
+        setTimeout(() => {this.consulterRecetteRecommandation()}, 200);
     },
     updated () {
         
     },
     methods: {
-
+        async consulterRecetteRecommandation() {
+            this.$emit('consulter-recette-recommandation', this.utilisateur.idUtilisateur)
+        },
+        sauterAccueil(){
+            this.$emit('sauter-accueil')
+        },
     },
     computed:{
 

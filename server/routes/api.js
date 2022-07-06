@@ -7,6 +7,7 @@ const Recette = require("../class/recette.js");
 const Ingredient = require("../class/ingredient.js");
 var recettes = [];
 var ingredients = [];
+const NOMBRE_RECETTE_RECOMMANDATON = 10
 
 // créer l'instance Sequelize
 const { Sequelize } = require("sequelize");
@@ -51,16 +52,18 @@ function connecterSessionUtilisateur(req, res, utilisateurRecupere) {
  * @param {number} mdp mot de passe de l'utilisateur
  * @return {Utilisateur} tous les informations principales d'utilisateur
  * @author author-name(Xiangyu AN) (création : 18-06-2022) (modification : 19-06-2022)
- * @état : non fini, la partie générer aléatoirement une liste de recette à faire
+ * @état : fini
  */
 router.post("/inscription", async(req, res) => {
     //info d'un utilisateur
-    const email = req.body.email;
-    const surnom = req.body.surnom;
-    const mdp = req.body.mdp;
+    const email = req.body.email
+    const surnom = req.body.surnom
+    const mdp = req.body.mdp
     const mdphash = await bcrypt.hash(mdp, 10); //hasher le mot de passe
-    let idUtilisateur = null;
-    let resultatTemp = null;
+    let idUtilisateur = null
+    let resultatTemp = null
+    let idsRecettes = null
+    let setIds = new Set();
 
     //vérifier l'existence de l'utilisateur
     try {
@@ -112,13 +115,46 @@ router.post("/inscription", async(req, res) => {
         surnom: surnom,
     };
 
-    /* ******************************************* */
-    //A FAIRE: générer une recommandaiton de 10 recettes
-    //1. récupérer tous les id de recettes de la table de recette
-    //2. vérifier si l'on a bien réussi à récupérer les id de recettes
-    //3. choisir aléatoirement 10 id de recettes
-    //4. ajouter ces id de recettes + id d'utilisateur dans la table (utilsateur_recette)
-    /* ******************************************* */
+    //récupérer tous les id de recettes de la table de recette
+    try {
+        console.log("récupérer tous les id de recettes de la table de recette");
+        resultatTemp = await recette.getIdRecettes();
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        res.status(400).json({
+            error: "Impossible de récupérer tous les id de recettes de la table de recette",
+        });
+        return;
+    }
+
+    //vérifier si l'on a bien réussi à récupérer les id de recettes
+    if (resultatTemp[0].length == 0) {
+        console.log("Aucune recette existe pour générer les premières recettes de recommandation");
+        res.status(400).json({ message: "Aucune recette existe pour générer les premières recettes de recommandation" });
+        return;
+    }
+
+    //récupérer tous les ids de recettes
+    idsRecettes = resultatTemp[0]
+
+    //choisir aléatoirement NOMBRE_RECETTE_RECOMMANDATON ids de recettes
+    while (setIds.size < NOMBRE_RECETTE_RECOMMANDATON)
+        setIds.add(parseInt(Math.random() * idsRecettes.length + 1))
+
+    //ajouter ces id de recettes + id d'utilisateur dans la table (utilsateur_recette)
+    for (let idRecette of setIds) {
+
+        try {
+            console.log("ajouter ces id de recettes + id d'utilisateur dans la table (utilsateur_recette)");
+            resultatTemp = await recette.addRecommandation(idUtilisateur, idRecette, 1);
+        } catch (error) {
+            //envoyer le message d'échec à l'utilisateur
+            res.status(400).json({
+                error: "Impossible d'ajouter cet id de recette + id d'utilisateur dans la table (utilsateur_recette)'",
+            });
+            return;
+        }
+    }
 
     //connexion d'utilisateur
     connecterSessionUtilisateur(req, res, utilisateurRecupere);
@@ -244,20 +280,6 @@ router.get("/deconnexion", (req, res) => {
 });
 
 /**
- * Description : Cette fonction permet de récupérer un nombre donné de recette
- * On va récupérer la liste de recettes de nombre donné
- * On va vérifier l'existence de cette liste de recettes récupérées
- *
- * @param {int} nbrRecette nombre de recette
- * @return {list<Recette>} une recette
- * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
- * @état : A FAIRE
- */
-router.post("/recettesCarousel", (req, res) => {
-
-});
-
-/**
  * Description : Cette fonction permet de récupérer tous les ingrédients dans BDD
  * On va récupérer les ids d'ingrédients de BDD
  * On va vérifier l'existence d'ingrédients
@@ -276,11 +298,19 @@ router.get("/ingredients", (req, res) => {
  * On va vérifier l'existence de tags et noms
  *
  * @return {list<string>} une liste de tous les tags et recettes dans BDD
- * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
- * @état : A FAIRE
+ * @author author-name(Xiangyu AN) (création : 07-06-2022) (modification : 07-06-2022)
+ * @état : A finir
  */
-router.get("/motsCles", (req, res) => {
-
+router.get("/nomIngredients", (req, res) => {
+    //si l'utilisateur n'est pas connecté
+    if (typeof req.session.utilisateur != "undefined") {
+        //impossible de récupérer les noms d'ingrédients
+        res.status(400).json({ message: "impossible de récupérer les noms d'ingrédients" });
+        return;
+    }
+    //envoyer le message d'erreur à l'utilisateur
+    res.status(400).json({ message: "L'utilisateur n'est pas connecté" });
+    return;
 });
 
 /**
@@ -411,11 +441,41 @@ router.post("/recette", (req, res) => {
  *
  * @param {int} idUtilisateur id d'utilisateur
  * @return {list<Recette>} une recette
- * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
- * @état : A FAIRE
+ * @author author-name(Xiangyu AN) (création : 07-06-2022) (modification : 07-06-2022)
+ * @état : Fait
  */
-router.post("/recettesRecommandation", (req, res) => {
+router.post("/recettesRecommandation", async(req, res) => {
+    //idd'un utilisateur
+    const idUtilisateur = req.body.idUtilisateur
+    let resultatTemp = null
+    let recettes = null
 
+    //récupérer tous les recettes de recommandation les plus récentes de l'utilisateur
+    try {
+        console.log("récupérer tous les recettes de recommandation de l'utilisateur");
+        resultatTemp = await recette.getRecettesRecommandationParIdUtilisateur(idUtilisateur);
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        res.status(400).json({
+            error: "Échouer à récupérer tous les recettes de recommandation de l'utilisateur",
+        });
+        return;
+    }
+
+    //récupérer tous les ids de recettes
+    recettes = resultatTemp[0]
+
+    //vérifier si l'on a bien réussi à récupérer les recettes de recommandation
+    if (recettes.length == 0) {
+        console.log("Aucune recette de recommandation de l'utilisateur trouvée");
+        res.status(400).json({ message: "Aucune recette de recommandation de l'utilisateur trouvée" });
+        return;
+    }
+
+    res.status(201).json({
+        recettes: recettes,
+    });
+    return;
 });
 
 /**

@@ -6,7 +6,7 @@
                 <!-- logo du site -->
                 <li class="flex-10">
                     <div class="flex jc-center">
-                        <router-link :to='cheminLogo'>
+                        <router-link to='/'>
                             <img class="barre-menu-image mt-025r" src="../assets/image/commun/logo.png" alt="logo de site">
                         </router-link>
                     </div>
@@ -143,9 +143,6 @@ module.exports ={
         }
     },   
     computed: {
-        cheminLogo: function() {
-            return this.connecte ? '/recettes' : '/'
-        },
     }
 
 }

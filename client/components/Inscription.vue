@@ -5,17 +5,17 @@
             <form class="flex direction-column jc-around w300px" @submit.prevent="inscription"  v-if="!connecte">
                 <!-- surnom -->
                 <input class="border-no border-b-bleu-gros pad-05r mtb-inter-inner" name="surnom" type="text" placeholder="* surnom " 
-                    required v-model="user.surnom">
+                    required v-model="utilisateur.surnom">
                 <!-- email -->
                 <input class="border-no border-b-bleu-gros pad-05r mtb-inter-inner" name="email" type="email" placeholder="* E-mail " 
-                    required v-model="user.email">
+                    required v-model="utilisateur.email">
                 <!-- mdp -->
                 <input class="border-no border-b-bleu-gros pad-05r mtb-inter-inner" name="mdp" type="password" placeholder="* Mot de passe"  
-                    required v-model="user.mdp" pattern="[a-zA-Z0-9.,_]{8,16}" 
+                    required v-model="utilisateur.mdp" pattern="[a-zA-Z0-9.,_]{8,16}" 
                     title="Le mot de passe est composé de 8 à 16 caractères et ne peut contenir que des lettres majuscules et minuscules, des chiffres ou des points, des virgules et des traits de soulignement.">
                 <!-- mdp-confirme -->
                 <input class="border-no border-b-bleu-gros pad-05r mtb-inter-inner" name="mdp-confirme" type="password" placeholder="* Confirmation de mot de passe" 
-                    required v-model="user.mdpConfirme" v-on:blur="verifMdp()"
+                    required v-model="utilisateur.mdpConfirme" v-on:blur="verifMdp()"
                     pattern="[a-zA-Z0-9.,_]{8,16}" 
                     title="Le mot de passe est composé de 8 à 16 caractères et ne peut contenir que des lettres majuscules et minuscules, des chiffres ou des points, des virgules et des traits de soulignement.">
                 <!-- button -->
@@ -40,7 +40,7 @@ module.exports = {
     },
     data () {
         return {
-           user: {
+           utilisateur: {
                email:null,
                surnom:null,
                mdp:null,
@@ -54,14 +54,14 @@ module.exports = {
     },
     methods: {
         reset(){
-            Object.keys(this.user).forEach(cle=>{this.user[cle]=null}) //vider les informations saisies
+            Object.keys(this.utilisateur).forEach(cle=>{this.utilisateur[cle]=null}) //vider les informations saisies
         },
         verifMdp(){
             if(!this.mdpEqual) alert('Le mot de passe saisi deux fois ne correspond pas, veuillez le saisir à nouveau.')
         },
         async inscription() {
             if(this.mdpEqual){
-                this.$emit('inscription', this.user)
+                this.$emit('inscription', this.utilisateur)
             }
         },
         sauterRecettes(){
@@ -70,7 +70,7 @@ module.exports = {
     },
     computed: {
         mdpEqual: function() {
-            return this.user.mdp === this.user.mdpConfirme
+            return this.utilisateur.mdp === this.utilisateur.mdpConfirme
         },
     }
 }
