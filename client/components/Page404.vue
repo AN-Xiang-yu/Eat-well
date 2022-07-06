@@ -2,13 +2,20 @@
   <article class="center">
     <h1>Page 404</h1>
     <section class="center">
-        <img src="assets/image/page404/404_not_found.png" alt="">
+        <!-- image de 404 -->
+        <div>
+            <img src="assets/image/page404/404_not_found.png" alt="">
+        </div>
+        <!-- bouton de revenir à la page d'accueil -->
+        <div class="mtb-inter">
+            <router-link to='/'>
+                <button class="button-type1 w-auto m-auto">
+                    Revenir à la page d'accueil
+                </button>
+            </router-link>
+        </div>
     </section>
-    <router-link to='/'>
-        <button>
-            Revienir à la page d'accueil
-        </button>
-    </router-link>
+
   </article>
 </template>
 

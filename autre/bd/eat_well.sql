@@ -122,6 +122,14 @@ ADD CONSTRAINT `id`
 ALTER TABLE `eat_well`.`recette` 
 ADD COLUMN `ingredients` LONGTEXT NOT NULL AFTER `etapes`;
 
+ALTER TABLE `eat_well`.`utilisateur_recette` 
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`id_utilisateur`, `id_recette`, `iteration`);
+;
+
+ALTER TABLE `eat_well`.`utilisateur_recette` 
+CHANGE COLUMN `iteration` `iteration` INT NOT NULL AFTER `id_recette`;
+
 
 INSERT INTO `type` (`id`, `nom`) VALUES ('1', 'entree'), ('2', 'plat'), ('3', 'dessert');
 

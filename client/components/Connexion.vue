@@ -63,6 +63,6 @@ module.exports ={
 }
 
 article{
-    height: 625px;
+    height: 700px;
 }
 </style>

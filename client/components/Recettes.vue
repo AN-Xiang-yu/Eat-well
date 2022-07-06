@@ -168,7 +168,8 @@
                     <p>calorie :  </p>
                 </div>
                 <!-- survole - ingredients -->
-                <router-link class="couche-recette flex direction-column jc-around pad-1r w100" to="/recette">
+                <div class="couche-recette flex direction-column jc-around pad-1r w100 cr-pointer" 
+                    @click="cliquerRecetteRecommandation(recette.id_recette, recette.iteration)">
                     <h4 class="w100 center">Ingrédients</h4>
                     <div class="flex">
                         <ol class="mb-0">
@@ -176,7 +177,7 @@
                         </ol>
                         <p class="w100 center" v-show="(recette.ingredients.length > 4)">...... (cliquer pour voir les détails)</p>
                     </div>
-                </router-link>
+                </div>
             </div>
         </section>
     </article>
@@ -189,9 +190,6 @@ module.exports = {
         utilisateur : {type:Object},
         recettesRecommandation : {type:Array},
         connecte: {type: Boolean},
-    },
-    components: {
-
     },
     data () {
         return {
@@ -217,9 +215,13 @@ module.exports = {
     },
     async mounted () {
         setTimeout(() => {this.sauterAccueil()}, 50);
-        setTimeout(() => {this.consulterRecetteRecommandation()}, 300);
+        setTimeout(() => {this.consulterRecettesRecommandation()}, 300);
     },
     methods: {
+        //sauter à la page d'accueil si l'on n'est pas connecté
+        sauterAccueil(){
+            this.$emit('sauter-accueil')
+        },
         //ajouter un nouvel ingrédient
         ajouterNouvelIngredient(listIngredients){
             listIngredients.push("")
@@ -233,12 +235,16 @@ module.exports = {
         changerAffichageRechercheAvancee(){
             this.affichageRechercheAvancee = !this.affichageRechercheAvancee
         },
-        async consulterRecetteRecommandation() {
-            this.$emit('consulter-recette-recommandation', {idUtilisateur : this.utilisateur.idUtilisateur})
+        //récupérer les recettes de recommandation
+        async consulterRecettesRecommandation() {
+            this.$emit('consulter-recettes-recommandation', {idUtilisateur : this.utilisateur.idUtilisateur})
         },
-        sauterAccueil(){
-            this.$emit('sauter-accueil')
+        async cliquerRecetteRecommandation(idRecette, iteration) {
+            this.$emit('cliquer-recette-recommandation', {idRecette :  idRecette, idUtilisateur :  this.utilisateur.idUtilisateur, iteration :  iteration})
+            this.$router.push({path:'/recette/'+idRecette})
+            location.reload() //rafraichir la page pour mettre à jour les modifications
         },
+
     },
     computed: {
         // La note d'imc

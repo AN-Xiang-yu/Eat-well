@@ -11,7 +11,7 @@ class Recette {
      * @param {int} nbrRecette email ou surnom de l'utilisateur
      * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
      * @return {Recette} Une liste de recettes
-     * @état : fait
+     * @état : fini
      */
     async getRecettesNbr(nbrRecette) {
         return this.sequelize
@@ -111,7 +111,7 @@ class Recette {
      *
      * @return {list<string>} Une liste de recettes
      * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
-     * @état : fait
+     * @état : fini
      */
     async getNomRecettes() {
         return this.sequelize
@@ -126,7 +126,7 @@ class Recette {
      *
      * @return {list<string>} Une liste de recettes
      * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
-     * @état : fait
+     * @état : fini
      */
     async getIdRecettes() {
         return this.sequelize
@@ -139,18 +139,19 @@ class Recette {
     /**
      * Description : Cette fonction permet de récupérer la recette selon id
      *
-     * @param {int} id id de recette
+     * @param {int} idRecette id de recette
      * @return {Recette} Une recette
-     * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
-     * @état : fait
+     * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : 06-07-2022)
+     * @état : Non fini
      */
-    async getRecettesParId(id) {
+    async getRecetteParId(idRecette) {
         return this.sequelize
             .query(
-                `SELECT *
-                    FROM recette
-                    WHERE id = :id`, {
-                    replacements: { id: id },
+                `SELECT r.nom, ingredients, etapes, t.nom as type
+                    FROM recette r
+                        INNER JOIN type t ON t.id = r.id_type
+                    WHERE r.id = :idRecette`, {
+                    replacements: { idRecette: parseInt(idRecette) },
                 }
             )
             .catch((err) => res.status(400).json({ error: err }));
@@ -161,8 +162,8 @@ class Recette {
      *
      * @param {int} idUtilisateur id d'utilisateur
      * @return {List<Recette>} Une liste de recettes
-     * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : ??-06-2022)
-     * @état : fait
+     * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
+     * @état : fini
      */
     async getRecettesRecommandationParIdUtilisateur(idUtilisateur) {
         return this.sequelize
@@ -185,16 +186,17 @@ class Recette {
      *
      * @param {int} idUtilisateur id d'utilisateur
      * @param {int} idRecette id de recette
-     * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-     * @état : A FAIRE
+     * @param {int} iteration numéro d'iteration de recommandation de recette
+     * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
+     * @état : fini
      */
-    async updateRecommandation(idUtilisateur, idRecette) {
+    async mettreAJourRecommandation(idUtilisateur, idRecette, iteration) {
         return this.sequelize
             .query(
                 `UPDATE utilisateur_recette
-                    SET id_utilisateur = :idUtilisateur 
-                    WHERE condition`, {
-                    replacements: { id_utilisateur: id_utilisateur, },
+                    SET clique = 1
+                    WHERE id_utilisateur = :idUtilisateur AND id_recette = :idRecette AND iteration = :iteration`, {
+                    replacements: { idUtilisateur: idUtilisateur, idRecette: idRecette, iteration: iteration },
                 }
             )
             .catch((err) => res.status(400).json({ error: err }));
@@ -205,8 +207,9 @@ class Recette {
      *
      * @param {int} idUtilisateur id d'utilisateur
      * @param {int} idRecette id de recette
+     * @param {int} iteration numéro d'iteration de recommandation de recette
      * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
-     * @état : Fait
+     * @état : fini
      */
     async addRecommandation(idUtilisateur, idRecette, iteration) {
         return this.sequelize
@@ -214,6 +217,26 @@ class Recette {
                 `INSERT INTO utilisateur_recette (id_utilisateur, id_recette, clique, iteration)
                     VALUES(:idUtilisateur, :idRecette, 0, :iteration)`, {
                     replacements: { idUtilisateur: idUtilisateur, idRecette: idRecette, iteration: iteration },
+                }
+            )
+            .catch((err) => res.status(400).json({ error: err }));
+    }
+
+    /**
+     * Description : Cette fonction permet de récupérer 
+     * le plus récent numéro d'itération de recettes de recommation de l'utilisateur donné
+     *
+     * @param {int} idUtilisateur id d'utilisateur
+     * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
+     * @état : fini
+     */
+    async getPlusRecenteIterationRecettesRecommandation(idUtilisateur) {
+        return this.sequelize
+            .query(
+                `SELECT MAX(iteration) as iteration
+                    FROM utilisateur_recette 
+                    WHERE id_utilisateur = :idUtilisateur`, {
+                    replacements: { idUtilisateur: idUtilisateur },
                 }
             )
             .catch((err) => res.status(400).json({ error: err }));

@@ -41,11 +41,56 @@ function connecterSessionUtilisateur(req, res, utilisateurRecupere) {
     });
 }
 
+async function genererRecetteRecommandation(res, idUtilisateur, iteration) {
+    let idsRecettes = null
+    let setIds = new Set();
+
+    //récupérer tous les id de recettes de la table de recette
+    try {
+        console.log("récupérer tous les id de recettes de la table de recette");
+        resultatTemp = await recette.getIdRecettes();
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        res.status(400).json({
+            error: "Impossible de récupérer tous les id de recettes de la table de recette",
+        });
+        return;
+    }
+
+    //vérifier si l'on a bien réussi à récupérer les id de recettes
+    if (resultatTemp[0].length == 0) {
+        console.log("Aucune recette existe pour générer les premières recettes de recommandation");
+        res.status(400).json({ message: "Aucune recette existe pour générer les premières recettes de recommandation" });
+        return;
+    }
+
+    //récupérer tous les ids de recettes
+    idsRecettes = resultatTemp[0]
+
+    //choisir aléatoirement NOMBRE_RECETTE_RECOMMANDATON ids de recettes
+    while (setIds.size < NOMBRE_RECETTE_RECOMMANDATON)
+        setIds.add(parseInt(Math.random() * idsRecettes.length + 1))
+
+    //ajouter ces id de recettes + id d'utilisateur dans la table (utilsateur_recette)
+    for (let idRecette of setIds) {
+        try {
+            console.log("ajouter ces id de recettes + id d'utilisateur dans la table (utilsateur_recette)");
+            resultatTemp = await recette.addRecommandation(idUtilisateur, idRecette, iteration);
+        } catch (error) {
+            //envoyer le message d'échec à l'utilisateur
+            res.status(400).json({
+                error: "Impossible d'ajouter cet id de recette + id d'utilisateur dans la table (utilsateur_recette)'",
+            });
+            return;
+        }
+    }
+}
+
 /**
  * Description : Cette fonction permet à utilisateur de s'inscrire
  * On va vérifier l'existence d'utilisateur dans la BDD, l'ajouter
  * dans la BDD, et mettre à jour la session en cas de réussite d'inscription
- * après, on va générer aléatoirement une liste de recette
+ * après, on va générer aléatoirement une liste de recettes de recommandation
  *
  * @param {string} email email de l'utilisateur
  * @param {string} surnom surnom de l'utilisateur
@@ -62,8 +107,8 @@ router.post("/inscription", async(req, res) => {
     const mdphash = await bcrypt.hash(mdp, 10); //hasher le mot de passe
     let idUtilisateur = null
     let resultatTemp = null
-    let idsRecettes = null
-    let setIds = new Set();
+        // let idsRecettes = null
+        // let setIds = new Set();
 
     //vérifier l'existence de l'utilisateur
     try {
@@ -115,46 +160,8 @@ router.post("/inscription", async(req, res) => {
         surnom: surnom,
     };
 
-    //récupérer tous les id de recettes de la table de recette
-    try {
-        console.log("récupérer tous les id de recettes de la table de recette");
-        resultatTemp = await recette.getIdRecettes();
-    } catch (error) {
-        //envoyer le message d'échec à l'utilisateur
-        res.status(400).json({
-            error: "Impossible de récupérer tous les id de recettes de la table de recette",
-        });
-        return;
-    }
-
-    //vérifier si l'on a bien réussi à récupérer les id de recettes
-    if (resultatTemp[0].length == 0) {
-        console.log("Aucune recette existe pour générer les premières recettes de recommandation");
-        res.status(400).json({ message: "Aucune recette existe pour générer les premières recettes de recommandation" });
-        return;
-    }
-
-    //récupérer tous les ids de recettes
-    idsRecettes = resultatTemp[0]
-
-    //choisir aléatoirement NOMBRE_RECETTE_RECOMMANDATON ids de recettes
-    while (setIds.size < NOMBRE_RECETTE_RECOMMANDATON)
-        setIds.add(parseInt(Math.random() * idsRecettes.length + 1))
-
-    //ajouter ces id de recettes + id d'utilisateur dans la table (utilsateur_recette)
-    for (let idRecette of setIds) {
-
-        try {
-            console.log("ajouter ces id de recettes + id d'utilisateur dans la table (utilsateur_recette)");
-            resultatTemp = await recette.addRecommandation(idUtilisateur, idRecette, 1);
-        } catch (error) {
-            //envoyer le message d'échec à l'utilisateur
-            res.status(400).json({
-                error: "Impossible d'ajouter cet id de recette + id d'utilisateur dans la table (utilsateur_recette)'",
-            });
-            return;
-        }
-    }
+    //générer aléatoirement une liste de recettes de recommandation
+    genererRecetteRecommandation(res, idUtilisateur, 1)
 
     //connexion d'utilisateur
     connecterSessionUtilisateur(req, res, utilisateurRecupere);
@@ -247,8 +254,8 @@ router.get("/connexion", async(req, res) => {
         res.status(404).json({ message: "L'utilisateur n'existe pas" });
         return;
     }
-
-    utilisateurRecupere = resultatTemp[0][0]; //récupérer l'utilisateur
+    //récupérer l'utilisateur
+    utilisateurRecupere = resultatTemp[0][0];
 
     //connexion d'utilisateur
     connecterSessionUtilisateur(req, res, utilisateurRecupere);
@@ -428,10 +435,38 @@ router.post("/recettes", async(req, res) => {
  * @param {int} idRecette id de recette
  * @return {Recette} une recette
  * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
- * @état : A FAIRE
+ * @état : fini
  */
-router.post("/recette", (req, res) => {
+router.post("/recette", async(req, res) => {
+    const idRecette = req.body.idRecette
+    let resultatTemp = null
+    let recetteRecuperee = null
 
+    //récupérer la recette selon son id
+    try {
+        console.log("récupérer la recette selon son id");
+        resultatTemp = await recette.getRecetteParId(idRecette);
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        res.status(400).json({
+            error: "Échouer à récupérer la recette selon son id",
+        });
+        return;
+    }
+
+    //vérifier si l'on a bien réussi à récupérer la recette
+    if (resultatTemp[0].length == 0) {
+        console.log("Aucune recette trouvée");
+        res.status(400).json({ message: "Aucune recette trouvée" });
+        return;
+    }
+
+    recetteRecuperee = resultatTemp[0]
+
+    res.status(201).json({
+        recette: recetteRecuperee,
+    });
+    return;
 });
 
 /**
@@ -442,14 +477,15 @@ router.post("/recette", (req, res) => {
  * @param {int} idUtilisateur id d'utilisateur
  * @return {list<Recette>} une recette
  * @author author-name(Xiangyu AN) (création : 07-06-2022) (modification : 07-06-2022)
- * @état : Fait
+ * @état : fini
  */
 router.post("/recettesRecommandation", async(req, res) => {
-    //idd'un utilisateur
+    //id d'un utilisateur
     const idUtilisateur = req.body.idUtilisateur
     let resultatTemp = null
     let recettes = null
 
+    console.log(idUtilisateur);
     //récupérer tous les recettes de recommandation les plus récentes de l'utilisateur
     try {
         console.log("récupérer tous les recettes de recommandation de l'utilisateur");
@@ -462,15 +498,15 @@ router.post("/recettesRecommandation", async(req, res) => {
         return;
     }
 
-    //récupérer tous les ids de recettes
-    recettes = resultatTemp[0]
-
     //vérifier si l'on a bien réussi à récupérer les recettes de recommandation
-    if (recettes.length == 0) {
+    if (resultatTemp[0].length == 0) {
         console.log("Aucune recette de recommandation de l'utilisateur trouvée");
         res.status(400).json({ message: "Aucune recette de recommandation de l'utilisateur trouvée" });
         return;
     }
+
+    //récupérer tous les ids de recettes
+    recettes = resultatTemp[0]
 
     res.status(201).json({
         recettes: recettes,
@@ -485,11 +521,44 @@ router.post("/recettesRecommandation", async(req, res) => {
  *
  * @param {int} idRecette id de recette
  * @param {int} idUtilisateur id d'utilisateur
- * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
- * @état : A FAIRE
+ * @param {int} iteration numéro d'iteration de recommandation de recette
+ * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
+ * @état : fini
  */
-router.post("/cliqueRecetteRecommandation", (req, res) => {
+router.post("/cliquerRecetteRecommandation", async(req, res) => {
+    const idRecette = req.body.idRecette
+    const idUtilisateur = req.body.idUtilisateur
+    const iteration = parseInt(req.body.iteration)
+    let resultatTemp = null
+    let nouvelleIteration = iteration + 1 //le nouveau numéro d'itération de recettes de recommandation d'utilisateur
 
+    console.log(iteration);
+    //mettre à jour la table utilisateur_recette
+    try {
+        console.log("mettre à jour la table utilisateur_recette");
+        resultatTemp = await recette.mettreAJourRecommandation(idUtilisateur, idRecette, iteration);
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        res.status(400).json({
+            error: "Échouer à mettre à jour la table utilisateur_recette",
+        });
+        return;
+    }
+
+    //vérifier l'existence de recette
+    if (resultatTemp[0].info.indexOf("Rows matched: 1") == -1) {
+        console.log("Aucune recette trouvée par cet id de recette et cet id d'utilisateur dans la base de données");
+        res.status(404).json({ message: "Aucune recette trouvée par cet id de recette et cet id d'utilisateur dans la base de données" })
+        return
+    }
+
+    //générer aléatoirement une liste de recettes de recommandation
+    genererRecetteRecommandation(res, idUtilisateur, nouvelleIteration)
+
+    res.status(201).json({
+        message: "cliquer la recette de recommandation"
+    });
+    return;
 });
 
 

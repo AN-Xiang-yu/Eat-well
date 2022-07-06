@@ -9,7 +9,7 @@ class Ingredient {
        * @return {list<Ingredient>} Une liste de recettes
        * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
 
-       * @état : fait
+       * @état : fini
        */
     async getIngredients() {
         return this.sequelize
@@ -25,7 +25,7 @@ class Ingredient {
        * @return {list<Ingredient>} Une liste d'ids d'ingrédients
        * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
 
-       * @état : fait
+       * @état : fini
        */
     async getIdIngredients() {
         return this.sequelize

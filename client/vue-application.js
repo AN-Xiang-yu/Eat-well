@@ -12,14 +12,14 @@ const routes = [
     { path: '/', component: Accueil },
     { path: '/connexion', component: Connexion },
     { path: '/inscription', component: Inscription },
-    { path: '/recette', component: Recette },
+    { path: '/recette/:id', component: Recette },
     { path: '/recettes', component: Recettes },
     { path: '*', component: Page404, }
 ]
 
 const router = new VueRouter({
     routes,
-    // retouner vers le début de page
+    // retourner vers le début de page après chaque rafraichissment
     scrollBehavior() {
         return { x: 0, y: 0 };
     }
@@ -40,7 +40,8 @@ var app = new Vue({
             surnom: null,
         },
         connecte: null,
-        recettesRecommandation: null
+        recettesRecommandation: null,
+        recette: null
     },
     async mounted() {
         this.restConnecter() //mettre à jour le mode de connexion 
@@ -165,25 +166,6 @@ var app = new Vue({
         },
 
         /**
-         * Description : Cette fonction permet de récupérer une liste de recettes de nombre donné pour le carousel
-         * 
-         * @param {int} nbrRecette nombre de recette
-         * @return {void} 
-         * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-         * @état : A FAIRE
-         */
-        async afficherRecetteCarousel(nbrRecette) {
-            try {
-                let resultat = (await axios.post('/api/recettesCarousel', nbrRecette)).data
-                console.log(resultat);
-            } catch (erreur) {
-                console.log(erreur.response.data.message);
-                console.log('erreur', erreur) //afficher le message d'erreur
-                this.messageErreur = erreur.response.data.message
-            }
-        },
-
-        /**
          * Description : Cette fonction permet de récupérer tous les ingrédients dans BDD
          * 
          * @return {void} 
@@ -201,35 +183,17 @@ var app = new Vue({
         },
 
         /**
-         * Description : Cette fonction permet de récupérer tous les noms de recette dans BDD
-         * 
-         * @return {void} 
-         * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-         * @état : A FAIRE
-         */
-        async recupererNomsRecette() {
-            try {
-                let resultat = (await axios.get('/api/motsCles')).data
-            } catch (erreur) {
-                console.log(erreur.response.data.message);
-                console.log('erreur', erreur) //afficher le message d'erreur
-                this.messageErreur = erreur.response.data.message
-            }
-        },
-
-        /**
          * Description : Cette fonction permet à utilisateur de chercher les recettes en uitilisant les ingrédients
          * les mots clés, les contraintes et les informations personnelles.
          * 
          * @param {list<int>} ingredients une liste d'ids d'ingredients
-         * @param {list<string>} mots_cles une liste de mots clés
          * @param {list<object>} contraintes une liste de contraintes
          * @param {list<object>} info_perso une liste des informations personnelles
          * @return {void} 
          * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
          * @état : A FAIRE
          */
-        async chercherRecettes(ingredients, mots_cles, contraintes, info_perso) {
+        async chercherRecettes(ingredients, contraintes, info_perso) {
             try {
                 let resultat = (await axios.post('/api/recettes', listeInfo)).data
             } catch (erreur) {
@@ -249,7 +213,13 @@ var app = new Vue({
          */
         async consulterRecette(idRecette) {
             try {
-                let resultat = (await axios.post('/api/recettes', idRecette)).data
+                let resultat = (await axios.post('/api/recette', idRecette)).data
+                this.recette = resultat.recette[0]
+                this.recette.ingredients = this.recette.ingredients.split(',')
+                this.recette.etapes = this.recette.etapes.split('.')
+                this.recette.etapes = this.recette.etapes.filter(function(etape) { //prendre les étapes non nulles
+                    return etape.split(" ").join("").length != 0
+                })
             } catch (erreur) {
                 console.log(erreur.response.data.message);
                 console.log('erreur', erreur) //afficher le message d'erreur
@@ -265,7 +235,7 @@ var app = new Vue({
          * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
          * @état : Fait
          */
-        async consulterRecetteRecommandation(idUtilisateur) {
+        async consulterRecettesRecommandation(idUtilisateur) {
             try {
                 let resultat = (await axios.post('/api/recettesRecommandation', idUtilisateur)).data
                 this.recettesRecommandation = resultat.recettes
@@ -284,14 +254,15 @@ var app = new Vue({
          * 
          * @param {int} idRecette id de recette
          * @param {int} idUtilisateur id d'utilisateur
+         * @param {int} iteration numéro d'iteration de recommandation de recette
          * @return {void} 
          * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
          * @état : A FAIRE
          */
-        async consulterRecette(idRecette, idUtilisateur) {
+        async cliquerRecetteRecommandation(listeId) {
             try {
-                let resultat = (await axios.post('/api/recettesRecommandation', listeId)).data
-
+                console.log(listeId);
+                await axios.post('/api/cliquerRecetteRecommandation', listeId)
             } catch (erreur) {
                 console.log(erreur.response.data.message);
                 console.log('erreur', erreur) //afficher le message d'erreur
