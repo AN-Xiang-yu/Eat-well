@@ -185,6 +185,10 @@
     </article>
 </template>
 
+
+
+
+
 <script>
 module.exports = {
     name:"Recettes",
@@ -216,6 +220,15 @@ module.exports = {
             content : null,
         }
     },
+
+    computed:{
+       filteredList() {
+      return this.products.filter((product) => {
+        return product.description.toLowerCase().includes(this.searchKey.toLowerCase());
+      });
+    },
+    },
+
     async mounted () {
         setTimeout(() => {this.sauterAccueil()}, 50);
         setTimeout(() => {this.consulterRecettesRecommandation()}, 300);
