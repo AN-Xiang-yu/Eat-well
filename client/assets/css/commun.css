@@ -132,7 +132,7 @@ header {
     /* fixer header en bas */
     position: fixed;
     top: 0;
-    z-index: 10;
+    z-index: 20;
 }
 
 header>nav>ul>li>a {

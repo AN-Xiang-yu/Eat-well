@@ -134,6 +134,7 @@ var app = new Vue({
             try {
                 let resultat = (await axios.get('/api/connexion')).data //vérifier l'état de connexion
                 this.utilisateur = resultat.utilisateur
+                console.log(this.utilisateur);
                 this.connecte = true //mettre à jour le mode de connexion en connecté
             } catch (erreur) {
                 if (erreur.response.statusCode === 401) { //déconnecter

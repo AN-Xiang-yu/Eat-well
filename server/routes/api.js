@@ -32,7 +32,7 @@ const ingredient = new Ingredient.default(sequelize);
 function connecterSessionUtilisateur(req, res, utilisateurRecupere) {
     //connexion d'utilisateur
     req.session.utilisateur = {
-        idUtilisateur: utilisateurRecupere.id,
+        idUtilisateur: utilisateurRecupere.idUtilisateur,
         email: utilisateurRecupere.email,
         surnom: utilisateurRecupere.surnom,
     };
@@ -154,6 +154,7 @@ router.post("/inscription", async(req, res) => {
     //récupérer l'id d'utilsateur qui vient d'être ajouté dans la table d'utilisateur
     idUtilisateur = parseInt(resultatTemp[0]);
 
+
     utilisateurRecupere = {
         idUtilisateur: idUtilisateur,
         email: email,
@@ -256,6 +257,8 @@ router.get("/connexion", async(req, res) => {
     }
     //récupérer l'utilisateur
     utilisateurRecupere = resultatTemp[0][0];
+    console.log("récupérer l'utilisateur");
+    console.log(utilisateurRecupere);
 
     //connexion d'utilisateur
     connecterSessionUtilisateur(req, res, utilisateurRecupere);

@@ -71,7 +71,7 @@ class Utilisateur {
      */
     async getUtilisateurParId(idUtilisateur) {
         return this.sequelize.query(
-            `SELECT *
+            `SELECT id as idUtilisateur, surnom, email, mdp
                 FROM utilisateur
                 WHERE id = :idUtilisateur `, {
                 replacements: { idUtilisateur: idUtilisateur },
