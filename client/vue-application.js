@@ -41,7 +41,8 @@ var app = new Vue({
         },
         connecte: null,
         recettesRecommandation: null,
-        recette: null
+        recette: null,
+        ingredients: null
     },
     async mounted() {
         this.restConnecter() //mettre à jour le mode de connexion 
@@ -134,7 +135,6 @@ var app = new Vue({
             try {
                 let resultat = (await axios.get('/api/connexion')).data //vérifier l'état de connexion
                 this.utilisateur = resultat.utilisateur
-                console.log(this.utilisateur);
                 this.connecte = true //mettre à jour le mode de connexion en connecté
             } catch (erreur) {
                 if (erreur.response.statusCode === 401) { //déconnecter
@@ -170,12 +170,16 @@ var app = new Vue({
          * Description : Cette fonction permet de récupérer tous les ingrédients dans BDD
          * 
          * @return {void} 
-         * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
+         * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
          * @état : A FAIRE
          */
         async recupererIngredients() {
             try {
                 let resultat = (await axios.get('/api/ingredients')).data
+                this.ingredients = new Map()
+                resultat.ingredients.forEach(function(ingredient) {
+                    this.ingredients
+                })
             } catch (erreur) {
                 console.log(erreur.response.data.message);
                 console.log('erreur', erreur) //afficher le message d'erreur
@@ -209,8 +213,8 @@ var app = new Vue({
          * 
          * @param {int} idRecette id de recette
          * @return {void} 
-         * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-         * @état : A FAIRE
+         * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
+         * @état : Fini
          */
         async consulterRecette(idRecette) {
             try {
@@ -234,7 +238,7 @@ var app = new Vue({
          * @param {int} idUtilisateur id d'utilisateur
          * @return {void} 
          * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
-         * @état : Fait
+         * @état : Fini
          */
         async consulterRecettesRecommandation(idUtilisateur) {
             try {

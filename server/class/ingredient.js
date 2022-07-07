@@ -7,15 +7,13 @@ class Ingredient {
        * Description : Cette fonction permet de récupérer le nom et l'id de tous les ingrédients 
        * 
        * @return {list<Ingredient>} Une liste de recettes
-       * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
+       * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : 07-07-2022)
 
        * @état : fini
        */
     async getIngredients() {
         return this.sequelize
-            .query(`SELECT nom, id FROM ingredient `, {
-                // replacements: {...: ... },
-            })
+            .query(`SELECT nom as nomIngredient, id as idIngredient FROM ingredient`)
             .catch((err) => res.status(400).json({ error: err }));
     }
 
@@ -29,9 +27,7 @@ class Ingredient {
        */
     async getIdIngredients() {
         return this.sequelize
-            .query(`SELECT id FROM ingredient `, {
-                // replacements: {...: ... },
-            })
+            .query(`SELECT id FROM ingredient`)
             .catch((err) => res.status(400).json({ error: err }));
     }
 }

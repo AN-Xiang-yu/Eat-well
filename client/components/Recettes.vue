@@ -6,22 +6,21 @@
             <!-- barre de recherche par défaut -->
             <div class="mtb-inter-inner">
                 <form id="recherche-ingredient" @submit.prevent>
-                    <div class="flex-nowrap a-center jc-around mtb-inter-inner" v-for="(ingredient, index) in ingredients" :key="index">
+                    <div class="flex-nowrap a-center jc-around mtb-inter-inner" v-for="(motCleAPrendre, index) in motsClesAPrendre" :key="index">
                         <!-- barre de recherche -->
                         <div class="flex-75 flex-nowrap a-center jc-around pad-05r border-leger-noire ombreHover background-blanc">
-                                <input class="search-input border-no background-blanc w80" placeholder="Chercher recettes par ingrédient" list="liste-ingredients" v-model="ingredients[index]">
-                                <datalist id="liste-ingredients">
-                                    <option value="Filtrage par défaut" selected>Filtrage par défaut</option>
-                                    <option value="Filtrer les recettes selon son niveau de nutrion dans l'ordre croissant"></option>
+                                <input class="search-input border-no background-blanc w80" placeholder="Chercher recettes par ingrédient" list="liste-mots-cles-a-prendre" v-model="motsClesAPrendre[index]">
+                                <datalist id="liste-mots-cles-a-prendre">
+                                    <option v-for="ingredient in ingredients" :key="ingredient" :value="ingredient.idIngredient">{{ingredient.nomIngredient}}</option>
                                 </datalist>
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                         <!-- bouton plus -->
-                        <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="ajouterNouvelIngredient(ingredients)">
+                        <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="ajouterNouvelIngredient(motsClesAPrendre)">
                             <i class="fa-solid fa-circle-plus"></i>
                         </button>
                         <!-- bouton moins -->
-                        <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="supprimerIngredient(ingredients, index)">
+                        <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="supprimerIngredient(motsClesAPrendre, index)">
                             <i class="fa-solid fa-circle-minus"></i>
                         </button>
                     </div>
@@ -39,22 +38,22 @@
                 <!-- formulaire de recherche avancée -->
                 <transition name="slide-fade">
                     <form class="recherche-avancee-formulaire m-auto flex a-center jc-around ombreHover background-blanc border-leger-noire pad-1r" @submit.prevent v-show="affichageRechercheAvancee">
-                        <div class="flex-100 flex-nowrap a-center jc-around mtb-inter-inner" v-for="(ingredient, index) in ingredientsNonConsommes" :key="index">
+                        <div class="flex-100 flex-nowrap a-center jc-around mtb-inter-inner" v-for="(motCleANePasPrendre, index) in motsClesANePasPrendre" :key="index">
                             <!-- barre de recherche -->
                             <div class="flex-75 flex-nowrap a-center jc-around pad-05r border-leger-noire ombreHover background-blanc">
-                                <input class="search-input border-no background-blanc w80" type="search" placeholder="Ingrédient à ne pas consommer" list="liste-ingredients-non-consommes" v-model="ingredientsNonConsommes[index]">
-                                <datalist id="liste-ingredients-non-consommes">
+                                <input class="search-input border-no background-blanc w80" type="search" placeholder="Ingrédient à ne pas consommer" list="liste-mots-cles-a-ne-pas-prendre" v-model="motsClesANePasPrendre[index]">
+                                <datalist id="liste-mots-cles-a-ne-pas-prendre">
                                     <option value="Filtrage par défaut" selected>Filtrage par défaut</option>
                                     <option value="Filtrer les recettes selon son niveau de nutrion dans l'ordre croissant"></option>
                                 </datalist>
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                             <!-- bouton plus -->
-                            <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="ajouterNouvelIngredient(ingredientsNonConsommes)">
+                            <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="ajouterNouvelIngredient(motsClesANePasPrendre)">
                                 <i class="fa-solid fa-circle-plus"></i>
                             </button>
                             <!-- bouton moins -->
-                            <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="supprimerIngredient(ingredientsNonConsommes, index)">
+                            <button class="button-type2 btn-circle btn-xl flex a-center jc-center" @click="supprimerIngredient(motsClesANePasPrendre, index)">
                                 <i class="fa-solid fa-circle-minus"></i>
                             </button>
                         </div>
@@ -193,12 +192,13 @@ module.exports = {
         utilisateur : {type:Object},
         recettesRecommandation : {type:Array},
         connecte: {type: Boolean},
+        ingredients : {type:Array},
     },
     data () {
         return {
-            ingredients : [""],
+            motsClesAPrendre : [""],
             affichageRechercheAvancee : false,
-            ingredientsNonConsommes : [""],
+            motsClesANePasPrendre : [""],
             listeContraintes : {
                 sansProc : false,
                 vegane : false,
@@ -219,6 +219,7 @@ module.exports = {
     async mounted () {
         setTimeout(() => {this.sauterAccueil()}, 50);
         setTimeout(() => {this.consulterRecettesRecommandation()}, 300);
+        setTimeout(() => {this.recupererIngredients()}, 300);
     },
     methods: {
         //sauter à la page d'accueil si l'on n'est pas connecté
@@ -238,14 +239,20 @@ module.exports = {
         changerAffichageRechercheAvancee(){
             this.affichageRechercheAvancee = !this.affichageRechercheAvancee
         },
+        //récupérer tous les ingrédients
+        async recupererIngredients() {
+            this.$emit('recuperer-ingredients')
+        },
         //récupérer les recettes de recommandation
         async consulterRecettesRecommandation() {
             this.$emit('consulter-recettes-recommandation', {idUtilisateur : this.utilisateur.idUtilisateur})
         },
+        //cliquer une recette de recommandation
         async cliquerRecetteRecommandation(idRecette, iteration) {
             this.$emit('cliquer-recette-recommandation', {idRecette :  idRecette, idUtilisateur :  this.utilisateur.idUtilisateur, iteration :  iteration})
             this.$router.push({path:'/recette/'+idRecette})
         },
+        //vérifier si l'image de la recette existe ou non
         imageRecetteNulle(image){
             return  image == null 
         },

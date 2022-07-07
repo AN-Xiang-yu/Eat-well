@@ -27,8 +27,8 @@
     <div id="body" class="flex-nowrap direction-column jc-between w100">
         <mon-header class="w100" :connecte="connecte" :utilisateur="utilisateur" @deconnecter="deconnecter"></mon-header>
         <main class="w100 flex-80">
-            <router-view :connecte="connecte" :utilisateur="utilisateur" :message-erreur="messageErreur" :recettes-recommandation="recettesRecommandation" :recette="recette" @sauter-recettes="sauterRecettes" @sauter-accueil="sauterAccueil" @inscription="inscription"
-                @connecter="connecter" @consulter-recettes-recommandation="consulterRecettesRecommandation" @consulter-recette="consulterRecette" @cliquer-recette-recommandation="cliquerRecetteRecommandation"></router-view>
+            <router-view :connecte="connecte" :utilisateur="utilisateur" :message-erreur="messageErreur" :recettes-recommandation="recettesRecommandation" :recette="recette" :ingredients="ingredients" @sauter-recettes="sauterRecettes" @sauter-accueil="sauterAccueil"
+                @inscription="inscription" @connecter="connecter" @consulter-recettes-recommandation="consulterRecettesRecommandation" @consulter-recette="consulterRecette" @cliquer-recette-recommandation="cliquerRecetteRecommandation" @recuperer-ingredients="recupererIngredients"></router-view>
         </main>
         <mon-footer class="flex-10"></mon-footer>
     </div>

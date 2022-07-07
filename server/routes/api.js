@@ -257,8 +257,6 @@ router.get("/connexion", async(req, res) => {
     }
     //récupérer l'utilisateur
     utilisateurRecupere = resultatTemp[0][0];
-    console.log("récupérer l'utilisateur");
-    console.log(utilisateurRecupere);
 
     //connexion d'utilisateur
     connecterSessionUtilisateur(req, res, utilisateurRecupere);
@@ -298,8 +296,34 @@ router.get("/deconnexion", (req, res) => {
  * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
  * @état : A FAIRE
  */
-router.get("/ingredients", (req, res) => {
+router.get("/ingredients", async(req, res) => {
+    let resultatTemp = null;
+    let ingredients = null;
 
+    //récupérer tous les ingrédients
+    try {
+        console.log("récupérer tous les ingrédients");
+        resultatTemp = await ingredient.getIngredients()
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        res.status(400).json({ error: "Impossible de récupérer tous les ingrédients" });
+        return;
+    }
+
+    //vérifier l'existence des ingrédients
+    if (resultatTemp[0].length == 0) {
+        console.log("Aucun ingrédient trouvé");
+        res.status(404).json({ message: "Aucun ingrédient trouvé" });
+        return;
+    }
+
+    //récupérer les ingrédients
+    ingredients = resultatTemp[0];
+
+    res.status(201).json({
+        ingredients: ingredients,
+    });
+    return;
 });
 
 /**
@@ -353,6 +377,7 @@ router.post("/recettes", async(req, res) => {
 
     //récupérer les recettes par ingrédients
     try {
+        console.log("récupérer les recettes par ingrédients");
         recettes_par_ingredients = await recette.getRecettesParIngredients(ingredients);
     } catch (error) {
         //envoyer le message d'échec à l'utilisateur
