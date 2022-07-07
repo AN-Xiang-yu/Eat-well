@@ -61,4 +61,8 @@ module.exports ={
 #formulaire-connexion{
     height: 300px;
 }
+
+article{
+    height: 700px;
+}
 </style>

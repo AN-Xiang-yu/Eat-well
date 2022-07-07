@@ -41,7 +41,6 @@ class Utilisateur {
             }).catch(err => res.status(400).json({ error: err }))
     }
 
-
     /**
      * Description : Cette fonction permet de récupérer l'utilisateur par son email ou surnom
      * On va utiliser les trois entrées pour alimenter la table d'utilisateur
@@ -53,7 +52,7 @@ class Utilisateur {
      */
     async getUtilisateur(emailSurnom) {
         return this.sequelize.query(
-            `SELECT *
+            `SELECT id as idUtilisateur, surnom, email, mdp
                 FROM utilisateur 
                 WHERE email = :email_surnom or surnom = :email_surnom`, {
                 replacements: { email_surnom: emailSurnom },
@@ -72,7 +71,7 @@ class Utilisateur {
      */
     async getUtilisateurParId(idUtilisateur) {
         return this.sequelize.query(
-            `SELECT *
+            `SELECT id as idUtilisateur, surnom, email, mdp
                 FROM utilisateur
                 WHERE id = :idUtilisateur `, {
                 replacements: { idUtilisateur: idUtilisateur },
