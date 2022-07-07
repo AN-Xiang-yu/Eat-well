@@ -9,9 +9,10 @@
                     <div class="flex-nowrap a-center jc-around mtb-inter-inner" v-for="(motCleAPrendre, index) in motsClesAPrendre" :key="index">
                         <!-- barre de recherche -->
                         <div class="flex-75 flex-nowrap a-center jc-around pad-05r border-leger-noire ombreHover background-blanc">
-                                <input class="search-input border-no background-blanc w80" placeholder="Chercher recettes par ingrédient" list="liste-mots-cles-a-prendre" v-model="motsClesAPrendre[index]">
+                                <input class="search-input border-no background-blanc w80" placeholder="Chercher par nom d'ingrédient ou nom de recette" list="liste-mots-cles-a-prendre" v-model="motsClesAPrendre[index]">
                                 <datalist id="liste-mots-cles-a-prendre">
-                                    <option v-for="ingredient in ingredients" :key="ingredient" :value="ingredient.idIngredient">{{ingredient.nomIngredient}}</option>
+                                    <option v-for="(ingredient,idx) in ingredients" :key="idx" :value="ingredient.nomIngredient"></option>
+                                    <option v-for="recette in recettes" :key="recette.nomRecette" :value="recette.nomRecette"></option>
                                 </datalist>
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
@@ -41,10 +42,10 @@
                         <div class="flex-100 flex-nowrap a-center jc-around mtb-inter-inner" v-for="(motCleANePasPrendre, index) in motsClesANePasPrendre" :key="index">
                             <!-- barre de recherche -->
                             <div class="flex-75 flex-nowrap a-center jc-around pad-05r border-leger-noire ombreHover background-blanc">
-                                <input class="search-input border-no background-blanc w80" type="search" placeholder="Ingrédient à ne pas consommer" list="liste-mots-cles-a-ne-pas-prendre" v-model="motsClesANePasPrendre[index]">
+                                <input class="search-input border-no background-blanc w80" type="search" placeholder="Ingrédient ou recette à ne pas consommer" list="liste-mots-cles-a-ne-pas-prendre" v-model="motsClesANePasPrendre[index]">
                                 <datalist id="liste-mots-cles-a-ne-pas-prendre">
-                                    <option value="Filtrage par défaut" selected>Filtrage par défaut</option>
-                                    <option value="Filtrer les recettes selon son niveau de nutrion dans l'ordre croissant"></option>
+                                    <option v-for="(ingredient,idx) in ingredients" :key="idx" :value="ingredient.nomIngredient"></option>
+                                    <option v-for="recette in recettes" :key="recette.nomRecette" :value="recette.nomRecette"></option>
                                 </datalist>
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
@@ -108,53 +109,28 @@
                 
             </div>
             <div class="flex jc-center">
-                <button type="button" class="button-type1 button-normal">Valider</button>
+                <button type="button" class="button-type1 button-normal" @click="chercherRecettes()">Valider</button>
             </div>
         </section>
         <!-- filtrage de recherche -->
         <section>
             <div>
                 <i class="fa-solid fa-filter"></i>&nbsp&nbsp
-                <select class="border-b-leger-noire-gros pad-1r mtb-inter-inner background-blanc" name="" id="">
-                    <option value="0" selected>Filtrage par défaut</option>
-                    <option value="1">Filtrer les recettes selon son niveau de nutrion dans l'ordre croissant</option>
-                    <option value="2">Filtrer les recettes selon son niveau de nutrion dans l'ordre décroissant</option>
-                    <option value="3">FIltrer les recettes selon les productions de CO2 dans l'ordre croissant</option>
-                    <option value="4">FIltrer les recettes selon les productions de CO2 dans l'ordre décroissant</option>
-                    <option value="5">FIltrer les recettes selon les consommation de l'eau dans l'ordre croissant</option>
-                    <option value="6">FIltrer les recettes selon les consommation de l'eau dans l'ordre décroissant</option>
+                <select  id="filtrage" class="border-b-leger-noire-gros pad-1r mtb-inter-inner background-blanc" name="filtrage" v-model="filtrage">
+                    <option value="0">Filtrer par défaut</option>
+                    <option value="1">FIltrer les recettes selon les productions de CO2 dans l'ordre croissant</option>
+                    <option value="2">FIltrer les recettes selon les productions de CO2 dans l'ordre décroissant</option>
+                    <option value="3">FIltrer les recettes selon les consommation de l'eau dans l'ordre croissant</option>
+                    <option value="4">FIltrer les recettes selon les consommation de l'eau dans l'ordre décroissant</option>
+                    <option value="5">FIltrer les recettes selon la calorie dans l'ordre croissant</option>
+                    <option value="6">FIltrer les recettes selon la calorie dans l'ordre décroissant</option>
                 </select>
             </div>
         </section>
         <!-- recettes -->
         <section class="flex-100 flex a-center jc-around vignette-container w100">
-            <div v-for="n in 8" :key="n" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
-                <!-- image de recette -->
-                <div class="w100 center">
-                    <img class="w200px" src="assets/image/recette/defaut.png" alt="image de recette">
-                </div>
-                <!-- informations principales de recette -->
-                <div>
-                    <h3>Nom : </h3>
-                    <p>CO2 : </p>
-                    <p>l'eau : </p>
-                    <p>calorie :  </p>
-                </div>
-                <!-- survole - ingredients -->
-                <router-link class="couche-recette flex direction-column jc-around pad-1r w100" to="/recette">
-                    <h4 class="w100 center">Ingrédients</h4>
-                    <ol>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                    </ol>
-                </router-link>
-            </div>
-        </section>
-        <!-- recettes de recommandation -->
-        <section class="flex-100 flex a-center jc-around vignette-container w100">
-            <h2 class="flex-100">Recettes de recommandation</h2>
-            <div v-for="recette in recettesRecommandation" :key="recette.id_recette" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
+            <p class="flex-100 center spe-coleur">{{messageRechercheRecette}}</p>
+            <div v-for="recette in recettesTrouveesFiltrees" :key="recette.id_recette" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
                 <!-- image de recette -->
                 <div class="w100 center">
                     <img 
@@ -165,9 +141,40 @@
                 <!-- informations principales de recette -->
                 <div class="w100">
                     <h3 class="center w100">{{recette.nomRecette }} </h3>
-                    <p>CO2 : </p>
-                    <p>l'eau : </p>
-                    <p>calorie :  </p>
+                    <p>CO2 : {{recette.production_CO2}}</p>
+                    <p>l'eau : {{recette.consommation_eau}}</p>
+                    <p>calorie :  {{recette.energie}}</p>
+                </div>
+                <!-- survole - ingredients -->
+                <div class="couche-recette flex direction-column jc-around pad-1r w100 cr-pointer" 
+                    @click="cliquerRecetteRecommandation(recette.id_recette, recette.iteration)">
+                    <h4 class="w100 center">Ingrédients</h4>
+                    <div class="flex">
+                        <ol class="mb-0">
+                            <li v-for="(ingredient,index) in recette.ingredients" :key = "index" v-show="index < 5">{{ingredient}}</li>
+                        </ol>
+                        <p class="w100 center" v-show="(recette.ingredients.length > 4)">...... (cliquer pour voir les détails)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- recettes de recommandation -->
+        <section class="flex-100 flex a-center jc-around vignette-container w100">
+            <h2 class="flex-100">Recettes de recommandation</h2>
+            <div v-for="recette in recettesRecommandationFiltrees" :key="recette.id_recette" class="height500 vignette flex direction-column jc-between a-center border-leger-noire ombreHover pad-1r">
+                <!-- image de recette -->
+                <div class="w100 center">
+                    <img 
+                    :class="imageRecetteNulle(recette.image) ? 'w200px': 'w75'" 
+                    :src="imageRecetteNulle(recette.image) ? 'assets/image/recette/defaut.png' : recette.image" 
+                    alt="image de recette">
+                </div>
+                <!-- informations principales de recette -->
+                <div class="w100">
+                    <h3 class="center w100">{{recette.nomRecette }} </h3>
+                    <p>CO2 : {{recette.production_CO2}}</p>
+                    <p>l'eau : {{recette.consommation_eau}}</p>
+                    <p>calorie :  {{recette.energie}}</p>
                 </div>
                 <!-- survole - ingredients -->
                 <div class="couche-recette flex direction-column jc-around pad-1r w100 cr-pointer" 
@@ -185,18 +192,16 @@
     </article>
 </template>
 
-
-
-
-
 <script>
 module.exports = {
     name:"Recettes",
     props: {
         utilisateur : {type:Object},
         recettesRecommandation : {type:Array},
-        connecte: {type: Boolean},
+        connecte : {type: Boolean},
         ingredients : {type:Array},
+        recettes : {type:Array},
+        recettesTrouvees : {type:Array},
     },
     data () {
         return {
@@ -216,23 +221,16 @@ module.exports = {
                 sexe : null,
                 imc : this.imc
             },
-            filtrage : 'Filtrage par défaut',
+            filtrage : '0',
             content : null,
+            messageRechercheRecette : "Vous pouvez saisir dans la barre de recherche pour trouver les recettes"
         }
     },
-
-    computed:{
-       filteredList() {
-      return this.products.filter((product) => {
-        return product.description.toLowerCase().includes(this.searchKey.toLowerCase());
-      });
-    },
-    },
-
     async mounted () {
         setTimeout(() => {this.sauterAccueil()}, 50);
         setTimeout(() => {this.consulterRecettesRecommandation()}, 300);
-        setTimeout(() => {this.recupererIngredients()}, 300);
+        setTimeout(() => {this.recupererNomsIngredients()}, 300);
+        setTimeout(() => {this.recupererNomsRecettes()}, 300);
     },
     methods: {
         //sauter à la page d'accueil si l'on n'est pas connecté
@@ -253,8 +251,26 @@ module.exports = {
             this.affichageRechercheAvancee = !this.affichageRechercheAvancee
         },
         //récupérer tous les ingrédients
-        async recupererIngredients() {
-            this.$emit('recuperer-ingredients')
+        async recupererNomsIngredients() {
+            this.$emit('recuperer-noms-ingredients')
+        },
+        //récupérer tous les recettes
+        async recupererNomsRecettes() {
+            this.$emit('recuperer-noms-recettes')
+        },
+        //chercher les recettes
+        async chercherRecettes() {
+            this.$emit('chercher-recettes',{motsCles:this.motsClesAPrendre, 
+                                            motsClesANePasPrendre:this.motsClesANePasPrendre, 
+                                            contraintes:this.listeContraintes,
+                                            imc : this.imc})
+             setTimeout(() => {
+                if (this.recettesTrouvees == null)
+                    this.messageRechercheRecette = "Aucune recette trouvée" 
+                else
+                    this.messageRechercheRecette = "On a trouvé " + this.recettesTrouvees.length + " recette(s)."
+                    }, 1000);
+
         },
         //récupérer les recettes de recommandation
         async consulterRecettesRecommandation() {
@@ -262,13 +278,14 @@ module.exports = {
         },
         //cliquer une recette de recommandation
         async cliquerRecetteRecommandation(idRecette, iteration) {
-            this.$emit('cliquer-recette-recommandation', {idRecette :  idRecette, idUtilisateur :  this.utilisateur.idUtilisateur, iteration :  iteration})
+            this.$emit('cliquer-recette-recommandation', {idRecette :  idRecette, idUtilisateur :  this.utilisateur.idUtilisateur, iteration : iteration})
             this.$router.push({path:'/recette/'+idRecette})
         },
         //vérifier si l'image de la recette existe ou non
         imageRecetteNulle(image){
             return  image == null 
         },
+        
     },
     computed: {
         // La note d'imc
@@ -301,6 +318,67 @@ module.exports = {
             }
             return ''
         },
+        recettesRecommandationFiltrees(){
+            let numFiltrage = parseInt(this.filtrage)
+            if(numFiltrage == 0) return this.recettesRecommandation
+            if(numFiltrage == 1) 
+                return [...this.recettesRecommandation].sort(function(a,b){
+                    return a.production_CO2 - b.production_CO2;
+                })
+            if(numFiltrage == 2) 
+                return [...this.recettesRecommandation].sort(function(a,b){
+                    return b.production_CO2 - a.production_CO2;
+                })
+            if(numFiltrage == 3) 
+                return [...this.recettesRecommandation].sort(function(a,b){
+                    return a.consommation_eau - b.consommation_eau;
+                })
+            if(numFiltrage == 4) 
+                return [...this.recettesRecommandation].sort(function(a,b){
+                    return b.consommation_eau - a.consommation_eau;
+                })
+            if(numFiltrage == 5) 
+                return [...this.recettesRecommandation].sort(function(a,b){
+                    return a.energie - b.energie;
+                })
+            if(numFiltrage == 6) 
+                return [...this.recettesRecommandation].sort(function(a,b){
+                    return b.energie - a.energie;
+                })
+        },
+        recettesTrouveesFiltrees(){
+            if(this.recettesTrouvees == null){
+                return this.recettesTrouvees
+            } else {
+                let numFiltrage = parseInt(this.filtrage)
+                if(numFiltrage == 0) return this.recettesTrouvees
+                if(numFiltrage == 1) 
+                    return [...this.recettesTrouvees].sort(function(a,b){
+                        return a.production_CO2 - b.production_CO2;
+                    })
+                if(numFiltrage == 2) 
+                    return [...this.recettesTrouvees].sort(function(a,b){
+                        return b.production_CO2 - a.production_CO2;
+                    })
+                if(numFiltrage == 3) 
+                    return [...this.recettesTrouvees].sort(function(a,b){
+                        return a.consommation_eau - b.consommation_eau;
+                    })
+                if(numFiltrage == 4) 
+                    return [...this.recettesTrouvees].sort(function(a,b){
+                        return b.consommation_eau - a.consommation_eau;
+                    })
+                if(numFiltrage == 5) 
+                    return [...this.recettesTrouvees].sort(function(a,b){
+                        return a.energie - b.energie;
+                    })
+                if(numFiltrage == 6) 
+                    return [...this.recettesTrouvees].sort(function(a,b){
+                        return b.energie - a.energie;
+                    })
+            }
+        },
+
     }
 }
 </script>

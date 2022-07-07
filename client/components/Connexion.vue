@@ -16,7 +16,6 @@
                 </div>
                 <p class="w100 center" ><router-link to='/inscription'>S'inscrire si vous n'avez pas de compte</router-link></p>
                 <p class="spe-coleur justify" v-text ="messageErreur"> </p>
-                <p class="an"></p>
             </form>
         </section>
     </article>
@@ -58,11 +57,12 @@ module.exports ={
 </script>
 
 <style scoped>
-#formulaire-connexion{
-    height: 300px;
-}
 
 article{
     height: 700px;
+}
+
+#formulaire-connexion{
+    height: 400px;
 }
 </style>

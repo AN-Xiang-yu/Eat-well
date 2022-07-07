@@ -7,7 +7,6 @@ const Inscription = window.httpVueLoader('./components/Inscription.vue')
 const Recette = window.httpVueLoader('./components/Recette.vue')
 const Recettes = window.httpVueLoader('./components/Recettes.vue')
 
-
 const routes = [
     { path: '/', component: Accueil },
     { path: '/connexion', component: Connexion },
@@ -42,7 +41,9 @@ var app = new Vue({
         connecte: null,
         recettesRecommandation: null,
         recette: null,
-        ingredients: null
+        ingredients: null,
+        recettes: null,
+        recettesTrouvees: null,
     },
     async mounted() {
         this.restConnecter() //mettre à jour le mode de connexion 
@@ -53,7 +54,7 @@ var app = new Vue({
          *
          * @return {void} 
          * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
-         * @état : fini
+         * @état : Fini
          */
         sauterRecettes() {
             if (this.connecte) {
@@ -67,7 +68,7 @@ var app = new Vue({
          *
          * @return {void} 
          * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
-         * @état : fini
+         * @état : Fini
          */
         sauterAccueil() {
             if (!this.connecte) {
@@ -84,7 +85,7 @@ var app = new Vue({
          *
          * @return {void} 
          * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
-         * @état : fini
+         * @état : Fini
          */
         async inscription(utilisateur) {
             try {
@@ -107,7 +108,7 @@ var app = new Vue({
          *
          * @return {void} 
          * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
-         * @état : fini
+         * @état : Fini
          */
         async connecter(utilisateur) {
             try {
@@ -129,7 +130,7 @@ var app = new Vue({
          *
          * @return {boolean} indiquer si la fonction est terminé
          * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
-         * @état : fini
+         * @état : Fini
          */
         async restConnecter() {
             try {
@@ -153,7 +154,7 @@ var app = new Vue({
          *
          * @return {void} 
          * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
-         * @état : fini
+         * @état : Fini
          */
         async deconnecter() {
             try {
@@ -171,15 +172,12 @@ var app = new Vue({
          * 
          * @return {void} 
          * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
-         * @état : A FAIRE
+         * @état : Fini
          */
-        async recupererIngredients() {
+        async recupererNomsIngredients() {
             try {
-                let resultat = (await axios.get('/api/ingredients')).data
-                this.ingredients = new Map()
-                resultat.ingredients.forEach(function(ingredient) {
-                    this.ingredients
-                })
+                let resultat = (await axios.get('/api/nomsIngredients')).data
+                this.ingredients = resultat.ingredients
             } catch (erreur) {
                 console.log(erreur.response.data.message);
                 console.log('erreur', erreur) //afficher le message d'erreur
@@ -188,19 +186,42 @@ var app = new Vue({
         },
 
         /**
-         * Description : Cette fonction permet à utilisateur de chercher les recettes en uitilisant les ingrédients
+         * Description : Cette fonction permet de récupérer les noms de toutes les recettes dans BDD
+         * 
+         * @return {void} 
+         * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
+         * @état : Fini
+         */
+        async recupererNomsRecettes() {
+            try {
+                let resultat = (await axios.get('/api/nomsRecettes')).data
+                this.recettes = resultat.recettes
+            } catch (erreur) {
+                console.log(erreur.response.data.message);
+                console.log('erreur', erreur) //afficher le message d'erreur
+                this.messageErreur = erreur.response.data.message
+            }
+        },
+
+        /**
+         * Description : Cette fonction permet à utilisateur de chercher les recettes en uitilisant
          * les mots clés, les contraintes et les informations personnelles.
          * 
-         * @param {list<int>} ingredients une liste d'ids d'ingredients
+         * @param {list<string>} motsCles une liste de mots clés
+         * @param {list<string>} motsClesANePasPrendre une liste de mots clés à ne pas prendre 
          * @param {list<object>} contraintes une liste de contraintes
-         * @param {list<object>} info_perso une liste des informations personnelles
+         * @param {int} imc indice de l'IMC personnel
          * @return {void} 
-         * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-         * @état : A FAIRE
+         * @author author-name(Xiangyu AN) (création : 07-07-2022) (modification : 07-07-2022)
+         * @état : Fini
          */
-        async chercherRecettes(ingredients, contraintes, info_perso) {
+        async chercherRecettes(listeInfo) {
             try {
                 let resultat = (await axios.post('/api/recettes', listeInfo)).data
+                this.recettesTrouvees = resultat.recettes
+                this.recettesTrouvees.forEach(function(recette) {
+                    recette.ingredients = recette.ingredients.split(',')
+                })
             } catch (erreur) {
                 console.log(erreur.response.data.message);
                 console.log('erreur', erreur) //afficher le message d'erreur
@@ -261,8 +282,8 @@ var app = new Vue({
          * @param {int} idUtilisateur id d'utilisateur
          * @param {int} iteration numéro d'iteration de recommandation de recette
          * @return {void} 
-         * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-         * @état : A FAIRE
+         * @author author-name(Xiangyu AN) (création :06-07-2022) (modification : 06-07-2022)
+         * @état : Fini
          */
         async cliquerRecetteRecommandation(listeId) {
             try {

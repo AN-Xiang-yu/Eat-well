@@ -9,6 +9,14 @@ var recettes = [];
 var ingredients = [];
 const NOMBRE_RECETTE_RECOMMANDATON = 10
 
+//constant pour les indices d'imc
+const DENUTRITION = 'dénutrition'
+const CORPULENCE_NORMALE = 'corpulence normale'
+const SURPOIDS = 'surpoids'
+const OBESITE_MODEREE = 'obésité modérée'
+const OBESITE_SEVERE = 'obésité sévère'
+const OBESITE_MORBIDE = 'obésité morbide'
+
 // créer l'instance Sequelize
 const { Sequelize } = require("sequelize");
 const sequelize = new Sequelize("eat_well", "root", "", {
@@ -97,7 +105,7 @@ async function genererRecetteRecommandation(res, idUtilisateur, iteration) {
  * @param {number} mdp mot de passe de l'utilisateur
  * @return {Utilisateur} tous les informations principales d'utilisateur
  * @author author-name(Xiangyu AN) (création : 18-06-2022) (modification : 19-06-2022)
- * @état : fini
+ * @état : Fini
  */
 router.post("/inscription", async(req, res) => {
     //info d'un utilisateur
@@ -179,7 +187,7 @@ router.post("/inscription", async(req, res) => {
  * @param {number} mdp mot de passe de l'utilisateur
  * @return {Utilisateur} tous les informations principales d'utilisateur
  * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
- * @état : fini
+ * @état : Fini
  */
 router.post("/connexion", async(req, res) => {
     const emailSurnom = req.body.email_surnom;
@@ -226,7 +234,7 @@ router.post("/connexion", async(req, res) => {
  *
  * @return {Utilisateur} tous les informations principales d'utilisateur
  * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
- * @état : fini
+ * @état : Fini
  */
 router.get("/connexion", async(req, res) => {
     let resultatTemp = null;
@@ -270,7 +278,7 @@ router.get("/connexion", async(req, res) => {
  *
  * @return {Utilisateur} tous les informations principales d'utilisateur
  * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
- * @état : fini
+ * @état : Fini
  */
 router.get("/deconnexion", (req, res) => {
     //si l'utilisateur n'est pas connecté
@@ -288,22 +296,22 @@ router.get("/deconnexion", (req, res) => {
 });
 
 /**
- * Description : Cette fonction permet de récupérer tous les ingrédients dans BDD
- * On va récupérer les ids d'ingrédients de BDD
+ * Description : Cette fonction permet de récupérer tous les noms d'ingrédients dans BDD
+ * On va récupérer les ids et les noms d'ingrédients de BDD
  * On va vérifier l'existence d'ingrédients
  *
  * @return {list<Ingredient>} une liste de tous les ingrédients dans BDD
- * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
- * @état : A FAIRE
+ * @author author-name(Xiangyu AN) (création : 07-07-2022) (modification : 07-07-2022)
+ * @état : Fini
  */
-router.get("/ingredients", async(req, res) => {
+router.get("/nomsIngredients", async(req, res) => {
     let resultatTemp = null;
     let ingredients = null;
 
     //récupérer tous les ingrédients
     try {
         console.log("récupérer tous les ingrédients");
-        resultatTemp = await ingredient.getIngredients()
+        resultatTemp = await ingredient.getNomsIngredients()
     } catch (error) {
         //envoyer le message d'échec à l'utilisateur
         res.status(400).json({ error: "Impossible de récupérer tous les ingrédients" });
@@ -327,127 +335,156 @@ router.get("/ingredients", async(req, res) => {
 });
 
 /**
- * Description : Cette fonction permet de récupérer tous les tags et noms de recette dans BDD
- * On va récupérer tous les tags et noms de recette de BDD
- * On va vérifier l'existence de tags et noms
+ * Description : Cette fonction permet de récupérer tous noms de recette dans BDD
+ * On va récupérer tous les noms et ids de recette de BDD
+ * On va vérifier l'existence de noms
  *
- * @return {list<string>} une liste de tous les tags et recettes dans BDD
- * @author author-name(Xiangyu AN) (création : 07-06-2022) (modification : 07-06-2022)
- * @état : A finir
+ * @return {list<string>} une liste de tous les noms et recettes dans BDD
+ * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 07-07-2022)
+ * @état : Fini
  */
-router.get("/nomIngredients", (req, res) => {
-    //si l'utilisateur n'est pas connecté
-    if (typeof req.session.utilisateur != "undefined") {
-        //impossible de récupérer les noms d'ingrédients
-        res.status(400).json({ message: "impossible de récupérer les noms d'ingrédients" });
+router.get("/nomsRecettes", async(req, res) => {
+    let resultatTemp = null;
+    let recettes = null;
+
+    //récupérer toutes les recettes
+    try {
+        console.log("récupérer toutes les recettes");
+        resultatTemp = await recette.getNomsRecettes()
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        res.status(400).json({ error: "Impossible de récupérer toutes les recettes" });
         return;
     }
-    //envoyer le message d'erreur à l'utilisateur
-    res.status(400).json({ message: "L'utilisateur n'est pas connecté" });
+
+    //vérifier l'existence des recettes
+    if (resultatTemp[0].length == 0) {
+        console.log("Aucune recette trouvé");
+        res.status(404).json({ message: "Aucune recette trouvé" });
+        return;
+    }
+
+    //récupérer les ingrédients
+    recettes = resultatTemp[0];
+
+    res.status(201).json({
+        recettes: recettes,
+    });
     return;
 });
 
 /**
  * Description : Cette fonction permet à utilisateur de chercher les recettes en uitilisant les ingrédients,
  * les mots clés, les contraintes et les informations personnelles.
- * On va utiliser les ingédients pour chercher des recettes
- * On va utiliser la liste de mots clés pour chercher des recettes
  * On va utiliser la liste de mots clés pour chercher des recettes
  * On va calculer la forme de personne et donner une remarque d'utiliser puis l'utiliser à chercher des recettes
  * On va faire une combinaison de ces quatres résultats
  * 
- * @param {list<int>} ingredients une liste d'ids d'ingredients
- * @param {list<string>} mots_cles une liste de mots clés
+ * @param {list<string>} motsCles une liste de mots clés
+ * @param {list<string>} motsClesANePasPrendre une liste de mots clés à ne pas prendre
  * @param {list<object>} contraintes une liste de contraintes
- * @param {list<object>} info_perso une liste des informations personnelles
+ * @param {int} imc indice de l'IMC personnel
  * @return {list<Recette>} une liste de recettes trouvés
  * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
- * @état : A FAIRE
+ * @état : Fini
  */
 router.post("/recettes", async(req, res) => {
-    let ingredients = req.body.ingredients;
-    let mots_cles = req.body.mots_cles;
+    let resultatTemp = null;
+    let mots_cles = req.body.motsCles;
+    let mots_cles_a_ne_pas_prendre = req.body.motsClesANePasPrendre;
     let contraintes = req.body.contraintes;
-    let info_perso = req.body.info_perso;
-    let recettes_par_ingredients = null;
-    let recettes_par_mots_cles = null;
-    let recettes_par_contraintes = null;
-    let recettes_par_remarque_perso = null;
+    let imc = req.body.imc;
     let recettes = null
 
-    //récupérer les recettes par ingrédients
-    try {
-        console.log("récupérer les recettes par ingrédients");
-        recettes_par_ingredients = await recette.getRecettesParIngredients(ingredients);
-    } catch (error) {
-        //envoyer le message d'échec à l'utilisateur
-        res.status(400).json({ error: "Impossible de trouver les recettes par ingrédients" });
-        return;
-    }
-
-    //vérifier l'existence de recettes par ingrédients
-    if (recettes_par_ingredients[0].length == 0) {
-        console.log("Aucune recette trouvée par ces ingrédiens");
-    }
-
+    console.log(mots_cles_a_ne_pas_prendre);
     //récupérer les recettes par les mots cles
     try {
-        recettes_par_mots_cles = await recette.getRecettesParIngredients(mots_cles);
+        console.log("récupérer les recettes");
+        resultatTemp = await recette.getRecettesParMotsCles(mots_cles, mots_cles_a_ne_pas_prendre, contraintes);
     } catch (error) {
         //envoyer le message d'échec à l'utilisateur
-        res.status(400).json({ error: "Impossible de trouver les recettes par mots cles" });
+        res.status(400).json({ error: "Impossible de trouver les recettes" });
         return;
     }
 
     //vérifier l'existence de recettes par les mots cles
-    if (recettes_par_mots_cles[0].length == 0) {
+    if (resultatTemp[0].length == 0) {
         console.log("Aucune recette trouvée par ces mots clés");
     }
 
-    //récupérer les recettes par les contraintes
-    try {
-        recettes_par_contraintes = await recette.getRecettesParIngredients(mots_cles);
-    } catch (error) {
-        //envoyer le message d'échec à l'utilisateur
-        res.status(400).json({ error: "Impossible de trouver les recettes par ces contraintes" });
-        return;
+    recettes = resultatTemp[0]
+
+    //calculer les informations de nutritions de chaque recette
+    for (index in recettes) {
+        let ingredients = null
+        let quantite = null
+        let energie = null
+        let lipide = null
+        let sel = null
+        let alcool = null
+        let vitamine_A = null
+        let production_CO2 = null
+        let consommation_eau = null
+
+        //récupérer tous les ingrédients de recette
+        try {
+            console.log("récupérer tous les ingrédients de recette");
+            resultatTemp = await ingredient.getIngredientsParIdRecette(recettes[index].id_recette);
+        } catch (error) {
+            //envoyer le message d'échec à l'utilisateur
+            res.status(400).json({
+                error: "Impossible de récupérer tous les ingrédients de recette",
+            });
+            return;
+        }
+
+        //vérifier si l'on a bien réussi à récupérer les ingrédients
+        if (resultatTemp[0].length == 0) {
+            console.log("Aucun ingrédient trouvé");
+            res.status(400).json({ message: "Aucun ingrédient trouvé" });
+            return;
+        }
+
+        //récupérer tous les ingredients
+        ingredients = resultatTemp[0]
+
+        //calculer les quantités totales de nutrition
+        ingredients.forEach(function(ingredient) {
+            quantite += ingredient.quantite
+            energie += ingredient.energie
+            lipide += ingredient.lipide
+            sel += ingredient.sel
+            alcool += parseFloat(ingredient.alcool)
+            vitamine_A += ingredient.vitamine_A
+            production_CO2 += ingredient.production_CO2
+            consommation_eau += ingredient.consommation_eau
+        })
+
+        //calculer les moyens des nutritions par 100 g/ml
+        energie = energie / quantite
+        lipide = lipide / quantite
+        sel = sel / quantite
+        alcool = alcool / quantite
+        vitamine_A = vitamine_A / quantite
+        production_CO2 = production_CO2 / quantite
+        consommation_eau = consommation_eau / quantite
+
+        //ajouter les moyens des nutritions dans la recette récupérée
+        recettes[index].energie = energie.toFixed(2)
+        recettes[index].lipide = lipide.toFixed(2)
+        recettes[index].sel = sel.toFixed(2)
+        recettes[index].alcool = alcool.toFixed(2)
+        recettes[index].vitamine_A = vitamine_A.toFixed(2)
+        recettes[index].production_CO2 = production_CO2.toFixed(2)
+        recettes[index].consommation_eau = consommation_eau.toFixed(2)
     }
 
-    //vérifier l'existence de recettes par les contraintes
-    if (recettes_par_contraintes[0].length == 0) {
-        console.log("Aucune recette trouvée par ces contraintes");
-    }
-
-    /* ******************************************* */
-    //A FAIRE: calculer la remarque personnelle
-    /* ******************************************* */
-    let remerque_perso = null
-
-    //récupérer les recettes par la remarque personnelle
-    try {
-        recettes_par_remarque_perso = await recette.getRecettesParIngredients(remerque_perso);
-    } catch (error) {
-        //envoyer le message d'échec à l'utilisateur
-        res.status(400).json({ error: "Impossible de trouver les recettes par la remarque personnelle" });
-        return;
-    }
-
-    //vérifier l'existence de recettes par la remarque personnelle
-    if (recettes_par_remarque_perso[0].length == 0) {
-        console.log("Aucune recette trouvée par ces informations personnelles");
-    }
-
-    //vérifier l'existence de l'utilisateur
-    if (resultatTemp[0].length == 0) {
-        console.log("L'utilisateur n'existe pas");
-        res.status(404).json({ message: "L'utilisateur n'existe pas" });
-        return;
-    }
-
-    /* ******************************************* */
-    //A FAIRE: faire une combinaison de ces quatres recettes en enlevant les redondances
-    /* ******************************************* */
-    recettes = null
+    //filtrer les recettes selon l'imc personnel
+    if (imc == CORPULENCE_NORMALE) recettes = recettes.filter(recette => recette.energie < 700)
+    if (imc == SURPOIDS) recettes = recettes.filter(recette => recette.energie < 600)
+    if (imc == OBESITE_MODEREE) recettes = recettes.filter(recette => recette.energie < 500)
+    if (imc == OBESITE_SEVERE) recettes = recettes.filter(recette => recette.energie < 300)
+    if (imc == OBESITE_MORBIDE) recettes = recettes.filter(recette => recette.energie < 200)
 
     res.status(201).json({
         recettes: recettes,
@@ -463,12 +500,22 @@ router.post("/recettes", async(req, res) => {
  * @param {int} idRecette id de recette
  * @return {Recette} une recette
  * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
- * @état : fini
+ * @état : Fini
  */
 router.post("/recette", async(req, res) => {
     const idRecette = req.body.idRecette
     let resultatTemp = null
     let recetteRecuperee = null
+    let ingredients = null
+    let quantite = null
+    let energie = null
+    let lipide = null
+    let sel = null
+    let alcool = null
+    let vitamine_A = null
+    let production_CO2 = null
+    let consommation_eau = null
+
 
     //récupérer la recette selon son id
     try {
@@ -489,8 +536,62 @@ router.post("/recette", async(req, res) => {
         return;
     }
 
+    //récupérer la recette
     recetteRecuperee = resultatTemp[0]
 
+    //récupérer tous les ingrédients de recette
+    try {
+        console.log("récupérer tous les ingrédients de recette");
+        resultatTemp = await ingredient.getIngredientsParIdRecette(idRecette);
+    } catch (error) {
+        //envoyer le message d'échec à l'utilisateur
+        res.status(400).json({
+            error: "Impossible de récupérer tous les ingrédients de recette",
+        });
+        return;
+    }
+
+    //vérifier si l'on a bien réussi à récupérer les ingrédients
+    if (resultatTemp[0].length == 0) {
+        console.log("Aucun ingrédient trouvé");
+        res.status(400).json({ message: "Aucun ingrédient trouvé" });
+        return;
+    }
+
+    //récupérer tous les ingredients
+    ingredients = resultatTemp[0]
+
+    //calculer les quantités totales de nutrition
+    ingredients.forEach(function(ingredient) {
+        quantite += ingredient.quantite
+        energie += ingredient.energie
+        lipide += ingredient.lipide
+        sel += ingredient.sel
+        alcool += parseFloat(ingredient.alcool)
+        vitamine_A += ingredient.vitamine_A
+        production_CO2 += ingredient.production_CO2
+        consommation_eau += ingredient.consommation_eau
+    })
+
+    //calculer les moyens des nutritions par 100 g/ml
+    energie = energie / quantite
+    lipide = lipide / quantite
+    sel = sel / quantite
+    alcool = alcool / quantite
+    vitamine_A = vitamine_A / quantite
+    production_CO2 = production_CO2 / quantite
+    consommation_eau = consommation_eau / quantite
+
+    //ajouter les moyens des nutritions dans la recette récupérée
+    recetteRecuperee[0].energie = energie.toFixed(2)
+    recetteRecuperee[0].lipide = lipide.toFixed(2)
+    recetteRecuperee[0].sel = sel.toFixed(2)
+    recetteRecuperee[0].alcool = alcool.toFixed(2)
+    recetteRecuperee[0].vitamine_A = vitamine_A.toFixed(2)
+    recetteRecuperee[0].production_CO2 = production_CO2.toFixed(2)
+    recetteRecuperee[0].consommation_eau = consommation_eau.toFixed(2)
+
+    console.log(recetteRecuperee);
     res.status(201).json({
         recette: recetteRecuperee,
     });
@@ -505,7 +606,7 @@ router.post("/recette", async(req, res) => {
  * @param {int} idUtilisateur id d'utilisateur
  * @return {list<Recette>} une recette
  * @author author-name(Xiangyu AN) (création : 07-06-2022) (modification : 07-06-2022)
- * @état : fini
+ * @état : Fini
  */
 router.post("/recettesRecommandation", async(req, res) => {
     //id d'un utilisateur
@@ -536,6 +637,71 @@ router.post("/recettesRecommandation", async(req, res) => {
     //récupérer tous les ids de recettes
     recettes = resultatTemp[0]
 
+    //calculer les informations de nutritions de chaque recette
+    for (index in recettes) {
+        let ingredients = null
+        let quantite = null
+        let energie = null
+        let lipide = null
+        let sel = null
+        let alcool = null
+        let vitamine_A = null
+        let production_CO2 = null
+        let consommation_eau = null
+
+        //récupérer tous les ingrédients de recette
+        try {
+            console.log("récupérer tous les ingrédients de recette");
+            resultatTemp = await ingredient.getIngredientsParIdRecette(recettes[index].id_recette);
+        } catch (error) {
+            //envoyer le message d'échec à l'utilisateur
+            res.status(400).json({
+                error: "Impossible de récupérer tous les ingrédients de recette",
+            });
+            return;
+        }
+
+        //vérifier si l'on a bien réussi à récupérer les ingrédients
+        if (resultatTemp[0].length == 0) {
+            console.log("Aucun ingrédient trouvé");
+            res.status(400).json({ message: "Aucun ingrédient trouvé" });
+            return;
+        }
+
+        //récupérer tous les ingredients
+        ingredients = resultatTemp[0]
+
+        //calculer les quantités totales de nutrition
+        ingredients.forEach(function(ingredient) {
+            quantite += ingredient.quantite
+            energie += ingredient.energie
+            lipide += ingredient.lipide
+            sel += ingredient.sel
+            alcool += parseFloat(ingredient.alcool)
+            vitamine_A += ingredient.vitamine_A
+            production_CO2 += ingredient.production_CO2
+            consommation_eau += ingredient.consommation_eau
+        })
+
+        //calculer les moyens des nutritions par 100 g/ml
+        energie = energie / quantite
+        lipide = lipide / quantite
+        sel = sel / quantite
+        alcool = alcool / quantite
+        vitamine_A = vitamine_A / quantite
+        production_CO2 = production_CO2 / quantite
+        consommation_eau = consommation_eau / quantite
+
+        //ajouter les moyens des nutritions dans la recette récupérée
+        recettes[index].energie = energie.toFixed(2)
+        recettes[index].lipide = lipide.toFixed(2)
+        recettes[index].sel = sel.toFixed(2)
+        recettes[index].alcool = alcool.toFixed(2)
+        recettes[index].vitamine_A = vitamine_A.toFixed(2)
+        recettes[index].production_CO2 = production_CO2.toFixed(2)
+        recettes[index].consommation_eau = consommation_eau.toFixed(2)
+    }
+
     res.status(201).json({
         recettes: recettes,
     });
@@ -551,7 +717,7 @@ router.post("/recettesRecommandation", async(req, res) => {
  * @param {int} idUtilisateur id d'utilisateur
  * @param {int} iteration numéro d'iteration de recommandation de recette
  * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
- * @état : fini
+ * @état : Fini
  */
 router.post("/cliquerRecetteRecommandation", async(req, res) => {
     const idRecette = req.body.idRecette

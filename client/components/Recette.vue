@@ -7,14 +7,14 @@
             <img class="w100" :src="recette.image" alt="image de recette">
         </div>
         <div class="flex-40 flex direction-column jc-around" >
-            <p><span>Type :</span> {{recette.type}}</p>
-            <p><span>Production de CO2 :</span></p>
-            <p><span>Consommation de l'eau :</span></p>
-            <p><span>Calorie (kcal) :</span></p>
-            <p><span>Lipides (g) :</span></p>
-            <p><span>Sel (NaCl) (g) :</span></p>
-            <p><span>Alcool (g) :</span></p>
-            <p><span>Activité de vitamine A, RE (µg-RE) :</span></p>
+            <p><b>Type :</b> {{ recette.type}}</p>
+            <p><b>Production de CO2 :</b>{{ recette.production_CO2}}</p>
+            <p><b>Consommation de l'eau :</b>{{ recette.consommation_eau}}</p>
+            <p><b>Calorie (kcal) :</b>{{ recette.energie}}</p>
+            <p><b>Lipides (g) :</b>{{ recette.lipide}}</p>
+            <p><b>Sel (NaCl) (g) :</b>{{ recette.sel}}</p>
+            <p><b>Alcool (g) :</b>{{ recette.alcool}}</p>
+            <p><b>Activité de vitamine A, RE (µg-RE) :</b>{{ recette.vitamine_A}}</p>
         </div>
     </section>
     <!-- liste des ingrédients -->
@@ -84,7 +84,7 @@ module.exports = {
         }
     },
     async mounted () {
-        //setTimeout(() => {this.sauterAccueil()}, 100)
+        setTimeout(() => {this.sauterAccueil()}, 100)
         this.consulterRecette()
         setTimeout(() => {this.consulterRecettesRecommandation()}, 200)
     },

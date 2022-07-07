@@ -11,7 +11,7 @@ class Recette {
      * @param {int} nbrRecette email ou surnom de l'utilisateur
      * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
      * @return {Recette} Une liste de recettes
-     * @état : fini
+     * @état : Fini
      */
     async getRecettesNbr(nbrRecette) {
         return this.sequelize
@@ -24,99 +24,81 @@ class Recette {
             .catch((err) => res.status(400).json({ error: err }));
     }
 
-    /** !!!!!!!!!! A REVOIR AVEC LE GROUPE
-     * Description : Cette fonction permet de récupérer les recettes selon les ids d'ingrédients
+    /**
+     * Description : Cette fonction permet de récupérer les recettes selon les noms des ingrédients et des recettes
      *
-     * @param {List<int>} ingredients une liste d'ids d'ingrédients
-     * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
+     * @param {List<String>} motsCles une liste des noms des ingrédients et des recettes
+     * @param {list<string>} motsClesANePasPrendre une liste de mots clés à ne pas prendre
+     * @param {List<object>} contraintes une liste de contraintes 
+     * @author author-name(Xiangyu AN) (création : 07-07-2022) (modification : 07-07-2022)
      * @return {Recette} Une liste de recettes
-     * @état : A FAIRE
+     * @état : Fini
      */
-    async getRecettesParIngredients(ingredients) {
-        return this.sequelize
-            .query(
-                `SELECT *
-                FROM recettes
-                WHERE ............ `, {
-                    // replacements: {...: ... },
-                }
-            )
-            .catch((err) => res.status(400).json({ error: err }));
-    }
+    async getRecettesParMotsCles(motsCles, motsClesANePasPrendre, contraintes) {
+        let sqlConstraintes = ''
+        let aPrendre = null
+        let aNePasPrendre = null
 
-    /** !!!!!!!!!! A REVOIR AVEC LE GROUPE
-     * Description : Cette fonction permet de récupérer les recettes selon les contraintes
-     *
-     * @param {List<object>} contraintes une liste de contraintes
-     * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-     * @return {Recette} Une liste de recettes
-     * @état : A FAIRE
-     */
-    async getRecettesParContraintes(contraintes) {
-        return this.sequelize
-            .query(
-                `SELECT *
-                FROM recettes
-                WHERE ............ `, {
-                    // replacements: {...: ... },
-                }
-            )
-            .catch((err) => res.status(400).json({ error: err }));
-    }
+        //les mots clés à prendre
+        aPrendre = '("'
+        for (let index = 0; index < motsCles.length - 1; index++) {
+            aPrendre += motsCles[index] + '", "'
+        }
+        aPrendre += motsCles[motsCles.length - 1] + '")'
 
-    /** !!!!!!!!!! A REVOIR AVEC LE GROUPE
-     * Description : Cette fonction permet de récupérer les recettes selon la remarque sur la forme personnelle
-     *
-     * @param {string} remarquePerso une remarque sur la forme personnelle
-     * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-     * @return {Recette} Une liste de recettes
-     * @état : A FAIRE
-     */
-    async getRecettesParRemarquePerso(remarquePerso) {
-        return this.sequelize
-            .query(
-                `SELECT *
-                FROM recettes
-                WHERE ............ `, {
-                    // replacements: {...: ... },
-                }
-            )
-            .catch((err) => res.status(400).json({ error: err }));
-    }
+        //les mots clés à ne pas prendre
+        aNePasPrendre = '("'
+        for (let index = 0; index < motsClesANePasPrendre.length - 1; index++) {
+            aNePasPrendre += motsClesANePasPrendre[index] + '", "'
+        }
+        aNePasPrendre += motsClesANePasPrendre[motsClesANePasPrendre.length - 1] + '")'
 
-    /** !!!!!!!!!! A REVOIR AVEC LE GROUPE
-     * Description : Cette fonction permet de récupérer les informations avec selon les entrées
-     *
-     * @param {List<String>} listeString une liste de string (ingrédients ou tags ou nom de recettes)
-     * @param {contraintes} contraintes une liste de contraintes
-     * @param {int} notePersonnelle une note personnelle calculée en fonction de sa taille, poids et sexe
-     * @author author-name(Prénom NOM) (création : ??-06-2022) (modification : ??-06-2022)
-     * @return {Recette} Une liste de recettes
-     * @état : A FAIRE
-     */
-    async getRecettesRecherchees(listeIngredients, contraintes, notePersonnelle) {
+        //les contraintes
+        if (contraintes.sansProc != false) sqlConstraintes += ' AND sans_porc = ' + contraintes.sansProc
+        if (contraintes.vegane != false) sqlConstraintes += ' AND vegane = ' + contraintes.vegane
+        if (contraintes.vegetarien != false) sqlConstraintes += ' AND vegetarien = ' + contraintes.vegetarien
+        if (contraintes.sansAlcool != false) sqlConstraintes += ' AND sans_alcool = ' + contraintes.sansAlcool
+        if (contraintes.sansGluten != false) sqlConstraintes += ' AND sans_gluten = ' + contraintes.sansGluten
+
         return this.sequelize
             .query(
-                `SELECT *
-                FROM recettes
-                WHERE ............ `, {
-                    // replacements: {...: ... },
-                }
-            )
-            .catch((err) => res.status(400).json({ error: err }));
+                `
+                SELECT r.id as id_recette, r.nom as nomRecette, ingredients, etapes, image
+                FROM recette r 
+                WHERE r.nom IN ${aPrendre} AND r.nom NOT IN 
+                    (
+                        SELECT r.nom
+                        FROM recette r 
+                        WHERE r.nom IN ${aNePasPrendre} 
+                    )
+                UNION(
+                    SELECT r.id as id_recette, r.nom as nomRecette, ingredients, etapes, image
+                    FROM ingredient i 
+                    INNER JOIN ingredient_recette ir ON i.id = ir.id_ingredient
+                    INNER JOIN recette r ON r.id = ir.id_recette
+                    WHERE i.nom IN ${aPrendre} AND i.nom NOT IN
+                        (
+                            SELECT i.nom
+                            FROM ingredient i 
+                            INNER JOIN ingredient_recette ir ON i.id = ir.id_ingredient
+                            INNER JOIN recette r ON r.id = ir.id_recette
+                            WHERE i.nom IN ${aNePasPrendre}
+                        ) ${sqlConstraintes}
+                )`,
+            ).catch((err) => res.status(400).json({ error: err }));
     }
 
     /**
      * Description : Cette fonction permet de récupérer les noms de tous les recettes
      *
      * @return {list<string>} Une liste de recettes
-     * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
-     * @état : fini
+     * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : 07-07-2022)
+     * @état : Fini
      */
-    async getNomRecettes() {
+    async getNomsRecettes() {
         return this.sequelize
             .query(
-                `SELECT nom FROM recette`
+                `SELECT id as idRecette, nom as nomRecette FROM recette`
             )
             .catch((err) => res.status(400).json({ error: err }));
     }
@@ -126,7 +108,7 @@ class Recette {
      *
      * @return {list<string>} Une liste de recettes
      * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
-     * @état : fini
+     * @état : Fini
      */
     async getIdRecettes() {
         return this.sequelize
@@ -142,7 +124,7 @@ class Recette {
      * @param {int} idRecette id de recette
      * @return {Recette} Une recette
      * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : 06-07-2022)
-     * @état : Non fini
+     * @état : Fini
      */
     async getRecetteParId(idRecette) {
         return this.sequelize
@@ -163,7 +145,7 @@ class Recette {
      * @param {int} idUtilisateur id d'utilisateur
      * @return {List<Recette>} Une liste de recettes
      * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
-     * @état : fini
+     * @état : Fini
      */
     async getRecettesRecommandationParIdUtilisateur(idUtilisateur) {
         return this.sequelize
@@ -188,7 +170,7 @@ class Recette {
      * @param {int} idRecette id de recette
      * @param {int} iteration numéro d'iteration de recommandation de recette
      * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
-     * @état : fini
+     * @état : Fini
      */
     async mettreAJourRecommandation(idUtilisateur, idRecette, iteration) {
         return this.sequelize
@@ -209,7 +191,7 @@ class Recette {
      * @param {int} idRecette id de recette
      * @param {int} iteration numéro d'iteration de recommandation de recette
      * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
-     * @état : fini
+     * @état : Fini
      */
     async addRecommandation(idUtilisateur, idRecette, iteration) {
         return this.sequelize
@@ -228,7 +210,7 @@ class Recette {
      *
      * @param {int} idUtilisateur id d'utilisateur
      * @author author-name(Xiangyu AN) (création : 06-07-2022) (modification : 06-07-2022)
-     * @état : fini
+     * @état : Fini
      */
     async getPlusRecenteIterationRecettesRecommandation(idUtilisateur) {
         return this.sequelize

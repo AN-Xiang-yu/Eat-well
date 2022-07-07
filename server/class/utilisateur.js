@@ -11,7 +11,7 @@ class Utilisateur {
      * @param {string} surnom surnom de l'utilisateur
      * @return {Utilisateur} tous les informations principales d'utilisateur
      * @author author-name(Xiangyu AN) (création : 18-06-2022) (modification : 18-06-2022)
-     * @état : fini
+     * @état : Fini
      */
     async exister(email, surnom) {
         return this.sequelize.query(
@@ -31,7 +31,7 @@ class Utilisateur {
      * @param {string} mdphash mot de passe haché de l'utilisateur
      * @return {int} id d'utilisateur ajouté
      * @author author-name(Xiangyu AN) (création : 18-06-2022) (modification : 18-06-2022)
-     * @état : fini
+     * @état : Fini
      */
     async ajouterUtilisateur(email, surnom, mdphash) {
         return this.sequelize.query(
@@ -48,7 +48,7 @@ class Utilisateur {
      * @param {string} emailSurnom email ou surnom de l'utilisateur
      * @return {Utilisateur} les informations de l'utilisateur
      * @author author-name(Xiangyu AN) (création : 19-06-2022) (modification : 19-06-2022)
-     * @état : fini
+     * @état : Fini
      */
     async getUtilisateur(emailSurnom) {
         return this.sequelize.query(
@@ -67,7 +67,7 @@ class Utilisateur {
      * @param {int} idUtilisateur email ou surnom de l'utilisateur
      * @return {Utilisateur} les informations de l'utilisateur
      * @author author-name(Xiangyu AN) (création : 18-06-2022) (modification : 18-06-2022)
-     * @état : fini
+     * @état : Fini
      */
     async getUtilisateurParId(idUtilisateur) {
         return this.sequelize.query(
