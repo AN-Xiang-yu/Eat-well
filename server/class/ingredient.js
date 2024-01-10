@@ -4,13 +4,12 @@ class Ingredient {
     }
 
     /**
-       * Description : Cette fonction permet de récupérer le nom et l'id de tous les ingrédients 
-       * 
-       * @return {list<Ingredient>} Une liste de recettes
-       * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : 07-07-2022)
-
-       * @état : Fini
-       */
+     * Description : Cette fonction permet de récupérer le nom et l'id de tous les ingrédients 
+     * 
+     * @return {list<Ingredient>} Une liste de recettes
+     * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : 07-07-2022)
+     * @état : Fini
+     */
     async getNomsIngredients() {
         return this.sequelize
             .query(`SELECT nom as nomIngredient, id as idIngredient FROM ingredient`)
@@ -18,13 +17,12 @@ class Ingredient {
     }
 
     /**
-       * Description : Cette fonction permet de récupérer tous les id des ingrédients 
-       * 
-       * @return {list<Ingredient>} Une liste d'ids d'ingrédients
-       * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
-
-       * @état : Fini
-       */
+     * Description : Cette fonction permet de récupérer tous les id des ingrédients 
+     * 
+     * @return {list<Ingredient>} Une liste d'ids d'ingrédients
+     * @author author-name(Essaid Benamar) (création : 21-06-2022) (modification : ??-06-2022)
+     * @état : Fini
+     */
     async getIdIngredients() {
         return this.sequelize
             .query(`SELECT id FROM ingredient`)

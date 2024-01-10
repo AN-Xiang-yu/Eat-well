@@ -52,7 +52,7 @@ class Utilisateur {
      */
     async getUtilisateur(emailSurnom) {
         return this.sequelize.query(
-            `SELECT id as idUtilisateur, surnom, email, mdp
+            `SELECT id AS idUtilisateur, surnom, email, mdp
                 FROM utilisateur 
                 WHERE email = :email_surnom or surnom = :email_surnom`, {
                 replacements: { email_surnom: emailSurnom },

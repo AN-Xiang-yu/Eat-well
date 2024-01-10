@@ -15,6 +15,7 @@
     "http-errors": "~1.6.3",
     "marmiton-api": "^2.2.0",
     "morgan": "~1.9.1",
+    "mysql2": "^3.3.1",
     "vue-carousel-3d": "^1.0.1"
   },
   "devDependencies": {
