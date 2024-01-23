@@ -59,6 +59,14 @@ CREATE TABLE ingredient(
 )ENGINE=InnoDB;
 
 
+CREATE TABLE `type` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nom` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `nom_UNIQUE` (`nom` ASC) )ENGINE=InnoDB;
+
+
+
 #------------------------------------------------------------
 # Table: recette
 #------------------------------------------------------------
@@ -66,8 +74,10 @@ CREATE TABLE ingredient(
 CREATE TABLE recette(
         id          Int  Auto_increment  NOT NULL ,
         nom         Varchar (100) NOT NULL ,
-        etapes      Longtext NOT NULL 
+        etapes      Longtext NOT NULL,
+        id_type     INT
 	,CONSTRAINT recette_PK PRIMARY KEY (id)
+    ,CONSTRAINT recette_type_FK FOREIGN KEY (id_type) REFERENCES `type`(id)
 )ENGINE=InnoDB;
 
 
@@ -102,22 +112,7 @@ CREATE TABLE utilisateur_recette(
 )ENGINE=InnoDB;
 
 
-CREATE TABLE `type` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nom` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `nom_UNIQUE` (`nom` ASC) VISIBLE);
 
-ALTER TABLE `eat_well`.`recette` 
-ADD COLUMN `id_type` INT NOT NULL AFTER `etapes`,
-ADD INDEX `id_idx` (`id_type` ASC) VISIBLE;
-;
-ALTER TABLE `eat_well`.`recette` 
-ADD CONSTRAINT `id`
-  FOREIGN KEY (`id_type`)
-  REFERENCES `eat_well`.`type` (`id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION;
 
 ALTER TABLE `eat_well`.`recette` 
 ADD COLUMN `ingredients` LONGTEXT NOT NULL AFTER `etapes`;
@@ -3280,10 +3275,4 @@ INSERT INTO `ingredient_recette` (`id_recette`, `id_ingredient`, `quantite`) VAL
 
 UPDATE ingredient  
 SET `sans_porc` = 1
-WHERE UPPER(nom) NOT IN ("CHARCUTERIE", "EMINCE", "JAMBON", "LARD A MANGER", "MORTADELLA", "PORC", "SALAMI", "SALAMETTO", "SANGLIER", "SAUCISSE", "SAUCISSES", "SAUCISSON", "VIANDE DE PORC", "CHARCUTERIES", "EMINCES", "JAMBON", "LARDS A MANGER", "MORTADELLE", "PORCS", "SALAMETTO", "SALAMIS", "SAINDOUX", "SANGLIERS", "SAUCISSE", "SAUCISSES", "SAUCISSONS", "VIANDES DE PORC", "ZAMPONES", "ZAMPONE")
-
-("Creme","Emmentaler","Fondue","Fromage" ,"Fromage a pate molle","Fromage a raclette","Fromage bleu" ,"Fromage fondu" ,"Fromage rape","Gruyere","doeuf","Jaune doeuf","Jaune d'oeuf","Lait","Margarine","Mascarpone","Mayonnaise","Meringue","Oeuf","Sauce tartare"",Blanc battu","Blanc d'oeuf","Camemberts","Camembert","Cremes","Fondues" ,"Fromages","Fromages a pate molle","Fromages a raclette","Fromages bleu" ,"Fromage fondu" ,"Fromages rape","Gruyeres","doeufs","Jaunes doeufs","Jaunes d'oeufs","Laits","Margarines","Mascarpones","Mayonnaises","Meringues","Mozzarellas","Mozzarella","Oeufs","Petit-beurre","Roqueforts","Roquefort","Beurre","Beurres")
-
-("Anchois" ,"Batonnet de poisson","Cabillaud","Calamar","Carrelet","Crevette","Langoustine","Merlu","Poisson","Sardine","Sole","Surimi","Thon","Truite","Batonnets de poisson","Cabillauds","Calamars","Carrelets","Crevettes","Langoustines","Merlus","Poissons","Sardines","Soles","Saumons","Saumon","Thons","Truites","Truites")
-
-("mouton" ,"Agneau" ,"Boeuf", "Cerf","Charcuterie" ,"Cheval","Chevre","Chevreuil","Emince" ,"Escalope" ,"Foie" ,"Gibier","Jambon","Langue (moyenne de veau et boeuf)","Lapin","Lard a manger","Mortadella","Porc","Poulet" ,"Salami","Salametto","Sanglier","Saucisse","Saucisses","Saucisson","Veau","Viande","Viande de boeuf" ,"Viande de porc","Viande de veau" ,"Viande de volaille","moutons","Agneaux","Boeufs","Cerfs","Charcuteries","Chevaux","Chevres","Chevreuils","Eminces","Escalopes","Foies","Gibiers","Jambon" ,"Langues","Lapins","Lards a manger","mortadelle","Porcs","Poulets","Salametto","Salamis","Saindoux","Sangliers","Saucisse","Saucisses","Saucissons","Veaux","Viandes","Viandes de boeuf","Viandes de porc","Viandes de veau" ,"Viandes de volaille","Zampones","Zampone")
+WHERE UPPER(nom) NOT IN ("CHARCUTERIE", "EMINCE", "JAMBON", "LARD A MANGER", "MORTADELLA", "PORC", "SALAMI", "SALAMETTO", "SANGLIER", "SAUCISSE", "SAUCISSES", "SAUCISSON", "VIANDE DE PORC", "CHARCUTERIES", "EMINCES", "JAMBON", "LARDS A MANGER", "MORTADELLE", "PORCS", "SALAMETTO", "SALAMIS", "SAINDOUX", "SANGLIERS", "SAUCISSE", "SAUCISSES", "SAUCISSONS", "VIANDES DE PORC", "ZAMPONES", "ZAMPONE", "CREME","EMMENTALER","FONDUE","FROMAGE" ,"FROMAGE A PATE MOLLE","FROMAGE A RACLETTE","FROMAGE BLEU" ,"FROMAGE FONDU" ,"FROMAGE RAPE","GRUYERE","DOEUF","JAUNE DOEUF","JAUNE D'OEUF","LAIT","MARGARINE","MASCARPONE","MAYONNAISE","MERINGUE","OEUF","SAUCE TARTARE"",BLANC BATTU","BLANC D'OEUF","CAMEMBERTS","CAMEMBERT","CREMES","FONDUES" ,"FROMAGES","FROMAGES A PATE MOLLE","FROMAGES A RACLETTE","FROMAGES BLEU" ,"FROMAGE FONDU" ,"FROMAGES RAPE","GRUYERES","DOEUFS","JAUNES DOEUFS","JAUNES D'OEUFS","LAITS","MARGARINES","MASCARPONES","MAYONNAISES","MERINGUES","MOZZARELLAS","MOZZARELLA","OEUFS","PETIT-BEURRE","ROQUEFORTS","ROQUEFORT","BEURRE","BEURRES", "ANCHOIS" ,"BATONNET DE POISSON","CABILLAUD","CALAMAR","CARRELET","CREVETTE","LANGOUSTINE","MERLU","POISSON","SARDINE","SOLE","SURIMI","THON","TRUITE","BATONNETS DE POISSON","CABILLAUDS","CALAMARS","CARRELETS","CREVETTES","LANGOUSTINES","MERLUS","POISSONS","SARDINES","SOLES","SAUMONS","SAUMON","THONS","TRUITES","TRUITES", "MOUTON" ,"AGNEAU" ,"BOEUF", "CERF","CHARCUTERIE" ,"CHEVAL","CHEVRE","CHEVREUIL","EMINCE" ,"ESCALOPE" ,"FOIE" ,"GIBIER","JAMBON","LANGUE (MOYENNE DE VEAU ET BOEUF)","LAPIN","LARD A MANGER","MORTADELLA","PORC","POULET" ,"SALAMI","SALAMETTO","SANGLIER","SAUCISSE","SAUCISSES","SAUCISSON","VEAU","VIANDE","VIANDE DE BOEUF" ,"VIANDE DE PORC","VIANDE DE VEAU" ,"VIANDE DE VOLAILLE","MOUTONS","AGNEAUX","BOEUFS","CERFS","CHARCUTERIES","CHEVAUX","CHEVRES","CHEVREUILS","EMINCES","ESCALOPES","FOIES","GIBIERS","JAMBON" ,"LANGUES","LAPINS","LARDS A MANGER","MORTADELLE","PORCS","POULETS","SALAMETTO","SALAMIS","SAINDOUX","SANGLIERS","SAUCISSE","SAUCISSES","SAUCISSONS","VEAUX","VIANDES","VIANDES DE BOEUF","VIANDES DE PORC","VIANDES DE VEAU" ,"VIANDES DE VOLAILLE","ZAMPONES","ZAMPONE")
